@@ -1,0 +1,157 @@
+@import "tailwindcss";
+
+/* ---------- Base theme variables (defaults; ThemeProvider overrides on subtree) ---------- */
+:root {
+  --color-bg: #f6ecd9;
+  --color-surface: #f1e3c8;
+  --color-paper: #eadfc1;
+  --color-ink: #3b2a1e;
+  --color-accent: #c06a4a;
+  --color-seal: #a02822;
+  --color-muted: #8b7455;
+  --color-shadow: rgba(72, 47, 24, 0.25);
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 22px;
+  --open-duration: 1.6s;
+
+  /* font-family fallbacks — next/font in layout.tsx sets the actual vars */
+  --font-display-warm: "Caveat", cursive;
+  --font-body-warm: "Lora", Georgia, serif;
+  --font-hand-warm: "Homemade Apple", "Caveat", cursive;
+
+  --font-display-playful: "Sora", system-ui, sans-serif;
+  --font-body-playful: "Inter", system-ui, sans-serif;
+
+  --font-display-cinematic: "Playfair Display", Georgia, serif;
+  --font-body-cinematic: "Cormorant Garamond", Georgia, serif;
+
+  --font-display-minimal: "Inter", system-ui, sans-serif;
+  --font-body-minimal: "Inter", system-ui, sans-serif;
+}
+
+@theme inline {
+  --color-bg: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-paper: var(--color-paper);
+  --color-ink: var(--color-ink);
+  --color-accent: var(--color-accent);
+  --color-seal: var(--color-seal);
+  --color-muted: var(--color-muted);
+
+  --font-display: var(--font-display-warm);
+  --font-body: var(--font-body-warm);
+  --font-hand: var(--font-hand-warm);
+}
+
+html,
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body-warm);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+[data-theme="modern-playful"] {
+  font-family: var(--font-body-playful);
+}
+[data-theme="cinematic-gold"] {
+  font-family: var(--font-body-cinematic);
+}
+[data-theme="minimalist-ink"] {
+  font-family: var(--font-body-minimal);
+}
+
+/* ---------- Utility classes ---------- */
+.font-hand {
+  font-family: var(--font-hand-warm);
+  letter-spacing: 0.01em;
+}
+.font-display {
+  font-family: var(--font-display-warm);
+}
+[data-theme="modern-playful"] .font-display {
+  font-family: var(--font-display-playful);
+}
+[data-theme="cinematic-gold"] .font-display {
+  font-family: var(--font-display-cinematic);
+}
+[data-theme="minimalist-ink"] .font-display {
+  font-family: var(--font-display-minimal);
+}
+
+/* Paper / grain textures: layered SVG noise + subtle color wash */
+.paper {
+  background-color: var(--color-paper);
+  background-image:
+    radial-gradient(1200px 600px at 50% -20%, rgba(255, 255, 255, 0.4), transparent 60%),
+    radial-gradient(900px 500px at 80% 120%, rgba(0, 0, 0, 0.06), transparent 60%),
+    url("/textures/kraft.svg");
+  background-size: auto, auto, 240px 240px;
+  background-blend-mode: normal, multiply, multiply;
+}
+
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("/textures/noise.svg");
+  background-size: 180px 180px;
+  opacity: 0.18;
+  mix-blend-mode: multiply;
+}
+
+.foil {
+  background: conic-gradient(
+    from 120deg,
+    #f2d272,
+    #b6862d,
+    #f6e5a7,
+    #8a5c17,
+    #f2d272
+  );
+  background-size: 200% 200%;
+  animation: foil-shimmer 6s linear infinite;
+}
+
+@keyframes foil-shimmer {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 200% 200%;
+  }
+}
+
+/* Envelope stack */
+.envelope-shadow {
+  filter: drop-shadow(0 12px 24px var(--color-shadow));
+}
+
+/* Handwritten reveal cursor caret (used in text-note) */
+.caret::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  transform: translateY(0.15em);
+  background: currentColor;
+  margin-left: 2px;
+  animation: caret-blink 1s step-end infinite;
+}
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,62 @@
+import type { Theme } from "./types";
+
+export const cinematicGold: Theme = {
+  id: "cinematic-gold",
+  name: "Cinematic Gold",
+  description: "Midnight velvet, gold foil, slow dramatic reveals.",
+  tokens: {
+    colors: {
+      background: "#0c0a14",
+      surface: "#171226",
+      paper: "#1d1634",
+      ink: "#f2ead3",
+      accent: "#e6c36b",
+      seal: "#c8a14a",
+      muted: "#8e85a6",
+      shadow: "rgba(0, 0, 0, 0.6)",
+    },
+    radii: { sm: "4px", md: "10px", lg: "18px" },
+    fonts: {
+      display: "var(--font-display-cinematic)",
+      body: "var(--font-body-cinematic)",
+      hand: "var(--font-hand-warm)",
+    },
+    timing: { openDuration: 2.4, easing: "power4.inOut", paperRustle: 0.5 },
+    texture: { paperUrl: "/textures/foil.svg", grain: "heavy" },
+  },
+  designs: [
+    {
+      id: "cinematic-midnight",
+      themeId: "cinematic-gold",
+      name: "Midnight Foil",
+      paper: "#1d1634",
+      flap: "#150f27",
+      seal: "#e6c36b",
+      accent: "#e6c36b",
+      pattern: "foil",
+      description: "Midnight purple with a gold foil seal.",
+    },
+    {
+      id: "cinematic-foil",
+      themeId: "cinematic-gold",
+      name: "Obsidian Gold",
+      paper: "#0a0a0a",
+      flap: "#050505",
+      seal: "#e6c36b",
+      accent: "#c8a14a",
+      pattern: "foil",
+      description: "Jet black with cascading gold detail.",
+    },
+    {
+      id: "cinematic-velvet",
+      themeId: "cinematic-gold",
+      name: "Velvet Rouge",
+      paper: "#4a0f1a",
+      flap: "#380a13",
+      seal: "#e6c36b",
+      accent: "#e6c36b",
+      pattern: "none",
+      description: "Deep velvet crimson with a gold crest.",
+    },
+  ],
+};

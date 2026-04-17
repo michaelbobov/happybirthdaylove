@@ -1,0 +1,15 @@
+import "server-only";
+import { redirect } from "next/navigation";
+import { createClient } from "./supabase/server";
+
+export async function getUser() {
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getUser();
+  return data.user;
+}
+
+export async function requireUser() {
+  const user = await getUser();
+  if (!user) redirect("/sign-in");
+  return user;
+}

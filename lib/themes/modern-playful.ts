@@ -1,0 +1,61 @@
+import type { Theme } from "./types";
+
+export const modernPlayful: Theme = {
+  id: "modern-playful",
+  name: "Modern & Playful",
+  description: "Clean geometry, confetti bursts, springy physics. Duolingo-energy.",
+  tokens: {
+    colors: {
+      background: "#fff8ec",
+      surface: "#ffffff",
+      paper: "#fef2d1",
+      ink: "#1a1a2e",
+      accent: "#ff5e8a",
+      seal: "#7c3aed",
+      muted: "#6b7280",
+      shadow: "rgba(28, 25, 60, 0.18)",
+    },
+    radii: { sm: "10px", md: "18px", lg: "28px" },
+    fonts: {
+      display: "var(--font-display-playful)",
+      body: "var(--font-body-playful)",
+      hand: "var(--font-hand-warm)",
+    },
+    timing: { openDuration: 1.1, easing: "back.out(1.6)", paperRustle: 0.2 },
+    texture: { paperUrl: "/textures/noise.svg", grain: "none" },
+  },
+  designs: [
+    {
+      id: "playful-candy",
+      themeId: "modern-playful",
+      name: "Candy Stripe",
+      paper: "#ffd6e5",
+      flap: "#ffbcd1",
+      seal: "#7c3aed",
+      accent: "#ff5e8a",
+      pattern: "stripes",
+      description: "Bubblegum pink with bold stripes.",
+    },
+    {
+      id: "playful-confetti",
+      themeId: "modern-playful",
+      name: "Confetti Burst",
+      paper: "#fff2a8",
+      flap: "#ffe36b",
+      seal: "#ff5e8a",
+      pattern: "confetti",
+      description: "Sunshine yellow speckled with confetti.",
+    },
+    {
+      id: "playful-holo",
+      themeId: "modern-playful",
+      name: "Holo Pop",
+      paper: "#bee4ff",
+      flap: "#a5d6ff",
+      seal: "#ff5e8a",
+      accent: "#7c3aed",
+      pattern: "dots",
+      description: "Holo-blue with confetti dots.",
+    },
+  ],
+};

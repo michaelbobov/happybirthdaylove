@@ -1,0 +1,61 @@
+import type { Theme } from "./types";
+
+export const minimalistInk: Theme = {
+  id: "minimalist-ink",
+  name: "Minimalist Ink",
+  description: "Monochrome, restrained, all the air in the room. A single perfect line of ink.",
+  tokens: {
+    colors: {
+      background: "#fafaf7",
+      surface: "#ffffff",
+      paper: "#f4f3ee",
+      ink: "#111111",
+      accent: "#111111",
+      seal: "#111111",
+      muted: "#7a7a7a",
+      shadow: "rgba(0, 0, 0, 0.12)",
+    },
+    radii: { sm: "2px", md: "4px", lg: "8px" },
+    fonts: {
+      display: "var(--font-display-minimal)",
+      body: "var(--font-body-minimal)",
+      hand: "var(--font-hand-warm)",
+    },
+    timing: { openDuration: 1.4, easing: "expo.out", paperRustle: 0.25 },
+    texture: { paperUrl: "/textures/noise.svg", grain: "none" },
+  },
+  designs: [
+    {
+      id: "ink-minimal",
+      themeId: "minimalist-ink",
+      name: "Off-White",
+      paper: "#f4f3ee",
+      flap: "#ece9e0",
+      seal: "#111111",
+      accent: "#111111",
+      pattern: "none",
+      description: "Bone paper, a single ink dot seal.",
+    },
+    {
+      id: "ink-deboss",
+      themeId: "minimalist-ink",
+      name: "Deboss",
+      paper: "#ffffff",
+      flap: "#f2f0eb",
+      seal: "#111111",
+      pattern: "none",
+      description: "Pure white with a debossed crest.",
+    },
+    {
+      id: "ink-grid",
+      themeId: "minimalist-ink",
+      name: "Graph",
+      paper: "#f8f7f2",
+      flap: "#efede6",
+      seal: "#111111",
+      accent: "#c7c3b5",
+      pattern: "grid",
+      description: "Engineering-paper grid, softly inked.",
+    },
+  ],
+};
