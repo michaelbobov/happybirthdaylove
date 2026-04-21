@@ -30,10 +30,11 @@ export function SignInForm() {
 
   return (
     <form onSubmit={submit} className="mt-6 flex flex-col gap-3">
-      <label className="text-xs uppercase tracking-widest" style={{ color: "var(--color-muted)" }}>
+      <label htmlFor="sign-in-email" className="text-xs uppercase tracking-widest" style={{ color: "var(--color-muted)" }}>
         Email
       </label>
       <input
+        id="sign-in-email"
         type="email"
         required
         value={email}

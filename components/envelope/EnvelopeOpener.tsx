@@ -6,6 +6,7 @@ import { gsap } from "gsap";
 import type { EnvelopeDesign } from "@/lib/themes";
 import { getTheme } from "@/lib/themes";
 import { EnvelopeSVG } from "./EnvelopeSVG";
+import { PhotoEnvelope } from "./PhotoEnvelope";
 
 type Props = {
   design: EnvelopeDesign;
@@ -44,7 +45,19 @@ export function EnvelopeOpener({
   const envelopeWrapRef = useRef<HTMLDivElement | null>(null);
   const [stage, setStage] = useState<"closed" | "opening" | "open">("closed");
 
-  // Hover tilt (closed state)
+  // Entry pop: on mount, scale/fade the envelope in with a bounce so it
+  // obviously presents itself as interactive. One-shot.
+  useEffect(() => {
+    const el = envelopeWrapRef.current;
+    if (!el) return;
+    gsap.fromTo(
+      el,
+      { scale: 0.82, y: 48, opacity: 0 },
+      { scale: 1, y: 0, opacity: 1, duration: 0.95, ease: "back.out(1.4)", delay: 0.08 },
+    );
+  }, []);
+
+  // Hover tilt (closed state) — tilts the inner wrapper; CSS bob on outer.
   useEffect(() => {
     if (stage !== "closed") return;
     const el = envelopeWrapRef.current;
@@ -84,9 +97,11 @@ export function EnvelopeOpener({
     if (!root || !envelope || !content) return;
 
     const ctx = gsap.context(() => {
-      const flap = root.querySelector(".env-flap") as SVGGElement | null;
-      const seal = root.querySelector(".wax-seal") as SVGGElement | null;
-      const peek = root.querySelector(".env-peek") as SVGGElement | null;
+      // PhotoEnvelope uses HTML divs with the same class hooks; SVGEnvelope
+      // uses <g> groups. GSAP handles both when typed as Element.
+      const flap = root.querySelector(".env-flap") as Element | null;
+      const seal = root.querySelector(".wax-seal") as Element | null;
+      const peek = root.querySelector(".env-peek") as Element | null;
 
       const tl = gsap.timeline({
         defaults: { ease },
@@ -102,7 +117,11 @@ export function EnvelopeOpener({
           .to(seal, { scale: 0, rotation: 22, opacity: 0, duration: 0.25, ease: "power2.in" }, 0.18);
       }
 
-      // 2. Flap lifts (rotate around top edge) — rotationX for 3D feel
+      // 2. Flap lifts (rotate around top edge) — rotationX for 3D feel.
+      // transformOrigin is set in CSS on each envelope (SVG: at the flap's
+      // top edge; photo: at the envelope bounds' top-middle, which may be
+      // inset from the PNG edge if the asset has padding). Letting CSS own
+      // the origin keeps GSAP agnostic to the renderer.
       if (flap) {
         tl.to(
           flap,
@@ -110,33 +129,37 @@ export function EnvelopeOpener({
             rotationX: -175,
             duration: D * 0.55,
             transformPerspective: 800,
-            transformOrigin: "50% 0%",
             ease: "power3.inOut",
           },
           0.32,
         );
       }
 
-      // 3. Letter peek rises out of body
+      // 3. Letter peek rises briefly as a teaser, then fades out as the
+      //    real content takes over (the peek is just the "corner sticking
+      //    out" placeholder — it hands off to the revealed item).
       if (peek) {
         gsap.set(peek, { y: 40, opacity: 0 });
-        tl.to(
-          peek,
-          { y: -height * 0.15, opacity: 1, duration: D * 0.5, ease: "power2.out" },
-          0.5,
-        );
+        tl.to(peek, { y: -height * 0.12, opacity: 1, duration: D * 0.35, ease: "power2.out" }, 0.5);
+        tl.to(peek, { opacity: 0, duration: 0.35, ease: "power2.in" }, 0.7 + D * 0.4);
       }
 
-      // 4. Envelope itself floats back/down as content takes over
+      // 4. Envelope softens into the background — stays in place as a
+      //    holder so the revealed content looks like it's resting on top
+      //    of the envelope, not replacing it.
       tl.to(
         envelope,
-        { scale: 0.72, y: 80, opacity: 0.0, duration: 0.7, ease: "power2.in" },
+        { scale: 0.94, y: 18, opacity: 0.88, duration: 0.6, ease: "power2.out" },
         0.7 + D * 0.4,
       );
 
-      // 5. Reveal content stage
-      gsap.set(content, { autoAlpha: 0, y: 30 });
-      tl.to(content, { autoAlpha: 1, y: 0, duration: 0.7, ease: "power3.out" }, "-=0.4");
+      // 5. Content emerges from the envelope body and lands above it.
+      gsap.set(content, { autoAlpha: 0, y: 50, scale: 0.9 });
+      tl.to(
+        content,
+        { autoAlpha: 1, y: -10, scale: 1, duration: 0.85, ease: "power3.out" },
+        "-=0.45",
+      );
     }, root);
 
     return () => ctx.revert();
@@ -158,71 +181,79 @@ export function EnvelopeOpener({
       className="relative w-full min-h-[520px] flex items-center justify-center select-none"
       style={{ perspective: 1400 }}
     >
-      {stage !== "open" ? (
+      {/* Envelope stays rendered at all stages — after open it settles behind
+          the revealed content as a visual "holder" rather than disappearing. */}
+      <div
+        className={stage === "closed" ? "envelope-float" : undefined}
+        style={{ position: "relative", zIndex: 0 }}
+      >
         <div
           ref={envelopeWrapRef}
           className="envelope-shadow"
           style={{ transformStyle: "preserve-3d", willChange: "transform" }}
           onClick={play}
         >
-          <EnvelopeSVG
-            design={design}
-            width={width}
-            height={height}
-            monogram={monogram}
-            stampLabel={stampLabel}
-            state={stage}
-          >
-            {/* peek: a letter corner sticking out */}
-            <rect
-              x={width * 0.15}
-              y={height * 0.25}
-              width={width * 0.7}
-              height={height * 0.45}
-              rx={6}
-              fill="#ffffff"
-              stroke="rgba(0,0,0,0.12)"
-            />
-            <line
-              x1={width * 0.22}
-              y1={height * 0.4}
-              x2={width * 0.78}
-              y2={height * 0.4}
-              stroke="#c9b08a"
-              strokeWidth={1}
-            />
-            <line
-              x1={width * 0.22}
-              y1={height * 0.48}
-              x2={width * 0.68}
-              y2={height * 0.48}
-              stroke="#c9b08a"
-              strokeWidth={1}
-            />
-            <line
-              x1={width * 0.22}
-              y1={height * 0.56}
-              x2={width * 0.74}
-              y2={height * 0.56}
-              stroke="#c9b08a"
-              strokeWidth={1}
-            />
-          </EnvelopeSVG>
-          {stage === "closed" ? (
-            <div
-              className="absolute inset-x-0 -bottom-10 text-center text-sm font-hand"
-              style={{ color: "var(--color-muted)" }}
-            >
-              tap to open
-            </div>
-          ) : null}
+            {design.imageUrl ? (
+              <PhotoEnvelope
+                design={design}
+                width={width}
+                height={height}
+                monogram={monogram}
+                stampLabel={stampLabel}
+                state={stage}
+              />
+            ) : (
+              <EnvelopeSVG
+                design={design}
+                width={width}
+                height={height}
+                monogram={monogram}
+                stampLabel={stampLabel}
+                state={stage}
+              >
+                {/* peek: a letter corner sticking out */}
+                <rect
+                  x={width * 0.15}
+                  y={height * 0.25}
+                  width={width * 0.7}
+                  height={height * 0.45}
+                  rx={6}
+                  fill="#ffffff"
+                  stroke="rgba(0,0,0,0.12)"
+                />
+                <line
+                  x1={width * 0.22}
+                  y1={height * 0.4}
+                  x2={width * 0.78}
+                  y2={height * 0.4}
+                  stroke="#c9b08a"
+                  strokeWidth={1}
+                />
+                <line
+                  x1={width * 0.22}
+                  y1={height * 0.48}
+                  x2={width * 0.68}
+                  y2={height * 0.48}
+                  stroke="#c9b08a"
+                  strokeWidth={1}
+                />
+                <line
+                  x1={width * 0.22}
+                  y1={height * 0.56}
+                  x2={width * 0.74}
+                  y2={height * 0.56}
+                  stroke="#c9b08a"
+                  strokeWidth={1}
+                />
+              </EnvelopeSVG>
+            )}
         </div>
-      ) : null}
+      </div>
 
       <div
         ref={contentRef}
         className="absolute inset-0 flex items-start justify-center pointer-events-none"
-        style={{ visibility: stage === "open" ? "visible" : "hidden" }}
+        style={{ visibility: stage === "open" ? "visible" : "hidden", zIndex: 2 }}
       >
         <div className="pointer-events-auto w-full">{children}</div>
       </div>

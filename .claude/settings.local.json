@@ -8,7 +8,9 @@
       "Bash(pnpm build *)",
       "Bash(pnpm lint *)",
       "Bash(pnpm dev *)",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/b/nonexistent-token)"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/b/nonexistent-token)",
+      "Bash(npm install *)",
+      "Bash(pnpm exec *)"
     ]
   }
 }

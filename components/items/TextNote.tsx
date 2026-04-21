@@ -38,7 +38,7 @@ export function TextNote({ html, caption }: Props) {
     <div className="w-full max-w-xl mx-auto">
       <div
         ref={rootRef}
-        className="relative paper rounded-[var(--radius-lg)] p-8 md:p-10 shadow-xl"
+        className="relative paper-sheet rounded-[var(--radius-lg)] p-8 md:p-10"
         style={{
           color: "var(--color-ink)",
           minHeight: 240,

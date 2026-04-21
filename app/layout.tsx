@@ -7,6 +7,7 @@ import {
   Inter,
   Playfair_Display,
   Cormorant_Garamond,
+  Space_Grotesk,
 } from "next/font/google";
 import "./globals.css";
 import { NavBar } from "@/components/layout/NavBar";
@@ -32,6 +33,11 @@ const cormorant = Cormorant_Garamond({
   variable: "--font-body-cinematic",
   display: "swap",
 });
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-display-minimal",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Enveloped — time-locked letters & gifts for the moments that matter",
@@ -52,6 +58,7 @@ export default function RootLayout({
     inter.variable,
     playfair.variable,
     cormorant.variable,
+    spaceGrotesk.variable,
   ].join(" ");
 
   return (

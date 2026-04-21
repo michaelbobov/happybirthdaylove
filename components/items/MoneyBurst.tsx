@@ -80,9 +80,8 @@ export function MoneyBurst({ amount, currency, instructions, link }: Props) {
       ))}
       <div
         ref={cardRef}
-        className="relative rounded-[var(--radius-lg)] paper px-8 py-6 text-center"
+        className="relative rounded-[var(--radius-lg)] paper-sheet px-8 py-6 text-center"
         style={{
-          boxShadow: "0 24px 40px var(--color-shadow)",
           color: "var(--color-ink)",
           minWidth: 280,
         }}

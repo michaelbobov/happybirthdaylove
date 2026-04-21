@@ -1,0 +1,23 @@
+{
+  "configured": false,
+  "senderEmail": "",
+  "senderPassword": "",
+  "recipientEmail": "",
+  "recipientPassword": "",
+  "bundles": {
+    "jordanBundle": {
+      "token": "",
+      "id": "",
+      "immediateEnvelopeId": "",
+      "dateLocked": {
+        "id": "",
+        "unlockAt": ""
+      },
+      "manualEnvelopeId": ""
+    },
+    "sarahDraftBundle": {
+      "token": "",
+      "id": ""
+    }
+  }
+}

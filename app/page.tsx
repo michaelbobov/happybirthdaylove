@@ -1,9 +1,11 @@
+import { HeroScroll } from "@/components/landing/HeroScroll";
 import { HeroDemo } from "@/components/landing/HeroDemo";
 import { SectionHow } from "@/components/landing/SectionHow";
 
 export default function Home() {
   return (
     <main className="flex-1">
+      <HeroScroll />
       <HeroDemo />
       <SectionHow />
       <footer

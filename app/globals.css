@@ -26,8 +26,9 @@
   --font-display-cinematic: "Playfair Display", Georgia, serif;
   --font-body-cinematic: "Cormorant Garamond", Georgia, serif;
 
-  --font-display-minimal: "Inter", system-ui, sans-serif;
-  --font-body-minimal: "Inter", system-ui, sans-serif;
+  /* display-minimal resolves via next/font (Space Grotesk) in layout.tsx;
+     body-minimal piggybacks on the Inter already loaded for modern-playful. */
+  --font-body-minimal: var(--font-body-playful);
 }
 
 @theme inline {
@@ -81,7 +82,8 @@ body {
   font-family: var(--font-display-minimal);
 }
 
-/* Paper / grain textures: layered SVG noise + subtle color wash */
+/* Paper / grain textures: layered SVG noise + subtle color wash.
+   Default = warm. Each theme overrides via [data-theme="…"] below. */
 .paper {
   background-color: var(--color-paper);
   background-image:
@@ -90,6 +92,32 @@ body {
     url("/textures/kraft.svg");
   background-size: auto, auto, 240px 240px;
   background-blend-mode: normal, multiply, multiply;
+}
+
+[data-theme="modern-playful"] .paper {
+  background-image:
+    radial-gradient(1100px 600px at 50% -15%, rgba(255, 255, 255, 0.7), transparent 60%),
+    radial-gradient(800px 500px at 85% 110%, rgba(255, 94, 138, 0.06), transparent 60%),
+    url("/textures/noise.svg");
+  background-size: auto, auto, 160px 160px;
+  background-blend-mode: normal, normal, multiply;
+}
+
+[data-theme="cinematic-gold"] .paper {
+  background-image:
+    radial-gradient(1100px 800px at 50% -10%, rgba(230, 195, 107, 0.14), transparent 55%),
+    radial-gradient(900px 600px at 85% 120%, rgba(230, 195, 107, 0.08), transparent 60%),
+    url("/textures/foil.svg");
+  background-size: auto, auto, 320px 320px;
+  background-blend-mode: screen, screen, overlay;
+}
+
+[data-theme="minimalist-ink"] .paper {
+  background-image:
+    radial-gradient(1200px 600px at 50% -25%, rgba(0, 0, 0, 0.035), transparent 60%),
+    radial-gradient(800px 500px at 85% 115%, rgba(0, 0, 0, 0.02), transparent 60%);
+  background-size: auto, auto;
+  background-blend-mode: normal, normal;
 }
 
 .grain::after {
@@ -101,6 +129,16 @@ body {
   background-size: 180px 180px;
   opacity: 0.18;
   mix-blend-mode: multiply;
+}
+[data-theme="modern-playful"] .grain::after {
+  opacity: 0.08;
+}
+[data-theme="cinematic-gold"] .grain::after {
+  opacity: 0.32;
+  mix-blend-mode: overlay;
+}
+[data-theme="minimalist-ink"] .grain::after {
+  opacity: 0.06;
 }
 
 .foil {
@@ -128,6 +166,52 @@ body {
 /* Envelope stack */
 .envelope-shadow {
   filter: drop-shadow(0 12px 24px var(--color-shadow));
+}
+
+/* Simple card-scale paper: soft top highlight, clean base color, believable
+   drop shadow. No noise texture (it muddied the color), no fold crease
+   (a random horizontal line on a love note looked wrong). */
+.paper-sheet {
+  position: relative;
+  background-color: var(--color-surface, #fefcf4);
+  background-image: radial-gradient(
+    120% 80% at 50% -10%,
+    rgba(255, 255, 255, 0.5),
+    transparent 60%
+  );
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 2px 3px rgba(0, 0, 0, 0.04),
+    0 18px 42px var(--color-shadow);
+}
+[data-theme="warm-handmade"] .paper-sheet {
+  background-color: #fbf3df;
+}
+[data-theme="modern-playful"] .paper-sheet {
+  background-color: #ffffff;
+}
+[data-theme="cinematic-gold"] .paper-sheet {
+  background-color: #f5ecd0;
+}
+[data-theme="minimalist-ink"] .paper-sheet {
+  background-color: #fafaf7;
+}
+
+/* Idle bob applied to the *outer* wrapper while the envelope is closed, so
+   the user notices it wants a click. GSAP owns the inner wrapper's transform
+   (tilt + open timeline) — keeping them on separate elements avoids conflict. */
+.envelope-float {
+  animation: envelope-bob 3.4s ease-in-out infinite;
+  animation-delay: 1.1s; /* let the entry pop finish first */
+}
+@keyframes envelope-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
 }
 
 /* Handwritten reveal cursor caret (used in text-note) */

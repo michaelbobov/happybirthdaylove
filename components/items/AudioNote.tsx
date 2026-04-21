@@ -29,8 +29,7 @@ export function AudioNote({ src, durationSec }: { src: string; durationSec?: num
   return (
     <div
       ref={rootRef}
-      className="inline-flex items-center gap-4 p-4 rounded-full paper"
-      style={{ boxShadow: "0 16px 30px var(--color-shadow)" }}
+      className="inline-flex items-center gap-4 p-4 rounded-full paper-sheet"
     >
       <button
         onClick={toggle}
