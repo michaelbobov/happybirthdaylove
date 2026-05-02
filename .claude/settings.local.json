@@ -10,7 +10,11 @@
       "Bash(pnpm dev *)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/b/nonexistent-token)",
       "Bash(npm install *)",
-      "Bash(pnpm exec *)"
+      "Bash(pnpm exec *)",
+      "Bash(npm run *)",
+      "Bash(curl -s -o /tmp/edit.html -w \"%{http_code}\\\\n\" -L \"http://localhost:3000/bundle/00000000-0000-0000-0000-000000000000/edit\")",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://localhost:3000/sign-in)",
+      "PowerShell(Get-NetTCPConnection -LocalPort 3000,3001 -State Listen -ErrorAction SilentlyContinue)"
     ]
   }
 }

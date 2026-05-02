@@ -2,66 +2,40 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { gsap } from "gsap";
-import { themeList, type Theme, type ThemeId } from "@/lib/themes";
+import { themeList, type Theme } from "@/lib/themes";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { EnvelopeOpener } from "@/components/envelope/EnvelopeOpener";
-import { TextNote } from "@/components/items/TextNote";
 import { Polaroid } from "@/components/items/Polaroid";
 import { GiftCardReveal } from "@/components/items/GiftCardReveal";
 import { MoneyBurst } from "@/components/items/MoneyBurst";
 
-type HeroCopy = {
-  eyebrow: string;
-  headline: string;
-  accent: string;
-  subtitle: string;
-  cta: string;
-};
-
-const heroCopy: Record<ThemeId, HeroCopy> = {
-  "warm-handmade": {
-    eyebrow: "A letter, kept safe",
-    headline: "Letters that open",
-    accent: "when the moment does.",
-    subtitle:
-      "Tuck a photo, a song, a twenty, or a whole year of love into envelopes. Each one waits for its day — then opens like it was always meant to.",
-    cta: "Start a bundle",
-  },
-  "modern-playful": {
-    eyebrow: "Future you ↔ past you",
-    headline: "A hug,",
-    accent: "mailed into the future.",
-    subtitle:
-      "Stack up envelopes with notes, GIFs, gift cards, cash. Schedule each one to pop open on the exact day it'll land best. Birthdays, milestones, bad Mondays.",
-    cta: "Build one now",
-  },
-  "cinematic-gold": {
-    eyebrow: "Sealed until the right hour",
-    headline: "Some letters are meant",
-    accent: "for later.",
-    subtitle:
-      "A vault of moments — released only when the clock allows it. Slow open. Real weight. The thing your grandchildren would actually keep.",
-    cta: "Begin the vault",
-  },
-  "minimalist-ink": {
-    eyebrow: "Time-locked",
-    headline: "A letter,",
-    accent: "timed.",
-    subtitle:
-      "Seal a note, a photo, or a gift. Set the hour. Trust the silence until it opens.",
-    cta: "Compose",
-  },
-};
+function PreviewLetterPeek() {
+  return (
+    <div
+      style={{
+        height: "100%",
+        overflow: "hidden",
+        padding: "14px 22px 0",
+        fontFamily: "var(--font-hand-warm)",
+        color: "#3b2a1e",
+        fontSize: 15,
+        lineHeight: 1.58,
+      }}
+    >
+      <p>My love —</p>
+      <p style={{ marginTop: 8 }}>
+        I wrote this for the days<br />I can&rsquo;t be there.
+      </p>
+      <p style={{ marginTop: 8 }}>Always yours, M</p>
+    </div>
+  );
+}
 
 const samples = [
   {
     key: "love-note",
     label: "Love note",
-    node: (
-      <TextNote
-        html="<p>My love —</p><p>I wrote this on a Tuesday while you were reading on the couch. I just wanted you to know.</p><p>Always yours,<br/>M</p>"
-      />
-    ),
+    node: <PreviewLetterPeek />,
   },
   {
     key: "polaroid",
@@ -118,11 +92,10 @@ export function HeroDemo() {
     });
   }, [themeId]);
 
-  const copy = heroCopy[themeId];
-
   return (
     <ThemeProvider themeId={themeId} as="section" className="paper grain relative overflow-hidden">
       <div id="demo" className="absolute -top-16" aria-hidden />
+      <CustomizationAmbient />
       <div
         className="relative mx-auto max-w-7xl px-6 pt-14 pb-10 md:pt-20"
         style={{ zIndex: 1 }}
@@ -139,7 +112,7 @@ export function HeroDemo() {
             className="font-display text-3xl md:text-4xl"
             style={{ color: "var(--color-ink)" }}
           >
-            {copy.headline} <span style={{ color: "var(--color-accent)" }}>{copy.accent}</span>
+            Build the moment, then open it.
           </h2>
         </div>
 
@@ -165,25 +138,10 @@ export function HeroDemo() {
               ))}
             </div>
 
-            {/* Design picker */}
-            <div className="mt-2 flex flex-wrap gap-2">
-              {theme.designs.map((d, i) => (
-                <button
-                  key={d.id}
-                  onClick={() => { setDesignIdx(i); setOpenKey((k) => k + 1); }}
-                  className="rounded-full px-3 py-1 text-[11px]"
-                  style={{
-                    background: i === designIdx ? "var(--color-accent)" : "transparent",
-                    color: i === designIdx ? "var(--color-bg)" : "var(--color-muted)",
-                    border: "1px solid var(--color-muted)",
-                  }}
-                >
-                  {d.name}
-                </button>
-              ))}
-            </div>
-
             {/* Content picker */}
+            <p className="mt-5 max-w-md text-sm font-hand" style={{ color: "var(--color-muted)" }}>
+              Pick what&rsquo;s inside, then click the envelope to open it.
+            </p>
             <div className="mt-2 flex flex-wrap gap-2">
               {samples.map((s, i) => (
                 <button
@@ -210,16 +168,147 @@ export function HeroDemo() {
               monogram=""
               width={480}
               height={480}
+              sealImageUrl="/images/seal.png"
+              inlineReveal={samples[sampleIdx].key === "love-note"}
             >
-              <div className="pt-4">{samples[sampleIdx].node}</div>
+              <div className={samples[sampleIdx].key === "love-note" ? "" : "pt-4"}>
+                {samples[sampleIdx].node}
+              </div>
             </EnvelopeOpener>
-            <div className="mt-2 text-center text-xs" style={{ color: "var(--color-muted)" }}>
-              click the envelope to open it
-            </div>
           </div>
 
         </div>
       </div>
     </ThemeProvider>
+  );
+}
+
+function CustomizationAmbient() {
+  return (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 select-none overflow-hidden"
+      style={{ zIndex: 0 }}
+    >
+      <svg
+        className="absolute hidden md:block"
+        width="520"
+        height="220"
+        viewBox="0 0 520 220"
+        fill="none"
+        style={{ left: "4%", top: 72, opacity: 0.38 }}
+      >
+        <path
+          d="M18 174 C 100 54, 178 220, 264 112 S 430 28, 500 116"
+          stroke="var(--color-seal)"
+          strokeWidth="2"
+          strokeDasharray="7 10"
+          strokeLinecap="round"
+        />
+        <path
+          d="M486 100 L 506 116 L 482 124"
+          stroke="var(--color-seal)"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+
+      <div
+        className="absolute hidden md:block"
+        style={{
+          right: "7%",
+          top: 84,
+          width: 128,
+          height: 128,
+          border: "1.5px solid var(--color-seal)",
+          borderRadius: "50%",
+          opacity: 0.36,
+          transform: "rotate(12deg)",
+        }}
+      />
+      <div
+        className="absolute hidden md:block"
+        style={{
+          right: "8.1%",
+          top: 99,
+          width: 96,
+          height: 96,
+          border: "1px dashed var(--color-seal)",
+          borderRadius: "50%",
+          opacity: 0.32,
+          transform: "rotate(12deg)",
+        }}
+      />
+
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/images/stamp1.png"
+        alt=""
+        draggable={false}
+        className="absolute hidden md:block"
+        style={{
+          right: "10%",
+          top: 116,
+          width: 86,
+          transform: "rotate(9deg)",
+          opacity: 0.78,
+          filter: "drop-shadow(0 10px 18px rgba(40,24,8,0.18))",
+        }}
+      />
+
+      <div
+        className="absolute hidden lg:block"
+        style={{
+          left: "7%",
+          bottom: 48,
+          width: 156,
+          height: 78,
+          borderRadius: 16,
+          border: "1px solid rgba(139,116,85,0.35)",
+          background: "rgba(255,255,255,0.24)",
+          transform: "rotate(-8deg)",
+          boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.25)",
+        }}
+      >
+        <div style={{ position: "absolute", inset: 10, border: "1px dashed rgba(160,40,34,0.4)", borderRadius: 11 }} />
+        <div
+          className="font-hand"
+          style={{
+            position: "absolute",
+            left: 22,
+            top: 22,
+            color: "rgba(74,52,34,0.45)",
+            fontSize: 18,
+          }}
+        >
+          tiny details
+        </div>
+      </div>
+
+      {[
+        { top: "16%", left: "22%", color: "var(--color-accent)", size: 6 },
+        { top: "28%", right: "24%", color: "var(--color-seal)", size: 7 },
+        { bottom: "20%", left: "34%", color: "var(--color-seal)", size: 5 },
+        { bottom: "15%", right: "31%", color: "var(--color-accent)", size: 6 },
+        { top: "52%", left: "3%", color: "var(--color-muted)", size: 5 },
+        { top: "64%", right: "4%", color: "var(--color-muted)", size: 5 },
+      ].map((speck, index) => (
+        <div
+          key={index}
+          className="absolute rounded-full"
+          style={{
+            top: speck.top,
+            bottom: speck.bottom,
+            left: speck.left,
+            right: speck.right,
+            width: speck.size,
+            height: speck.size,
+            background: speck.color,
+            opacity: 0.42,
+          }}
+        />
+      ))}
+    </div>
   );
 }

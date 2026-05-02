@@ -21,7 +21,7 @@ export default async function OpenPage({
 
   const { data: envelope } = await admin
     .from("envelopes")
-    .select("id, title, caption, envelope_design_id, theme_override_id, unlock_type, unlock_at")
+    .select("id, title, caption, envelope_design_id, theme_override_id, seal_color_override, stamps, unlock_type, unlock_at, opened_at")
     .eq("id", envelopeId)
     .eq("bundle_id", bundle.id)
     .single();
@@ -38,8 +38,11 @@ export default async function OpenPage({
         caption: envelope.caption,
         envelopeDesignId: envelope.envelope_design_id,
         themeOverrideId: envelope.theme_override_id,
+        sealColorOverride: envelope.seal_color_override ?? null,
+        stamps: Array.isArray(envelope.stamps) ? envelope.stamps : [],
         unlockType: envelope.unlock_type,
         unlockAt: envelope.unlock_at,
+        openedAt: envelope.opened_at,
       }}
     />
   );

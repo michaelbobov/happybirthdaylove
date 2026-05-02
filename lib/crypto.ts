@@ -45,7 +45,13 @@ export function decrypt(blob: Buffer): Buffer {
 }
 
 export function decryptToString(blob: Buffer): string {
-  return decrypt(blob).toString("utf8");
+  try {
+    return decrypt(blob).toString("utf8");
+  } catch (error) {
+    const plaintext = blob.toString("utf8").trim();
+    if (plaintext.startsWith("{") || plaintext.startsWith("[")) return plaintext;
+    throw error;
+  }
 }
 
 /** Convert a Postgres bytea response (`\x...` hex or base64 string or Buffer) into a Buffer. */

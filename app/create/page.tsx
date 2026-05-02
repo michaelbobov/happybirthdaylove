@@ -6,7 +6,7 @@ export const metadata = { title: "New bundle — Enveloped" };
 export default async function CreatePage() {
   await requireUser();
   return (
-    <main className="flex-1 mx-auto max-w-2xl w-full px-6 py-12">
+    <main className="app-screen flex-1 mx-auto max-w-2xl w-full px-6 pb-12">
       <h1 className="font-display text-4xl" style={{ color: "var(--color-ink)" }}>
         Start a new bundle
       </h1>

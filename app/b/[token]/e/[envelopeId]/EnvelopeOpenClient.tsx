@@ -5,9 +5,11 @@ import Link from "next/link";
 import { ArrowLeft, Lock } from "lucide-react";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { EnvelopeOpener } from "@/components/envelope/EnvelopeOpener";
-import { ItemRenderer } from "@/components/items/ItemRenderer";
+import { EnvelopeSpread } from "@/components/envelope/EnvelopeSpread";
+import { ItemViewer } from "@/components/items/ItemViewer";
 import { getDesign, type ThemeId } from "@/lib/themes";
 import type { RevealedItem } from "@/lib/types";
+import type { EnvelopeStamp } from "@/lib/stamps";
 
 type Envelope = {
   id: string;
@@ -15,8 +17,11 @@ type Envelope = {
   caption: string | null;
   envelopeDesignId: string;
   themeOverrideId: string | null;
+  sealColorOverride: string | null;
+  stamps: EnvelopeStamp[];
   unlockType: "immediate" | "date" | "passphrase" | "manual";
   unlockAt: string | null;
+  openedAt: string | null;
 };
 
 export function EnvelopeOpenClient({
@@ -34,14 +39,14 @@ export function EnvelopeOpenClient({
   const design = getDesign(envelope.envelopeDesignId);
 
   const [passphrase, setPassphrase] = useState("");
-  const [status, setStatus] = useState<"idle" | "locked" | "need_pass" | "ok" | "err">(
+  const [status, setStatus] = useState<"idle" | "locked" | "need_pass" | "ok" | "viewing" | "spread" | "done" | "err">(
     hasPassphrase ? "need_pass" : "idle",
   );
   const [items, setItems] = useState<RevealedItem[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [unlockAt, setUnlockAt] = useState<string | null>(envelope.unlockAt);
 
-  const tryReveal = async (pass?: string) => {
+  const tryReveal = async (pass?: string, onSuccessStatus?: "ok" | "spread") => {
     setError(null);
     const res = await fetch(`/api/reveal/${envelope.id}`, {
       method: "POST",
@@ -50,14 +55,20 @@ export function EnvelopeOpenClient({
     });
     const json = await res.json();
     if (res.ok) {
+      if (pass && typeof window !== "undefined") {
+        window.sessionStorage.setItem(passphraseStorageKey(token), pass);
+      }
       setItems(json.items as RevealedItem[]);
-      setStatus("ok");
+      setStatus(onSuccessStatus ?? "ok");
       return;
     }
     if (json.error === "locked_until") {
       setUnlockAt(json.unlockAt ?? envelope.unlockAt);
       setStatus("locked");
     } else if (json.error === "bad_passphrase") {
+      if (typeof window !== "undefined") {
+        window.sessionStorage.removeItem(passphraseStorageKey(token));
+      }
       setStatus("need_pass");
       setError(pass ? "That wasn't it." : null);
     } else if (json.error === "manual_locked") {
@@ -69,17 +80,30 @@ export function EnvelopeOpenClient({
   };
 
   useEffect(() => {
-    // Mount-time fetch: hit the reveal endpoint and let tryReveal synchronize
-    // state from the server response. This is a boundary sync, not a derived-
-    // state update.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (!hasPassphrase) tryReveal();
+    // If already opened on a prior visit, fetch items and jump straight to spread view.
+    // Otherwise do the normal reveal (which triggers the animation path).
+    if (hasPassphrase && typeof window !== "undefined") {
+      const storedPassphrase = window.sessionStorage.getItem(passphraseStorageKey(token));
+      if (storedPassphrase) {
+        const id = window.setTimeout(() => {
+          tryReveal(storedPassphrase, envelope.openedAt ? "spread" : undefined);
+        }, 0);
+        return () => window.clearTimeout(id);
+      }
+      return;
+    }
+    if (!hasPassphrase) {
+      const id = window.setTimeout(() => {
+        tryReveal(undefined, envelope.openedAt ? "spread" : undefined);
+      }, 0);
+      return () => window.clearTimeout(id);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <ThemeProvider themeId={themeId} as="main" className="paper grain flex-1 min-h-screen">
-      <div className="mx-auto max-w-5xl px-6 py-10">
+    <ThemeProvider themeId={themeId} as="main" className="app-screen paper grain flex-1 min-h-screen">
+      <div className="mx-auto max-w-5xl px-6 pb-10">
         <Link
           href={`/b/${token}`}
           className="inline-flex items-center gap-2 text-sm"
@@ -123,11 +147,13 @@ export function EnvelopeOpenClient({
             >
               <input
                 autoFocus
+                type="password"
                 value={passphrase}
                 onChange={(e) => setPassphrase(e.target.value)}
                 className="rounded-[var(--radius-md)] px-4 py-3 bg-white/70"
                 style={{ border: "1px solid var(--color-muted)", color: "var(--color-ink)" }}
                 placeholder="Passphrase"
+                autoComplete="off"
               />
               <button
                 type="submit"
@@ -170,18 +196,55 @@ export function EnvelopeOpenClient({
 
         {status === "ok" && (
           <div className="mt-6">
-            <EnvelopeOpener design={design} autoOpen>
-              <div className="flex flex-col gap-10 items-center py-10">
-                {items.map((item) => (
-                  <div key={item.id} className="w-full flex justify-center">
-                    <ItemRenderer item={item} />
-                  </div>
-                ))}
-              </div>
+            <EnvelopeOpener
+              design={design}
+              sealColorOverride={envelope.sealColorOverride}
+              stamps={envelope.stamps}
+              autoOpen
+              onOpened={() => setStatus("viewing")}
+            >
+              {/* Empty slot — items reveal after animation completes */}
+              <div />
             </EnvelopeOpener>
+          </div>
+        )}
+
+        {status === "spread" && items.length > 0 && (
+          <div className="mt-10">
+            <EnvelopeSpread items={items} openedAt={envelope.openedAt!} />
+          </div>
+        )}
+
+        {(status === "viewing" || status === "done") && (
+          <div className="mt-10">
+            <ItemViewer
+              items={items}
+              onDone={() => setStatus("spread")}
+            />
+            {status === "done" && (
+              <div className="mt-10 text-center">
+                <div
+                  className="font-hand text-2xl"
+                  style={{ color: "var(--color-accent)" }}
+                >
+                  With love ♥
+                </div>
+                <Link
+                  href={`/b/${token}`}
+                  className="mt-4 inline-block text-sm"
+                  style={{ color: "var(--color-muted)" }}
+                >
+                  ← Back to all envelopes
+                </Link>
+              </div>
+            )}
           </div>
         )}
       </div>
     </ThemeProvider>
   );
+}
+
+function passphraseStorageKey(token: string) {
+  return `enveloped:bundle-passphrase:${token}`;
 }

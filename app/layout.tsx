@@ -63,7 +63,7 @@ export default function RootLayout({
 
   return (
     <html lang="en" className={`${fontVars} h-full antialiased`} suppressHydrationWarning>
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <NavBar />
         {children}
       </body>

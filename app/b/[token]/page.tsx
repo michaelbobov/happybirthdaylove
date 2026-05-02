@@ -21,10 +21,25 @@ export default async function RecipientBundlePage({
   const { data: envelopes } = await admin
     .from("envelopes")
     .select(
-      "id, title, caption, order_index, unlock_type, unlock_at, envelope_design_id, theme_override_id, opened_at",
+      "id, title, caption, order_index, unlock_type, unlock_at, envelope_design_id, theme_override_id, seal_color_override, stamps, opened_at",
     )
     .eq("bundle_id", bundle.id)
     .order("order_index", { ascending: true });
+
+  const envelopeList = envelopes ?? [];
+
+  // Fetch item types (unencrypted) for content preview chips.
+  // One query for all envelopes in the bundle — no decryption needed.
+  const { data: itemRows } = await admin
+    .from("envelope_items")
+    .select("envelope_id, type")
+    .in("envelope_id", envelopeList.map((e) => e.id));
+
+  // Group by envelope id
+  const itemTypesByEnvelope: Record<string, string[]> = {};
+  for (const row of itemRows ?? []) {
+    (itemTypesByEnvelope[row.envelope_id] ??= []).push(row.type);
+  }
 
   return (
     <BundleHub
@@ -37,7 +52,7 @@ export default async function RecipientBundlePage({
         hasPassphrase: !!bundle.passphrase_hash,
         recipientName: bundle.recipient_name,
       }}
-      envelopes={(envelopes ?? []).map((e) => ({
+      envelopes={envelopeList.map((e) => ({
         id: e.id,
         title: e.title,
         caption: e.caption,
@@ -46,7 +61,10 @@ export default async function RecipientBundlePage({
         unlockAt: e.unlock_at,
         envelopeDesignId: e.envelope_design_id,
         themeOverrideId: e.theme_override_id,
+        sealColorOverride: e.seal_color_override ?? null,
+        stamps: Array.isArray(e.stamps) ? e.stamps : [],
         openedAt: e.opened_at,
+        contentTypes: itemTypesByEnvelope[e.id] ?? [],
       }))}
     />
   );

@@ -4,143 +4,87 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { themeList } from "@/lib/themes";
 import { createBundle } from "@/app/actions/bundles";
+import type { ThemeId } from "@/lib/themes";
 
 export function CreateBundleForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [themeId, setThemeId] = useState<ThemeId>("warm-handmade");
+  const [name, setName] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [themeId, setThemeId] = useState<"warm-handmade" | "modern-playful" | "cinematic-gold" | "minimalist-ink">(
-    "warm-handmade",
-  );
 
-  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!name.trim()) return;
     setLoading(true);
     setError(null);
-    const form = new FormData(e.currentTarget);
     const res = await createBundle({
-      title: String(form.get("title") ?? ""),
-      coverMessage: String(form.get("coverMessage") ?? ""),
-      recipientName: String(form.get("recipientName") ?? ""),
-      recipientEmail: String(form.get("recipientEmail") ?? ""),
-      passphrase: String(form.get("passphrase") ?? ""),
+      title: name.trim(),
+      coverMessage: "",
+      recipientName: "",
+      recipientEmail: "",
+      passphrase: "",
       themeId,
     });
     setLoading(false);
-    if (!res.ok) {
-      setError(res.error);
-      return;
-    }
+    if (!res.ok) { setError(res.error); return; }
     router.push(`/bundle/${res.data.id}/edit`);
   };
 
   return (
-    <form onSubmit={submit} className="mt-8 flex flex-col gap-5">
-      <Field label="Bundle title" name="title" placeholder="For when you need me" required />
-      <Field label="Recipient's name" name="recipientName" placeholder="Their first name" />
-      <Field label="Recipient's email (optional)" name="recipientEmail" type="email" />
-      <Textarea label="Cover message" name="coverMessage" placeholder="A note they'll see first, before any envelope." />
-      <Field
-        label="Passphrase (optional)"
-        name="passphrase"
-        placeholder="A word only the two of you share"
-        helper="Adds a second lock in front of every envelope."
-      />
+    <form onSubmit={submit} className="mt-10 flex flex-col gap-8">
+      {/* Name field — big, single focus */}
+      <label className="flex flex-col gap-3">
+        <span className="text-xs uppercase tracking-[0.18em]" style={{ color: "var(--color-muted)" }}>
+          Who is this for?
+        </span>
+        <input
+          autoFocus
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="e.g. For when you miss me"
+          className="font-display text-3xl bg-transparent border-b-2 outline-none pb-2"
+          style={{ borderColor: "var(--color-muted)", color: "var(--color-ink)" }}
+          required
+        />
+      </label>
 
+      {/* Theme — visual cards */}
       <div>
-        <div className="text-xs uppercase tracking-widest mb-2" style={{ color: "var(--color-muted)" }}>
-          Theme
+        <div className="text-xs uppercase tracking-[0.18em] mb-4" style={{ color: "var(--color-muted)" }}>
+          Pick a feel
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="grid grid-cols-2 gap-3">
           {themeList.map((t) => (
             <button
-              type="button"
               key={t.id}
+              type="button"
               onClick={() => setThemeId(t.id)}
-              className="rounded-full px-3 py-1.5 text-xs border"
+              className="rounded-[var(--radius-lg)] p-4 text-left transition-all"
               style={{
-                background: t.id === themeId ? "var(--color-ink)" : "transparent",
+                background: t.id === themeId ? "var(--color-ink)" : "rgba(255,255,255,0.5)",
                 color: t.id === themeId ? "var(--color-bg)" : "var(--color-ink)",
-                borderColor: "var(--color-ink)",
+                border: `2px solid ${t.id === themeId ? "var(--color-ink)" : "transparent"}`,
+                boxShadow: t.id === themeId ? "0 6px 20px var(--color-shadow)" : "none",
               }}
             >
-              {t.name}
+              <div className="font-display text-lg">{t.name}</div>
+              <div className="mt-1 text-xs opacity-70">{t.description}</div>
             </button>
           ))}
         </div>
       </div>
 
-      {error ? <p style={{ color: "var(--color-seal)" }}>{error}</p> : null}
+      {error && <p className="text-sm" style={{ color: "var(--color-seal)" }}>{error}</p>}
+
       <button
         type="submit"
-        disabled={loading}
-        className="self-start rounded-full px-6 py-3 text-sm"
-        style={{ background: "var(--color-ink)", color: "var(--color-bg)" }}
+        disabled={loading || !name.trim()}
+        className="self-start rounded-full px-8 py-3.5 text-sm font-medium"
+        style={{ background: "var(--color-ink)", color: "var(--color-bg)", opacity: name.trim() ? 1 : 0.45 }}
       >
-        {loading ? "Creating…" : "Create bundle"}
+        {loading ? "Creating…" : "Start building →"}
       </button>
     </form>
-  );
-}
-
-function Field({
-  label,
-  name,
-  type = "text",
-  placeholder,
-  required,
-  helper,
-}: {
-  label: string;
-  name: string;
-  type?: string;
-  placeholder?: string;
-  required?: boolean;
-  helper?: string;
-}) {
-  return (
-    <label className="flex flex-col gap-1.5">
-      <span className="text-xs uppercase tracking-widest" style={{ color: "var(--color-muted)" }}>
-        {label}
-      </span>
-      <input
-        required={required}
-        type={type}
-        name={name}
-        placeholder={placeholder}
-        className="rounded-[var(--radius-md)] bg-white/60 px-4 py-3 outline-none"
-        style={{ border: "1px solid var(--color-muted)", color: "var(--color-ink)" }}
-      />
-      {helper ? (
-        <span className="text-xs" style={{ color: "var(--color-muted)" }}>
-          {helper}
-        </span>
-      ) : null}
-    </label>
-  );
-}
-
-function Textarea({
-  label,
-  name,
-  placeholder,
-}: {
-  label: string;
-  name: string;
-  placeholder?: string;
-}) {
-  return (
-    <label className="flex flex-col gap-1.5">
-      <span className="text-xs uppercase tracking-widest" style={{ color: "var(--color-muted)" }}>
-        {label}
-      </span>
-      <textarea
-        name={name}
-        placeholder={placeholder}
-        rows={3}
-        className="rounded-[var(--radius-md)] bg-white/60 px-4 py-3 outline-none font-hand text-lg"
-        style={{ border: "1px solid var(--color-muted)", color: "var(--color-ink)" }}
-      />
-    </label>
   );
 }

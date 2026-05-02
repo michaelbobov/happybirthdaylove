@@ -13,6 +13,10 @@ export type PhotoEnvelopeProps = {
   stampLabel?: string;
   children?: ReactNode;
   state?: "closed" | "opening" | "open";
+  /** Overrides the design's default seal color. Hex string. */
+  sealColorOverride?: string | null;
+  /** PNG asset used to render the wax seal. */
+  sealImageUrl?: string;
   onClick?: () => void;
   style?: CSSProperties;
   className?: string;
@@ -40,6 +44,8 @@ export const PhotoEnvelope = forwardRef<HTMLDivElement, PhotoEnvelopeProps>(func
     stampLabel,
     children,
     state = "closed",
+    sealColorOverride,
+    sealImageUrl = "/images/seal.png",
     onClick,
     style,
     className,
@@ -80,13 +86,15 @@ export const PhotoEnvelope = forwardRef<HTMLDivElement, PhotoEnvelopeProps>(func
       [(b.left + b.right) / 2, b.top + (b.bottom - b.top) * 0.55],
       [b.right, b.top],
     ];
+  const flapPts = roundFlapApex(rawPts);
 
-  // Flap polygon in container-% space.
-  const flapClip = `polygon(${rawPts.map(([x, y]) => `${cx(x)} ${cy(y)}`).join(", ")})`;
+  // Use a true curve for the bottom tongue so it matches the soft V in the
+  // reference envelope instead of reading as a faceted polygon.
+  const flapClip = createRoundedFlapClip(rawPts, cpxPx, cpyPx);
 
   // Body polygon: flap fold-line + bottom envelope corners.
   const bodyClip = `polygon(${[
-    ...rawPts,
+    ...flapPts,
     [b.right, b.bottom],
     [b.left, b.bottom],
   ]
@@ -223,14 +231,95 @@ export const PhotoEnvelope = forwardRef<HTMLDivElement, PhotoEnvelopeProps>(func
         viewBox={`0 0 ${width} ${height}`}
         width={width}
         height={height}
-        style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "visible" }}
+        style={{ position: "absolute", inset: 0, zIndex: 8, pointerEvents: "none", overflow: "visible" }}
         aria-hidden="true"
       >
-        <WaxSeal cx={sealX} cy={sealY} r={sealR} color={design.seal} monogram={monogram} />
+        <WaxSeal
+          cx={sealX}
+          cy={sealY}
+          r={sealR}
+          color={sealColorOverride ?? design.seal}
+          monogram={monogram}
+          imageUrl={sealImageUrl}
+        />
       </svg>
     </div>
   );
 });
+
+function createRoundedFlapClip(
+  points: Array<[number, number]>,
+  toX: (xFrac: number) => number,
+  toY: (yFrac: number) => number,
+) {
+  if (points.length < 3) {
+    return `polygon(${points.map(([x, y]) => `${toX(x)}px ${toY(y)}px`).join(", ")})`;
+  }
+
+  const apexIndex = points.reduce((maxIdx, point, idx) => (point[1] > points[maxIdx][1] ? idx : maxIdx), 0);
+  const prev = points[apexIndex - 1];
+  const apex = points[apexIndex];
+  const next = points[apexIndex + 1];
+  if (!prev || !next) {
+    return `polygon(${points.map(([x, y]) => `${toX(x)}px ${toY(y)}px`).join(", ")})`;
+  }
+
+  const curveStart: [number, number] = [
+    apex[0] + (prev[0] - apex[0]) * 0.075,
+    apex[1] + (prev[1] - apex[1]) * 0.075,
+  ];
+  const curveEnd: [number, number] = [
+    apex[0] + (next[0] - apex[0]) * 0.075,
+    apex[1] + (next[1] - apex[1]) * 0.075,
+  ];
+  const control: [number, number] = [apex[0], apex[1] + 0.009];
+
+  const commands = [
+    `M ${toX(points[0][0])} ${toY(points[0][1])}`,
+    ...points.slice(1, apexIndex).map(([x, y]) => `L ${toX(x)} ${toY(y)}`),
+    `L ${toX(curveStart[0])} ${toY(curveStart[1])}`,
+    `Q ${toX(control[0])} ${toY(control[1])} ${toX(curveEnd[0])} ${toY(curveEnd[1])}`,
+    ...points.slice(apexIndex + 1).map(([x, y]) => `L ${toX(x)} ${toY(y)}`),
+    "Z",
+  ];
+
+  return `path("${commands.join(" ")}")`;
+}
+
+function roundFlapApex(points: Array<[number, number]>): Array<[number, number]> {
+  if (points.length < 3) return points;
+  const apexIndex = points.reduce((maxIdx, point, idx) => (point[1] > points[maxIdx][1] ? idx : maxIdx), 0);
+  const prev = points[apexIndex - 1];
+  const apex = points[apexIndex];
+  const next = points[apexIndex + 1];
+  if (!prev || !next) return points;
+
+  const towardPrev: [number, number] = [
+    apex[0] + (prev[0] - apex[0]) * 0.16,
+    apex[1] + (prev[1] - apex[1]) * 0.16,
+  ];
+  const towardNext: [number, number] = [
+    apex[0] + (next[0] - apex[0]) * 0.16,
+    apex[1] + (next[1] - apex[1]) * 0.16,
+  ];
+
+  // Keep the body seam close to the same shallow rounded V as the flap clip.
+  const roundedTongue: Array<[number, number]> = [
+    towardPrev,
+    [apex[0] - 0.014, apex[1] + 0.002],
+    [apex[0] - 0.008, apex[1] + 0.007],
+    [apex[0], apex[1] + 0.009],
+    [apex[0] + 0.008, apex[1] + 0.007],
+    [apex[0] + 0.014, apex[1] + 0.002],
+    towardNext,
+  ];
+
+  return [
+    ...points.slice(0, apexIndex),
+    ...roundedTongue,
+    ...points.slice(apexIndex + 1),
+  ];
+}
 
 type PaperLayerProps = {
   imageUrl: string;

@@ -3,6 +3,7 @@
 import { forwardRef, useId } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import type { EnvelopeDesign } from "@/lib/themes";
+import type { EnvelopeStamp } from "@/lib/stamps";
 import { EnvelopePatterns, patternFillUrl } from "./EnvelopePatterns";
 import { WaxSeal } from "./WaxSeal";
 
@@ -23,6 +24,12 @@ export type EnvelopeSVGProps = {
   className?: string;
   /** Applied to the root svg element (for GSAP context). */
   svgClassName?: string;
+  /** Overrides the design's default seal color. Hex string, e.g. "#c06a4a". */
+  sealColorOverride?: string | null;
+  /** Optional PNG asset used to render the seal instead of the drawn SVG shape. */
+  sealImageUrl?: string;
+  /** Decorative stamps positioned on the envelope body. Rendered behind the flap. */
+  stamps?: EnvelopeStamp[];
 };
 
 /**
@@ -48,6 +55,9 @@ export const EnvelopeSVG = forwardRef<SVGSVGElement, EnvelopeSVGProps>(function 
     style,
     className,
     svgClassName,
+    sealColorOverride,
+    sealImageUrl = "/images/seal.png",
+    stamps,
   },
   ref,
 ) {
@@ -113,6 +123,55 @@ export const EnvelopeSVG = forwardRef<SVGSVGElement, EnvelopeSVGProps>(function 
             opacity={0.3}
           />
 
+          {/* User-placed decorative stamps on the envelope body */}
+          {stamps && stamps.length > 0 ? (
+            <g className="env-stamps">
+              {stamps.map((s) => {
+                const cx = (s.x / 100) * width;
+                const cy = (s.y / 100) * height;
+                const shorter = Math.min(width, height);
+                const sizePx = (s.size / 100) * shorter;
+                const transform = `rotate(${s.rotation} ${cx} ${cy})`;
+                if (s.kind === "asset") {
+                  return (
+                    <image
+                      key={s.id}
+                      href={s.value}
+                      x={cx - sizePx / 2}
+                      y={cy - sizePx / 2}
+                      width={sizePx}
+                      height={sizePx}
+                      transform={transform}
+                      preserveAspectRatio="xMidYMid meet"
+                      style={{
+                        filter:
+                          "drop-shadow(0 2px 2px rgba(0,0,0,0.18)) drop-shadow(0 0 0.5px rgba(0,0,0,0.3))",
+                      }}
+                    />
+                  );
+                }
+                return (
+                  <text
+                    key={s.id}
+                    x={cx}
+                    y={cy}
+                    textAnchor="middle"
+                    dominantBaseline="central"
+                    fontSize={sizePx}
+                    fill={s.color ?? "currentColor"}
+                    transform={transform}
+                    style={{
+                      userSelect: "none",
+                      filter: "drop-shadow(0 1.5px 1px rgba(0,0,0,0.15))",
+                    }}
+                  >
+                    {s.value}
+                  </text>
+                );
+              })}
+            </g>
+          ) : null}
+
           {stampLabel ? (
             <g transform={`translate(${bodyX + bodyW - 72}, ${bodyY + 14})`}>
               <rect
@@ -170,7 +229,14 @@ export const EnvelopeSVG = forwardRef<SVGSVGElement, EnvelopeSVGProps>(function 
         </g>
 
         {/* Wax seal — sits on top of flap + body join */}
-        <WaxSeal cx={sealX} cy={sealY} r={sealR} color={design.seal} monogram={monogram} />
+        <WaxSeal
+          cx={sealX}
+          cy={sealY}
+          r={sealR}
+          color={sealColorOverride ?? design.seal}
+          monogram={monogram}
+          imageUrl={sealImageUrl}
+        />
       </svg>
     </div>
   );
