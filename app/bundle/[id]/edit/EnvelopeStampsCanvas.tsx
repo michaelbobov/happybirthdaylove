@@ -9,6 +9,7 @@ import {
 } from "react";
 import { RotateCw, Trash2, Maximize2 } from "lucide-react";
 import type { EnvelopeStamp } from "@/lib/stamps";
+import { measureEnvelopeTextBoxPct } from "@/lib/envelope-text-layout";
 
 /**
  * Interactive overlay for placing, moving, rotating, scaling, and deleting
@@ -22,7 +23,15 @@ import type { EnvelopeStamp } from "@/lib/stamps";
  * of the canvas's shorter side (matches the SVG renderer in EnvelopeSVG.tsx).
  */
 
-export type PendingStamp = { kind: "emoji" | "asset"; value: string; color?: string };
+export type PendingStamp = {
+  kind: "emoji" | "asset" | "text";
+  value: string;
+  color?: string;
+  fontFamily?: string;
+  size?: number;
+  width?: number;
+  height?: number;
+};
 
 type Props = {
   stamps: EnvelopeStamp[];
@@ -39,10 +48,39 @@ type DragState =
   | { kind: "move"; id: string; offsetX: number; offsetY: number }
   | { kind: "rotate"; id: string; cx: number; cy: number; startAngle: number; startRot: number }
   | { kind: "scale"; id: string; cx: number; cy: number; startDist: number; startSize: number }
+  | {
+      kind: "resizeText";
+      id: string;
+      edge: "n" | "s" | "e" | "w" | "nw" | "ne" | "sw" | "se";
+      startX: number;
+      startY: number;
+      startW: number;
+      startH: number;
+    }
   | null;
+
+function getStampBounds(stamp: EnvelopeStamp, sizePx: number, canvasWidth: number, canvasHeight: number) {
+  if (stamp.kind !== "text") return { width: sizePx, height: sizePx };
+  const auto = measureEnvelopeTextBoxPct({
+    text: stamp.value,
+    envelopeWidthPx: canvasWidth,
+    envelopeHeightPx: canvasHeight,
+    fontSizePx: sizePx,
+    fontFamily: stamp.fontFamily ?? "var(--font-hand)",
+    maxWidthPct: 72,
+    lineHeight: 1.15,
+    horizontalPaddingPx: 6,
+    verticalPaddingPx: 4,
+  });
+  return {
+    width: stamp.width ? (stamp.width / 100) * canvasWidth : (auto.widthPct / 100) * canvasWidth,
+    height: stamp.height ? (stamp.height / 100) * canvasHeight : (auto.heightPct / 100) * canvasHeight,
+  };
+}
 
 const MIN_SIZE = 4;
 const MAX_SIZE = 34;
+const TEXT_DEFAULT_SIZE = 12;
 
 export function EnvelopeStampsCanvas({
   stamps,
@@ -57,6 +95,7 @@ export function EnvelopeStampsCanvas({
   const canvasRef = useRef<HTMLDivElement>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [drag, setDrag] = useState<DragState>(null);
+  const shorter = Math.min(width, height);
 
   const patch = useCallback(
     (id: string, partial: Partial<EnvelopeStamp>) => {
@@ -90,9 +129,12 @@ export function EnvelopeStampsCanvas({
       value: pending.value,
       x,
       y,
-      size: pending.kind === "asset" ? 22 : pending.value.length > 4 ? 8 : 14,
+      size: pending.size ?? (pending.kind === "asset" ? 22 : pending.kind === "text" ? TEXT_DEFAULT_SIZE : 14),
+      width: pending.kind === "text" ? pending.width : undefined,
+      height: pending.kind === "text" ? pending.height : undefined,
       rotation: 0,
       color: pending.color,
+      fontFamily: pending.fontFamily,
     };
     onChange([...stamps, next]);
     setSelectedId(id);
@@ -149,6 +191,28 @@ export function EnvelopeStampsCanvas({
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
   };
 
+  const onResizeTextPointerDown = (
+    e: React.PointerEvent,
+    id: string,
+    edge: "n" | "s" | "e" | "w" | "nw" | "ne" | "sw" | "se",
+  ) => {
+    e.stopPropagation();
+    const stamp = stamps.find((s) => s.id === id);
+    if (!stamp || stamp.kind !== "text") return;
+    const sizePx = (stamp.size / 100) * shorter;
+    const bounds = getStampBounds(stamp, sizePx, width, height);
+    setDrag({
+      kind: "resizeText",
+      id,
+      edge,
+      startX: e.clientX,
+      startY: e.clientY,
+      startW: stamp.width ?? (bounds.width / width) * 100,
+      startH: stamp.height ?? (bounds.height / height) * 100,
+    });
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+  };
+
   useEffect(() => {
     if (!drag) return;
     const onMove = (ev: PointerEvent) => {
@@ -169,6 +233,26 @@ export function EnvelopeStampsCanvas({
         const factor = dist / Math.max(drag.startDist, 1);
         const next = Math.max(MIN_SIZE, Math.min(MAX_SIZE, drag.startSize * factor));
         patch(drag.id, { size: next });
+      } else if (drag.kind === "resizeText") {
+        const stamp = stamps.find((s) => s.id === drag.id);
+        if (!stamp || stamp.kind !== "text") return;
+        const dx = ev.clientX - drag.startX;
+        const dy = ev.clientY - drag.startY;
+        const rad = (stamp.rotation * Math.PI) / 180;
+        const ux = { x: Math.cos(rad), y: Math.sin(rad) };
+        const uy = { x: -Math.sin(rad), y: Math.cos(rad) };
+        const mx = (dx / width) * 100;
+        const my = (dy / height) * 100;
+        let dw = 0;
+        let dh = 0;
+        const edge = drag.edge;
+        if (edge === "e" || edge === "ne" || edge === "se") dw += 2 * (mx * ux.x + my * ux.y);
+        if (edge === "w" || edge === "nw" || edge === "sw") dw -= 2 * (mx * ux.x + my * ux.y);
+        if (edge === "s" || edge === "sw" || edge === "se") dh += 2 * (mx * uy.x + my * uy.y);
+        if (edge === "n" || edge === "nw" || edge === "ne") dh -= 2 * (mx * uy.x + my * uy.y);
+        const nextW = Math.max(10, Math.min(90, drag.startW + dw));
+        const nextH = Math.max(4, Math.min(48, drag.startH + dh));
+        patch(drag.id, { width: nextW, height: nextH });
       }
     };
     const onUp = () => setDrag(null);
@@ -180,7 +264,7 @@ export function EnvelopeStampsCanvas({
       window.removeEventListener("pointerup", onUp);
       window.removeEventListener("pointercancel", onUp);
     };
-  }, [drag, patch]);
+  }, [drag, patch, stamps, height, width, shorter]);
 
   // Keyboard: delete selected on Backspace/Delete (unless typing in an input)
   useEffect(() => {
@@ -199,7 +283,6 @@ export function EnvelopeStampsCanvas({
   }, [selectedId, remove]);
 
   const selected = stamps.find((s) => s.id === selectedId) ?? null;
-  const shorter = Math.min(width, height);
 
   return (
     <div style={{ position: "relative", width, height, userSelect: "none" }}>
@@ -224,6 +307,7 @@ export function EnvelopeStampsCanvas({
           const cxPct = s.x;
           const cyPct = s.y;
           const sizePx = (s.size / 100) * shorter;
+          const bounds = getStampBounds(s, sizePx, width, height);
           const isSelected = s.id === selectedId;
           return (
             <div
@@ -233,8 +317,8 @@ export function EnvelopeStampsCanvas({
                 position: "absolute",
                 left: `${cxPct}%`,
                 top: `${cyPct}%`,
-                width: sizePx,
-                height: sizePx,
+                width: bounds.width,
+                height: bounds.height,
                 transform: `translate(-50%, -50%) rotate(${s.rotation}deg)`,
                 cursor: drag?.kind === "move" && drag.id === s.id ? "grabbing" : "grab",
                 display: "flex",
@@ -258,6 +342,23 @@ export function EnvelopeStampsCanvas({
                     pointerEvents: "none",
                   }}
                 />
+              ) : s.kind === "text" ? (
+                <span
+                  style={{
+                    width: "100%",
+                    color: s.color ?? "var(--color-ink)",
+                    fontFamily: s.fontFamily ?? "var(--font-hand)",
+                    fontSize: sizePx,
+                    lineHeight: 1.15,
+                    whiteSpace: "normal",
+                    overflowWrap: "break-word",
+                    textAlign: "center",
+                    textShadow: "0 1px 0 rgba(255,255,255,0.5)",
+                    pointerEvents: "none",
+                  }}
+                >
+                  {s.value}
+                </span>
               ) : (
                 <span
                   style={{
@@ -296,7 +397,8 @@ export function EnvelopeStampsCanvas({
             reachable. */}
         {selected && (() => {
           const sizePx = (selected.size / 100) * shorter;
-          const halfDiag = Math.sqrt(2) * (sizePx / 2) + 18;
+          const bounds = getStampBounds(selected, sizePx, width, height);
+          const halfDiag = Math.sqrt(bounds.width ** 2 + bounds.height ** 2) / 2 + 18;
           return (
             <>
               {/* Rotate handle — top */}
@@ -326,6 +428,53 @@ export function EnvelopeStampsCanvas({
               >
                 <RotateCw size={14} />
               </button>
+
+              {selected.kind === "text"
+                ? (() => {
+                    const hw = bounds.width / 2;
+                    const hh = bounds.height / 2;
+                    const rad = (selected.rotation * Math.PI) / 180;
+                    const cos = Math.cos(rad);
+                    const sin = Math.sin(rad);
+                    const xp = (dx: number, dy: number) =>
+                      selected.x + ((dx * cos - dy * sin) / width) * 100;
+                    const yp = (dx: number, dy: number) =>
+                      selected.y + ((dx * sin + dy * cos) / height) * 100;
+                    const handles = [
+                      ["nw", xp(-hw, -hh), yp(-hw, -hh), "nwse-resize"],
+                      ["n", xp(0, -hh), yp(0, -hh), "ns-resize"],
+                      ["ne", xp(hw, -hh), yp(hw, -hh), "nesw-resize"],
+                      ["e", xp(hw, 0), yp(hw, 0), "ew-resize"],
+                      ["se", xp(hw, hh), yp(hw, hh), "nwse-resize"],
+                      ["s", xp(0, hh), yp(0, hh), "ns-resize"],
+                      ["sw", xp(-hw, hh), yp(-hw, hh), "nesw-resize"],
+                      ["w", xp(-hw, 0), yp(-hw, 0), "ew-resize"],
+                    ] as const;
+                    return handles.map(([edge, left, top, cursor]) => (
+                      <button
+                        key={edge}
+                        type="button"
+                        aria-label={`Resize text ${edge}`}
+                        onPointerDown={(e) => onResizeTextPointerDown(e, selected.id, edge)}
+                        style={{
+                          position: "absolute",
+                          left: `${left}%`,
+                          top: `${top}%`,
+                          transform: "translate(-50%, -50%)",
+                          width: 14,
+                          height: 14,
+                          borderRadius: 4,
+                          background: "rgba(255,255,255,0.95)",
+                          border: "1.5px solid rgba(192,106,74,0.85)",
+                          boxShadow: "0 2px 8px rgba(0,0,0,0.12)",
+                          padding: 0,
+                          cursor,
+                          touchAction: "none",
+                        }}
+                      />
+                    ));
+                  })()
+                : null}
 
               {/* Scale handle — bottom-right */}
               <button
@@ -384,6 +533,13 @@ export function EnvelopeStampsCanvas({
         })()}
       </div>
 
+      {selected?.kind === "text" ? (
+        <TextStampInspector
+          stamp={selected}
+          onPatch={(partial) => patch(selected.id, partial)}
+        />
+      ) : null}
+
       {/* Pending-placement hint strip */}
       {pending && (
         <div
@@ -406,15 +562,115 @@ export function EnvelopeStampsCanvas({
             fontFamily: "var(--font-hand)",
           }}
         >
-          {pending.kind === "emoji" ? (
-            <span style={{ fontSize: 18 }}>{pending.value}</span>
-          ) : (
+          {pending.kind === "asset" ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={pending.value} alt="" style={{ width: 20, height: 20, objectFit: "contain" }} />
+          ) : pending.kind === "text" ? (
+            <span
+              style={{
+                maxWidth: 180,
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                color: pending.color,
+                fontFamily: pending.fontFamily ?? "var(--font-hand)",
+              }}
+            >
+              {pending.value}
+            </span>
+          ) : (
+            <span style={{ fontSize: 18 }}>{pending.value}</span>
           )}
           click the envelope to place
         </div>
       )}
     </div>
   );
+}
+
+function TextStampInspector({
+  stamp,
+  onPatch,
+}: {
+  stamp: EnvelopeStamp;
+  onPatch: (partial: Partial<EnvelopeStamp>) => void;
+}) {
+  return (
+    <div
+      onPointerDown={(event) => event.stopPropagation()}
+      style={{
+        position: "absolute",
+        left: 12,
+        right: 12,
+        bottom: 12,
+        display: "grid",
+        gridTemplateColumns: "minmax(0, 1fr) auto auto",
+        gap: 8,
+        alignItems: "center",
+        padding: "10px 12px",
+        borderRadius: 14,
+        background: "rgba(255,255,255,0.94)",
+        border: "1px solid rgba(0,0,0,0.12)",
+        boxShadow: "0 8px 24px rgba(0,0,0,0.14)",
+        color: "var(--color-ink)",
+        fontSize: 11,
+      }}
+    >
+      <InspectorRange label="Text" min={2} max={28} value={stamp.size} onChange={(size) => onPatch({ size })} />
+      <span style={{ color: "var(--color-muted)", fontSize: 10, lineHeight: 1.35, maxWidth: 120 }}>
+        Drag box handles on the envelope to resize.
+      </span>
+      <input
+        type="color"
+        aria-label="Selected text color"
+        value={colorToInputValue(stamp.color ?? "#3b2a1e")}
+        onChange={(event) => onPatch({ color: event.target.value })}
+        style={{
+          width: 30,
+          height: 28,
+          padding: 0,
+          borderRadius: 8,
+          border: "1px solid rgba(0,0,0,0.18)",
+          background: "transparent",
+        }}
+      />
+    </div>
+  );
+}
+
+function InspectorRange({
+  label,
+  min,
+  max,
+  value,
+  onChange,
+}: {
+  label: string;
+  min: number;
+  max: number;
+  value: number;
+  onChange: (value: number) => void;
+}) {
+  return (
+    <label style={{ display: "grid", gap: 2 }}>
+      <span style={{ color: "var(--color-muted)", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+        {label} {Math.round(value)}
+      </span>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        value={value}
+        onChange={(event) => onChange(Number(event.target.value))}
+      />
+    </label>
+  );
+}
+
+function colorToInputValue(color: string): string {
+  if (/^#[0-9a-fA-F]{6}$/.test(color)) return color;
+  if (/^#[0-9a-fA-F]{3}$/.test(color)) {
+    return `#${color.slice(1).split("").map((char) => `${char}${char}`).join("")}`;
+  }
+  return "#3b2a1e";
 }

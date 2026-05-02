@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useId } from "react";
+import { forwardRef } from "react";
 import type { SVGProps } from "react";
 
 type Props = SVGProps<SVGGElement> & {
@@ -13,6 +13,7 @@ type Props = SVGProps<SVGGElement> & {
   sealClassName?: string;
   /** When set, renders a PNG seal instead of the drawn SVG blob. */
   imageUrl?: string;
+  showShadow?: boolean;
 };
 
 /**
@@ -26,62 +27,40 @@ export const WaxSeal = forwardRef<SVGGElement, Props>(function WaxSeal(
     monogram = "",
     sealClassName = "wax-seal",
     imageUrl = "/images/seal.png",
+    showShadow = true,
     ...rest
   },
   ref,
 ) {
   const drip = r * 0.15;
-  const uid = useId().replace(/[:]/g, "");
 
   if (imageUrl) {
     const size = r * 2.35;
     const x = cx - size / 2;
     const y = cy - size / 2;
-    const pieces = [
-      {
-        id: "bottom",
-        className: "wax-seal-bottom",
-        points: `${x},${cy} ${x + size},${cy} ${x + size},${y + size} ${x},${y + size}`,
-      },
-      {
-        id: "top",
-        className: "wax-seal-top",
-        points: `${x},${y} ${x + size},${y} ${x + size},${cy} ${x},${cy}`,
-      },
-    ];
 
     return (
       <g ref={ref} className={sealClassName} {...rest}>
-        <defs>
-          {pieces.map((piece) => (
-            <clipPath key={piece.id} id={`seal-piece-${uid}-${piece.id}`}>
-              <polygon points={piece.points} />
-            </clipPath>
-          ))}
-        </defs>
-        <ellipse
-          className="wax-seal-shadow"
-          cx={cx + 1}
-          cy={cy + r * 0.55}
-          rx={r * 0.95}
-          ry={r * 0.2}
-          fill="rgba(0,0,0,0.28)"
-        />
-        {pieces.map((piece) => (
-          <image
-            key={piece.id}
-            className={`wax-seal-piece ${piece.className}`}
-            href={imageUrl}
-            x={x}
-            y={y}
-            width={size}
-            height={size}
-            preserveAspectRatio="xMidYMid meet"
-            clipPath={`url(#seal-piece-${uid}-${piece.id})`}
-          >
-            <title>Wax seal</title>
-          </image>
-        ))}
+        {showShadow ? (
+          <ellipse
+            className="wax-seal-shadow"
+            cx={cx + 1}
+            cy={cy + r * 0.55}
+            rx={r * 0.95}
+            ry={r * 0.2}
+            fill="rgba(0,0,0,0.28)"
+          />
+        ) : null}
+        <image
+          href={imageUrl}
+          x={x}
+          y={y}
+          width={size}
+          height={size}
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <title>Wax seal</title>
+        </image>
         {monogram ? (
           <text
             x={cx}

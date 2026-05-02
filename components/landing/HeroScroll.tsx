@@ -151,10 +151,8 @@ export function HeroScroll() {
     if (!outer || !wrap) return;
 
     const flap = wrap.querySelector<HTMLElement>(".env-flap");
+    const flapSeal = wrap.querySelector<Element>(".env-flap-seal");
     const seal = wrap.querySelector<Element>(".wax-seal");
-    const sealTop = wrap.querySelector<Element>(".wax-seal-top");
-    const sealBottom = wrap.querySelector<Element>(".wax-seal-bottom");
-    const sealShadow = wrap.querySelector<Element>(".wax-seal-shadow");
     const peek = wrap.querySelector<HTMLElement>(".env-peek");
     const address = addressRef.current;
     const polaroids = POLAROIDS.map((p) =>
@@ -199,28 +197,16 @@ export function HeroScroll() {
     const tl = gsap.timeline();
 
     // Act 1 — envelope opens
-    if (sealTop && sealBottom) {
-      tl.to(seal, { scale: 1.03, transformOrigin: "center", duration: 0.08 }, 0);
-      if (sealShadow) {
-        tl.to(sealShadow, { opacity: 0.2, duration: 0.22 }, 0.12);
-      }
-      tl.to(sealTop, {
-        y: -ENV_H * 0.16,
-        rotationX: -120,
-        rotation: 0,
-        opacity: 0,
-        transformOrigin: "center bottom",
-        transformPerspective: 900,
-        duration: 0.5,
-        ease: "power3.inOut",
-      }, 0.08);
-      gsap.set(sealBottom, { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1 });
-    } else if (seal) {
+    if (seal && !flapSeal) {
       tl.to(seal, { scale: 1.08, transformOrigin: "center", duration: 0.1 }, 0)
         .to(seal, { scale: 0, rotation: 22, opacity: 0, duration: 0.22, ease: "power2.in" }, 0.1);
     }
-    if (flap) {
-      tl.to(flap, { rotationX: -175, transformPerspective: 900, duration: 0.55 }, 0.08);
+    if (flapSeal) {
+      tl.set(flapSeal, { zIndex: 4 }, 0.12);
+    }
+    const flapTargets = [flap, flapSeal].filter(Boolean) as Element[];
+    if (flapTargets.length > 0) {
+      tl.to(flapTargets, { rotationX: -175, transformPerspective: 900, duration: 0.55 }, 0.08);
     }
     if (address) {
       tl.to(address, { opacity: 0, duration: 0.2 }, 0.34);

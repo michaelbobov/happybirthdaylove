@@ -1,22 +1,32 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
 import {
   Clock,
   Layers,
   Lock,
   Palette,
+  RotateCw,
   Search,
   Sparkles,
   Trash2,
+  Type,
   Zap,
 } from "lucide-react";
 import { designsFor, themeList, type EnvelopeDesignId, type ThemeId } from "@/lib/themes";
 import {
+  DEFAULT_FRONT_TEXT_COLOR,
+  DEFAULT_FRONT_TEXT_FONT,
+  DEFAULT_FRONT_TEXT_POSITION,
+  DEFAULT_FRONT_TEXT_ROTATION,
+  DEFAULT_FRONT_TEXT_SIZE,
+  ENVELOPE_FRONT_TEXT_STAMP_ID,
   STAMP_ASSETS,
   STAMP_EMOJI_LIBRARY,
+  getEnvelopeFrontText,
   type EnvelopeStamp,
 } from "@/lib/stamps";
+import { captionHorizontalRangePct, measureEnvelopeTextBoxPct } from "@/lib/envelope-text-layout";
 import { PhotoEnvelope } from "@/components/envelope/PhotoEnvelope";
 import { EnvelopeSVG } from "@/components/envelope/EnvelopeSVG";
 import { searchStickers } from "@/lib/stickers";
@@ -71,10 +81,6 @@ const UNLOCK_OPTIONS = [
 
 const ENVELOPE_W = 540;
 const ENVELOPE_H = 348;
-const CAPTION_PLACEMENT_ID = "__captionPlacement";
-const DEFAULT_CAPTION_POSITION = { x: 50, y: 65 };
-const DEFAULT_CAPTION_SIZE = 22;
-const DEFAULT_CAPTION_COLOR = "rgba(40,24,8,0.62)";
 const CAPTION_COLORS = [
   { label: "Ink", value: "rgba(40,24,8,0.62)" },
   { label: "Black", value: "#111111" },
@@ -85,13 +91,32 @@ const CAPTION_COLORS = [
   { label: "Plum", value: "#6b3d6b" },
 ] as const;
 
-type Tab = "contents" | "design" | "stamps" | "unlock";
+const EXTRA_TEXT_FONTS = [
+  { label: "Handwritten", value: "var(--font-hand)" },
+  { label: "Display", value: "var(--font-display)" },
+  { label: "Serif", value: "var(--font-body)" },
+  { label: "Clean", value: "system-ui, sans-serif" },
+] as const;
+
+type CaptionPlacementPatch = {
+  x?: number;
+  y?: number;
+  size?: number;
+  color?: string;
+  fontFamily?: string;
+  /** Omit auto-sizing for this dimension (drag resize sets numbers; pass null to return to auto hug-text). */
+  width?: number | null;
+  height?: number | null;
+  rotation?: number;
+};
+
+type Tab = "front" | "contents" | "design" | "stamps" | "unlock";
 
 export function EnvelopeWorkspace({
   bundleId, bundleThemeId, envelope, items, onUpdated, onItemsChange,
 }: Props) {
   const [env, setEnv] = useState<Envelope>(envelope);
-  const [tab, setTab] = useState<Tab>("contents");
+  const [tab, setTab] = useState<Tab>("front");
   const [pending, setPending] = useState<PendingStamp | null>(null);
   const [stampQuery, setStampQuery] = useState("");
   const [stampCat, setStampCat] = useState(STAMP_EMOJI_LIBRARY[0].id);
@@ -102,17 +127,32 @@ export function EnvelopeWorkspace({
   const themeId = (env.themeOverrideId as ThemeId) ?? (bundleThemeId as ThemeId);
   const designs = designsFor(themeId);
   const design = designs.find((d) => d.id === env.envelopeDesignId) ?? designs[0];
-  const previewCaption = env.caption?.trim() || env.title.trim();
-  const captionPlacement = env.stamps.find((s) => s.id === CAPTION_PLACEMENT_ID);
+  const previewCaption = getEnvelopeFrontText(env.title, env.caption);
+  const captionPlacement = env.stamps.find((s) => s.id === ENVELOPE_FRONT_TEXT_STAMP_ID);
   const captionPosition = {
-    x: captionPlacement?.x ?? DEFAULT_CAPTION_POSITION.x,
-    y: captionPlacement?.y ?? DEFAULT_CAPTION_POSITION.y,
+    x: captionPlacement?.x ?? DEFAULT_FRONT_TEXT_POSITION.x,
+    y: captionPlacement?.y ?? DEFAULT_FRONT_TEXT_POSITION.y,
   };
-  const captionSize = captionPlacement?.size ?? DEFAULT_CAPTION_SIZE;
-  const captionColor = captionPlacement?.color ?? DEFAULT_CAPTION_COLOR;
-  const captionColorInputValue = colorToInputValue(captionColor);
+  const captionSize = captionPlacement?.size ?? DEFAULT_FRONT_TEXT_SIZE;
+  const captionColor = captionPlacement?.color ?? DEFAULT_FRONT_TEXT_COLOR;
+  const captionFont = captionPlacement?.fontFamily ?? DEFAULT_FRONT_TEXT_FONT;
+  const captionRotation = captionPlacement?.rotation ?? DEFAULT_FRONT_TEXT_ROTATION;
   const captionBounds = getCaptionBounds(design);
-  const decorativeStamps = env.stamps.filter((s) => s.id !== CAPTION_PLACEMENT_ID);
+  const shorterPreview = Math.min(ENVELOPE_W, ENVELOPE_H);
+  const captionFontPx = (captionSize / 100) * shorterPreview;
+  const autoCaptionBox = measureEnvelopeTextBoxPct({
+    text: previewCaption,
+    envelopeWidthPx: ENVELOPE_W,
+    envelopeHeightPx: ENVELOPE_H,
+    fontSizePx: captionFontPx,
+    fontFamily: captionFont,
+    maxWidthPct: captionHorizontalRangePct(captionBounds),
+    lineHeight: 1.2,
+  });
+  const captionWidthPct = captionPlacement?.width ?? autoCaptionBox.widthPct;
+  const captionHeightPct = captionPlacement?.height ?? autoCaptionBox.heightPct;
+  const captionColorInputValue = colorToInputValue(captionColor);
+  const decorativeStamps = env.stamps.filter((s) => s.id !== ENVELOPE_FRONT_TEXT_STAMP_ID);
 
   const save = useCallback(async (next: Envelope) => {
     setSaveState("saving");
@@ -156,26 +196,69 @@ export function EnvelopeWorkspace({
       ...e,
       stamps: [
         ...stamps,
-        ...e.stamps.filter((s) => s.id === CAPTION_PLACEMENT_ID),
+        ...e.stamps.filter((s) => s.id === ENVELOPE_FRONT_TEXT_STAMP_ID),
       ],
     }));
-  const setCaptionPlacement = (partial: Partial<{ x: number; y: number; size: number; color: string }>) =>
+  const setCaptionPlacement = (partial: CaptionPlacementPatch) =>
     setEnv((e) => {
-      const existing = e.stamps.find((s) => s.id === CAPTION_PLACEMENT_ID);
+      const existing = e.stamps.find((s) => s.id === ENVELOPE_FRONT_TEXT_STAMP_ID);
+      const hadExplicitWidth = existing?.width !== undefined;
+      const hadExplicitHeight = existing?.height !== undefined;
+      const nextWidth =
+        partial.width === null
+          ? undefined
+          : partial.width !== undefined
+            ? partial.width
+            : hadExplicitWidth
+              ? existing?.width
+              : undefined;
+      const nextHeight =
+        partial.height === null
+          ? undefined
+          : partial.height !== undefined
+            ? partial.height
+            : hadExplicitHeight
+              ? existing?.height
+              : undefined;
+      const text = getEnvelopeFrontText(e.title, e.caption);
+      const fontPx = ((partial.size ?? existing?.size ?? DEFAULT_FRONT_TEXT_SIZE) / 100) * Math.min(ENVELOPE_W, ENVELOPE_H);
+      const auto = measureEnvelopeTextBoxPct({
+        text,
+        envelopeWidthPx: ENVELOPE_W,
+        envelopeHeightPx: ENVELOPE_H,
+        fontSizePx: fontPx,
+        fontFamily: partial.fontFamily ?? existing?.fontFamily ?? DEFAULT_FRONT_TEXT_FONT,
+        maxWidthPct: captionHorizontalRangePct(captionBounds),
+        lineHeight: 1.2,
+      });
+      const effW = nextWidth ?? auto.widthPct;
+      const effH = nextHeight ?? auto.heightPct;
+      const nextPosition = clampCaptionPosition(
+        {
+          x: partial.x ?? existing?.x ?? DEFAULT_FRONT_TEXT_POSITION.x,
+          y: partial.y ?? existing?.y ?? DEFAULT_FRONT_TEXT_POSITION.y,
+        },
+        captionBounds,
+        effW,
+        effH,
+      );
       const placement: EnvelopeStamp = {
-        id: CAPTION_PLACEMENT_ID,
-        kind: "emoji",
-        value: existing?.value ?? " ",
-        x: partial.x ?? existing?.x ?? DEFAULT_CAPTION_POSITION.x,
-        y: partial.y ?? existing?.y ?? DEFAULT_CAPTION_POSITION.y,
-        size: partial.size ?? existing?.size ?? DEFAULT_CAPTION_SIZE,
-        rotation: 0,
-        color: partial.color ?? existing?.color ?? DEFAULT_CAPTION_COLOR,
+        id: ENVELOPE_FRONT_TEXT_STAMP_ID,
+        kind: "text",
+        value: text.trim() || " ",
+        x: nextPosition.x,
+        y: nextPosition.y,
+        size: partial.size ?? existing?.size ?? DEFAULT_FRONT_TEXT_SIZE,
+        ...(nextWidth !== undefined ? { width: nextWidth } : {}),
+        ...(nextHeight !== undefined ? { height: nextHeight } : {}),
+        rotation: partial.rotation ?? existing?.rotation ?? DEFAULT_FRONT_TEXT_ROTATION,
+        color: partial.color ?? existing?.color ?? DEFAULT_FRONT_TEXT_COLOR,
+        fontFamily: partial.fontFamily ?? existing?.fontFamily ?? DEFAULT_FRONT_TEXT_FONT,
       };
       return {
         ...e,
         stamps: [
-          ...e.stamps.filter((s) => s.id !== CAPTION_PLACEMENT_ID),
+          ...e.stamps.filter((s) => s.id !== ENVELOPE_FRONT_TEXT_STAMP_ID),
           placement,
         ],
       };
@@ -198,6 +281,22 @@ export function EnvelopeWorkspace({
       stamps={decorativeStamps}
     />
   );
+  const envelopeBaseArt = design.imageUrl ? (
+    <PhotoEnvelope
+      design={design}
+      width={ENVELOPE_W}
+      height={ENVELOPE_H}
+      state="closed"
+      sealColorOverride={env.sealColorOverride}
+    />
+  ) : (
+    <EnvelopeSVG
+      design={design}
+      width={ENVELOPE_W}
+      height={ENVELOPE_H}
+      sealColorOverride={env.sealColorOverride}
+    />
+  );
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
@@ -206,11 +305,8 @@ export function EnvelopeWorkspace({
       <div className="envelope-preview-shell" style={{ position: "relative", display: "flex", justifyContent: "center" }}>
         <div className="envelope-preview-scale">
         {tab === "stamps" ? (
-          /* When stamps tab is active, the photo-envelope needs the SVG layer
-             to render placed stamps — so for photo designs we render the photo
-             behind and an overlay SVG on top just for stamps.  For SVG designs
-             stamps are already baked in, so the overlay canvas is purely for
-             interaction. */
+          /* In decorate mode the interactive canvas owns stamp rendering, so
+             the envelope art underneath must stay undecorated. */
           <EnvelopeStampsCanvas
             stamps={decorativeStamps}
             onChange={setStamps}
@@ -219,56 +315,24 @@ export function EnvelopeWorkspace({
             width={ENVELOPE_W}
             height={ENVELOPE_H}
           >
-            {design.imageUrl ? (
-              <>
-                <PhotoEnvelope
-                  design={design}
-                  width={ENVELOPE_W}
-                  height={ENVELOPE_H}
-                  state="closed"
-                  sealColorOverride={env.sealColorOverride}
-                />
+            <>
+              {envelopeBaseArt}
                 <EnvelopeCaptionOverlay
                   caption={previewCaption}
                   position={captionPosition}
                   size={captionSize}
                   color={captionColor}
+                  fontFamily={captionFont}
+                  boxWidthPct={captionWidthPct}
+                  boxHeightPct={captionHeightPct}
+                  rotation={captionRotation}
+                  showFrame
                   bounds={captionBounds}
-                  onPositionChange={(position) => setCaptionPlacement(position)}
+                  envelopeWidthPx={ENVELOPE_W}
+                  envelopeHeightPx={ENVELOPE_H}
+                  onPlacementChange={setCaptionPlacement}
                 />
-                {/* Stamp layer on top of photo envelope */}
-                <svg
-                  width={ENVELOPE_W}
-                  height={ENVELOPE_H}
-                  viewBox={`0 0 ${ENVELOPE_W} ${ENVELOPE_H}`}
-                  style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
-                >
-                  {decorativeStamps.map((s) => {
-                    const cx = (s.x / 100) * ENVELOPE_W;
-                    const cy = (s.y / 100) * ENVELOPE_H;
-                    const sizePx = (s.size / 100) * Math.min(ENVELOPE_W, ENVELOPE_H);
-                    const t = `rotate(${s.rotation} ${cx} ${cy})`;
-                    return s.kind === "asset" ? (
-                      <image key={s.id} href={s.value} x={cx - sizePx / 2} y={cy - sizePx / 2} width={sizePx} height={sizePx} transform={t} preserveAspectRatio="xMidYMid meet" />
-                    ) : (
-                      <text key={s.id} x={cx} y={cy} textAnchor="middle" dominantBaseline="central" fontSize={sizePx} fill={s.color ?? "currentColor"} transform={t}>{s.value}</text>
-                    );
-                  })}
-                </svg>
-              </>
-            ) : (
-              <>
-                {envelopeArt}
-                <EnvelopeCaptionOverlay
-                  caption={previewCaption}
-                  position={captionPosition}
-                  size={captionSize}
-                  color={captionColor}
-                  bounds={captionBounds}
-                  onPositionChange={(position) => setCaptionPlacement(position)}
-                />
-              </>
-            )}
+            </>
           </EnvelopeStampsCanvas>
         ) : (
           <>
@@ -278,8 +342,15 @@ export function EnvelopeWorkspace({
               position={captionPosition}
               size={captionSize}
               color={captionColor}
+              fontFamily={captionFont}
+              boxWidthPct={captionWidthPct}
+              boxHeightPct={captionHeightPct}
+              rotation={captionRotation}
+              showFrame={tab === "front"}
               bounds={captionBounds}
-              onPositionChange={(position) => setCaptionPlacement(position)}
+              envelopeWidthPx={ENVELOPE_W}
+              envelopeHeightPx={ENVELOPE_H}
+              onPlacementChange={setCaptionPlacement}
             />
           </>
         )}
@@ -314,13 +385,26 @@ export function EnvelopeWorkspace({
           borderBottom: "1px solid rgba(0,0,0,0.08)",
           background: "rgba(255,255,255,0.4)",
         }}>
+          <TabButton active={tab === "front"} onClick={() => setTab("front")} icon={<Type size={13} />}>Front Text</TabButton>
           <TabButton active={tab === "contents"} onClick={() => setTab("contents")} icon={<Layers size={13} />}>Inside{items.length ? ` · ${items.length}` : ""}</TabButton>
-          <TabButton active={tab === "design"} onClick={() => setTab("design")} icon={<Palette size={13} />}>Design</TabButton>
-          <TabButton active={tab === "stamps"} onClick={() => setTab("stamps")} icon={<Sparkles size={13} />}>Stamps{decorativeStamps.length ? ` · ${decorativeStamps.length}` : ""}</TabButton>
-          <TabButton active={tab === "unlock"} onClick={() => setTab("unlock")} icon={<Clock size={13} />}>Unlock</TabButton>
+          <TabButton active={tab === "design"} onClick={() => setTab("design")} icon={<Palette size={13} />}>Look</TabButton>
+          <TabButton active={tab === "stamps"} onClick={() => setTab("stamps")} icon={<Sparkles size={13} />}>Decorate{decorativeStamps.length ? ` · ${decorativeStamps.length}` : ""}</TabButton>
+          <TabButton active={tab === "unlock"} onClick={() => setTab("unlock")} icon={<Clock size={13} />}>Timing</TabButton>
         </div>
 
         <div style={{ padding: "18px 20px" }}>
+          {tab === "front" && (
+            <FrontTextPanel
+              title={env.title}
+              caption={env.caption}
+              captionSize={captionSize}
+              captionColor={captionColor}
+              captionFont={captionFont}
+              captionColorInputValue={captionColorInputValue}
+              onPatch={patch}
+              onCaptionPlacementChange={setCaptionPlacement}
+            />
+          )}
           {tab === "contents" && (
             <ContentsPanel
               bundleId={bundleId}
@@ -358,98 +442,6 @@ export function EnvelopeWorkspace({
               onPatch={patch}
             />
           )}
-        </div>
-      </div>
-
-      {/* ── Title & caption ───────────────────────────────────────────── */}
-      <div style={{ marginTop: 22, display: "flex", flexDirection: "column", gap: 8 }}>
-        <input
-          value={env.title}
-          onChange={(e) => patch({ title: e.target.value })}
-          placeholder="Envelope title…"
-          style={{
-            background: "transparent", border: "none", outline: "none",
-            fontFamily: "var(--font-display)", fontSize: 28, color: "var(--color-ink)",
-            width: "100%", padding: 0,
-          }}
-        />
-        <input
-          value={env.caption ?? ""}
-          onChange={(e) => patch({ caption: e.target.value || null })}
-          placeholder="Caption shown on the sealed envelope (open when you're sad…)"
-          className="font-hand"
-          style={{
-            background: "transparent", border: "none", borderBottom: "1px dashed var(--color-muted)",
-            outline: "none", fontSize: 16, color: "var(--color-muted)", width: "100%", padding: "4px 0",
-          }}
-        />
-        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-          <span style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--color-muted)" }}>
-            Envelope text size
-          </span>
-          <input
-            type="range"
-            min={14}
-            max={32}
-            value={captionSize}
-            onChange={(e) => setCaptionPlacement({ size: Number(e.target.value) })}
-            style={{ width: 150 }}
-          />
-          <button
-            type="button"
-            onClick={() => setCaptionPlacement({ ...DEFAULT_CAPTION_POSITION, size: DEFAULT_CAPTION_SIZE, color: DEFAULT_CAPTION_COLOR })}
-            style={{
-              borderRadius: 999,
-              border: "1px solid var(--color-muted)",
-              background: "transparent",
-              color: "var(--color-muted)",
-              cursor: "pointer",
-              fontSize: 11,
-              padding: "4px 10px",
-            }}
-          >
-            Reset placement
-          </button>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-          <span style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.12em", color: "var(--color-muted)" }}>
-            Text color
-          </span>
-          {CAPTION_COLORS.map((color) => (
-            <button
-              key={color.value}
-              type="button"
-              aria-label={color.label}
-              onClick={() => setCaptionPlacement({ color: color.value })}
-              style={{
-                width: 20,
-                height: 20,
-                borderRadius: "50%",
-                background: color.value,
-                border: captionColor === color.value ? "2px solid var(--color-ink)" : "1px solid rgba(0,0,0,0.2)",
-                outline: captionColor === color.value ? "2px solid rgba(255,255,255,0.8)" : "none",
-                outlineOffset: 1,
-                cursor: "pointer",
-              }}
-            />
-          ))}
-          <label style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12, color: "var(--color-muted)" }}>
-            Custom
-            <input
-              type="color"
-              value={captionColorInputValue}
-              onChange={(e) => setCaptionPlacement({ color: e.target.value })}
-              style={{
-                width: 28,
-                height: 24,
-                padding: 0,
-                border: "1px solid rgba(0,0,0,0.18)",
-                borderRadius: 6,
-                background: "transparent",
-                cursor: "pointer",
-              }}
-            />
-          </label>
         </div>
       </div>
 
@@ -512,7 +504,7 @@ function TabButton({
         textTransform: "uppercase",
         cursor: "pointer",
         fontWeight: active ? 600 : 500,
-        transition: "all 0.15s",
+        transition: "background 0.15s, border-color 0.15s, color 0.15s",
       }}
     >
       {icon}
@@ -548,10 +540,29 @@ function getCaptionBounds(design: { bounds?: { top: number; left: number; right:
   const height = bottom - top;
 
   return {
-    minX: left + width * 0.18,
-    maxX: right - width * 0.18,
-    minY: top + height * 0.64,
-    maxY: bottom - height * 0.08,
+    minX: left + width * 0.04,
+    maxX: right - width * 0.04,
+    minY: top + height * 0.42,
+    maxY: bottom - height * 0.04,
+  };
+}
+
+function clampCaptionPosition(
+  position: { x: number; y: number },
+  bounds: CaptionBounds,
+  boxWidth: number,
+  boxHeight: number,
+) {
+  const halfW = boxWidth / 2;
+  const halfH = boxHeight / 2;
+  const minX = bounds.minX + halfW;
+  const maxX = bounds.maxX - halfW;
+  const minY = bounds.minY + halfH;
+  const maxY = bounds.maxY - halfH;
+
+  return {
+    x: minX <= maxX ? Math.max(minX, Math.min(maxX, position.x)) : (bounds.minX + bounds.maxX) / 2,
+    y: minY <= maxY ? Math.max(minY, Math.min(maxY, position.y)) : (bounds.minY + bounds.maxY) / 2,
   };
 }
 
@@ -568,36 +579,96 @@ function EnvelopeCaptionOverlay({
   position,
   size,
   color,
+  fontFamily,
+  boxWidthPct,
+  boxHeightPct,
+  rotation,
+  showFrame,
   bounds,
-  onPositionChange,
+  envelopeWidthPx,
+  envelopeHeightPx,
+  onPlacementChange,
 }: {
   caption: string;
   position: { x: number; y: number };
   size: number;
   color: string;
+  fontFamily: string;
+  boxWidthPct: number;
+  boxHeightPct: number;
+  rotation: number;
+  showFrame?: boolean;
   bounds: CaptionBounds;
-  onPositionChange: (position: { x: number; y: number }) => void;
+  envelopeWidthPx: number;
+  envelopeHeightPx: number;
+  onPlacementChange: (placement: CaptionPlacementPatch) => void;
 }) {
   const dragOffset = useRef<{ x: number; y: number } | null>(null);
-  if (!caption) return null;
+  const rotateDrag = useRef<{ cx: number; cy: number; startAngle: number; startRotation: number } | null>(null);
+  const resizeDrag = useRef<{
+    edge: "n" | "s" | "e" | "w" | "nw" | "ne" | "sw" | "se";
+    startX: number;
+    startY: number;
+    startWpct: number;
+    startHpct: number;
+  } | null>(null);
 
-  const pointToPosition = (event: React.PointerEvent<HTMLDivElement>) => {
+  if (!caption) return null;
+  const displayPosition = clampCaptionPosition(position, bounds, boxWidthPct, boxHeightPct);
+
+  const pointToPosition = (event: ReactPointerEvent<HTMLDivElement>) => {
     const parent = event.currentTarget.parentElement;
     if (!parent) return position;
     const rect = parent.getBoundingClientRect();
     const pointerX = ((event.clientX - rect.left) / rect.width) * 100;
     const pointerY = ((event.clientY - rect.top) / rect.height) * 100;
     const offset = dragOffset.current ?? { x: 0, y: 0 };
-    return {
-      x: Math.max(bounds.minX, Math.min(bounds.maxX, pointerX - offset.x)),
-      y: Math.max(bounds.minY, Math.min(bounds.maxY, pointerY - offset.y)),
-    };
+    return clampCaptionPosition(
+      { x: pointerX - offset.x, y: pointerY - offset.y },
+      bounds,
+      boxWidthPct,
+      boxHeightPct,
+    );
+  };
+
+  const maxColPct = captionHorizontalRangePct(bounds);
+
+  const applyResize = (event: ReactPointerEvent, initial: NonNullable<typeof resizeDrag.current>) => {
+    const dx = event.clientX - initial.startX;
+    const dy = event.clientY - initial.startY;
+    const rad = (rotation * Math.PI) / 180;
+    const ux = { x: Math.cos(rad), y: Math.sin(rad) };
+    const uy = { x: -Math.sin(rad), y: Math.cos(rad) };
+    const mx = (dx / envelopeWidthPx) * 100;
+    const my = (dy / envelopeHeightPx) * 100;
+
+    let dw = 0;
+    let dh = 0;
+    const edge = initial.edge;
+    if (edge === "e" || edge === "ne" || edge === "se") dw += 2 * (mx * ux.x + my * ux.y);
+    if (edge === "w" || edge === "nw" || edge === "sw") dw -= 2 * (mx * ux.x + my * ux.y);
+    if (edge === "s" || edge === "sw" || edge === "se") dh += 2 * (mx * uy.x + my * uy.y);
+    if (edge === "n" || edge === "nw" || edge === "ne") dh -= 2 * (mx * uy.x + my * uy.y);
+
+    const nextW = Math.round(Math.max(12, Math.min(maxColPct, initial.startWpct + dw)) * 1000) / 1000;
+    const nextH = Math.round(Math.max(6, Math.min(78, initial.startHpct + dh)) * 1000) / 1000;
+    onPlacementChange({ width: nextW, height: nextH });
+  };
+
+  const handleStyle: CSSProperties = {
+    position: "absolute",
+    width: 14,
+    height: 14,
+    borderRadius: 4,
+    background: "rgba(255,255,255,0.95)",
+    border: "1.5px solid rgba(192,106,74,0.85)",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.12)",
+    padding: 0,
+    touchAction: "none",
   };
 
   return (
     <div
-      aria-hidden="true"
-      className="font-hand"
       onPointerDown={(event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -606,15 +677,15 @@ function EnvelopeCaptionOverlay({
         const rect = parent.getBoundingClientRect();
         const pointerX = ((event.clientX - rect.left) / rect.width) * 100;
         const pointerY = ((event.clientY - rect.top) / rect.height) * 100;
-        dragOffset.current = { x: pointerX - position.x, y: pointerY - position.y };
+        dragOffset.current = { x: pointerX - displayPosition.x, y: pointerY - displayPosition.y };
         event.currentTarget.setPointerCapture(event.pointerId);
       }}
       onPointerMove={(event) => {
         if (!dragOffset.current) return;
-        onPositionChange(pointToPosition(event));
+        onPlacementChange(pointToPosition(event));
       }}
       onPointerUp={(event) => {
-        if (dragOffset.current) onPositionChange(pointToPosition(event));
+        if (dragOffset.current) onPlacementChange(pointToPosition(event));
         dragOffset.current = null;
         event.currentTarget.releasePointerCapture(event.pointerId);
       }}
@@ -623,24 +694,340 @@ function EnvelopeCaptionOverlay({
       }}
       style={{
         position: "absolute",
-        left: `${position.x}%`,
-        top: `${position.y}%`,
-        transform: "translate(-50%, -50%) rotate(-1.4deg)",
-        width: "58%",
-        maxWidth: 330,
+        left: `${displayPosition.x}%`,
+        top: `${displayPosition.y}%`,
+        transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
+        width: `${boxWidthPct}%`,
+        height: `${boxHeightPct}%`,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
         textAlign: "center",
         color,
+        fontFamily,
         fontSize: size,
-        lineHeight: 1.45,
+        lineHeight: 1.2,
         cursor: "grab",
         whiteSpace: "pre-wrap",
+        overflow: "visible",
         textShadow: "0 1px 0 rgba(255,255,255,0.45)",
         touchAction: "none",
         userSelect: "none",
+        border: showFrame ? "1.5px dashed rgba(192,106,74,0.85)" : "1.5px solid transparent",
+        borderRadius: 8,
+        boxShadow: showFrame ? "0 0 0 3px rgba(255,255,255,0.32)" : "none",
       }}
     >
-      {caption}
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          overflow: "hidden",
+          overflowWrap: "break-word",
+        }}
+      >
+        {caption}
+      </div>
+      {showFrame ? (
+        <>
+          <button
+            type="button"
+            aria-label="Rotate front text"
+            onPointerDown={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              const parent = event.currentTarget.parentElement?.parentElement;
+              if (!parent) return;
+              const rect = parent.getBoundingClientRect();
+              const cx = rect.left + (displayPosition.x / 100) * rect.width;
+              const cy = rect.top + (displayPosition.y / 100) * rect.height;
+              rotateDrag.current = {
+                cx,
+                cy,
+                startAngle: Math.atan2(event.clientY - cy, event.clientX - cx),
+                startRotation: rotation,
+              };
+              event.currentTarget.setPointerCapture(event.pointerId);
+            }}
+            onPointerMove={(event) => {
+              if (!rotateDrag.current) return;
+              event.preventDefault();
+              const drag = rotateDrag.current;
+              const angle = Math.atan2(event.clientY - drag.cy, event.clientX - drag.cx);
+              const delta = ((angle - drag.startAngle) * 180) / Math.PI;
+              onPlacementChange({ rotation: drag.startRotation + delta });
+            }}
+            onPointerUp={(event) => {
+              rotateDrag.current = null;
+              event.currentTarget.releasePointerCapture(event.pointerId);
+            }}
+            onPointerCancel={() => {
+              rotateDrag.current = null;
+            }}
+            style={{
+              position: "absolute",
+              left: "50%",
+              top: -38,
+              transform: `translateX(-50%) rotate(${-rotation}deg)`,
+              width: 28,
+              height: 28,
+              borderRadius: "50%",
+              background: "rgba(255,255,255,0.95)",
+              border: "1.5px solid rgba(192,106,74,0.85)",
+              color: "var(--color-ink)",
+              cursor: "grab",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: "0 3px 10px rgba(0,0,0,0.15)",
+              touchAction: "none",
+            }}
+          >
+            <RotateCw size={14} />
+          </button>
+
+          {(
+            [
+              ["nw", -7, -7, "nwse-resize"],
+              ["n", "50%", -7, "ns-resize"],
+              ["ne", "calc(100% - 7px)", -7, "nesw-resize"],
+              ["e", "calc(100% - 7px)", "50%", "ew-resize"],
+              ["se", "calc(100% - 7px)", "calc(100% - 7px)", "nwse-resize"],
+              ["s", "50%", "calc(100% - 7px)", "ns-resize"],
+              ["sw", -7, "calc(100% - 7px)", "nesw-resize"],
+              ["w", -7, "50%", "ew-resize"],
+            ] as const
+          ).map(([edge, left, top, cursor]) => (
+            <button
+              key={edge}
+              type="button"
+              aria-label={`Resize front text ${edge}`}
+              onPointerDown={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                resizeDrag.current = {
+                  edge,
+                  startX: event.clientX,
+                  startY: event.clientY,
+                  startWpct: boxWidthPct,
+                  startHpct: boxHeightPct,
+                };
+                event.currentTarget.setPointerCapture(event.pointerId);
+              }}
+              onPointerMove={(event) => {
+                if (!resizeDrag.current) return;
+                event.preventDefault();
+                applyResize(event, resizeDrag.current);
+              }}
+              onPointerUp={(event) => {
+                resizeDrag.current = null;
+                event.currentTarget.releasePointerCapture(event.pointerId);
+              }}
+              onPointerCancel={() => {
+                resizeDrag.current = null;
+              }}
+              style={{
+                ...handleStyle,
+                left,
+                top,
+                transform: "translate(-50%, -50%)",
+                cursor,
+              }}
+            />
+          ))}
+        </>
+      ) : null}
     </div>
+  );
+}
+
+// ── Front text panel ──────────────────────────────────────────────────────────
+
+function FrontTextPanel({
+  title,
+  caption,
+  captionSize,
+  captionColor,
+  captionFont,
+  captionColorInputValue,
+  onPatch,
+  onCaptionPlacementChange,
+}: {
+  title: string;
+  caption: string | null;
+  captionSize: number;
+  captionColor: string;
+  captionFont: string;
+  captionColorInputValue: string;
+  onPatch: (partial: Partial<Envelope>) => void;
+  onCaptionPlacementChange: (partial: CaptionPlacementPatch) => void;
+}) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div
+        style={{
+          borderRadius: 14,
+          padding: "12px 14px",
+          background: "rgba(253,250,242,0.78)",
+          border: "1px solid rgba(0,0,0,0.08)",
+          color: "var(--color-muted)",
+          fontSize: 13,
+          lineHeight: 1.55,
+        }}
+      >
+        This controls the words on the front of the envelope. Drag the preview above to place it; drag the
+        edges or corners of the dashed box to resize. Use Decorate for stickers or extra short phrases.
+      </div>
+
+      <Field label="Envelope identity">
+        <div style={{ display: "grid", gap: 10 }}>
+          <label style={{ display: "grid", gap: 5 }}>
+            <span style={fieldHintSx}>Title</span>
+            <input
+              value={title}
+              onChange={(e) => onPatch({ title: e.target.value })}
+              placeholder="Envelope title…"
+              name="envelope-title"
+              autoComplete="off"
+              style={inputSx({ fontFamily: "var(--font-display)", fontSize: 22 })}
+            />
+          </label>
+          <label style={{ display: "grid", gap: 5 }}>
+            <span style={fieldHintSx}>Front message</span>
+            <input
+              value={caption ?? ""}
+              onChange={(e) => onPatch({ caption: e.target.value || null })}
+              placeholder="Open when you're missing me…"
+              name="envelope-caption"
+              autoComplete="off"
+              style={inputSx({ fontFamily: captionFont, fontSize: 18 })}
+            />
+          </label>
+        </div>
+      </Field>
+
+      <Field label="Typography">
+        <div style={{ display: "grid", gap: 10 }}>
+          <select
+            value={captionFont}
+            onChange={(e) => onCaptionPlacementChange({ fontFamily: e.target.value })}
+            aria-label="Front text font"
+            style={{
+              borderRadius: 8,
+              padding: "8px 10px",
+              background: "rgba(255,255,255,0.82)",
+              border: "1px solid var(--color-muted)",
+              color: "var(--color-ink)",
+              fontSize: 12,
+            }}
+          >
+            {EXTRA_TEXT_FONTS.map((font) => (
+              <option key={font.value} value={font.value}>
+                {font.label}
+              </option>
+            ))}
+          </select>
+          <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) auto", gap: 10, alignItems: "end" }}>
+            <RangeControl
+              label="Text"
+              min={2}
+              max={48}
+              value={captionSize}
+              onChange={(size) => onCaptionPlacementChange({ size })}
+            />
+            <button
+              type="button"
+              onClick={() =>
+                onCaptionPlacementChange({
+                  ...DEFAULT_FRONT_TEXT_POSITION,
+                  size: DEFAULT_FRONT_TEXT_SIZE,
+                  width: null,
+                  height: null,
+                  rotation: DEFAULT_FRONT_TEXT_ROTATION,
+                  color: DEFAULT_FRONT_TEXT_COLOR,
+                  fontFamily: DEFAULT_FRONT_TEXT_FONT,
+                })
+              }
+              style={{ ...ghostButtonSx, marginBottom: 2 }}
+            >
+              Reset layout
+            </button>
+          </div>
+        </div>
+      </Field>
+
+      <Field label="Text color">
+        <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+          {CAPTION_COLORS.map((color) => (
+            <button
+              key={color.value}
+              type="button"
+              aria-label={color.label}
+              onClick={() => onCaptionPlacementChange({ color: color.value })}
+              style={{
+                width: 24,
+                height: 24,
+                borderRadius: "50%",
+                background: color.value,
+                border: captionColor === color.value ? "2px solid var(--color-ink)" : "1px solid rgba(0,0,0,0.2)",
+                boxShadow: captionColor === color.value ? "0 0 0 2px rgba(255,255,255,0.8)" : "none",
+                cursor: "pointer",
+              }}
+            />
+          ))}
+          <label style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12, color: "var(--color-muted)" }}>
+            Custom
+            <input
+              type="color"
+              value={captionColorInputValue}
+              onChange={(e) => onCaptionPlacementChange({ color: e.target.value })}
+              aria-label="Custom envelope front text color"
+              style={{
+                width: 30,
+                height: 26,
+                padding: 0,
+                border: "1px solid rgba(0,0,0,0.18)",
+                borderRadius: 7,
+                background: "transparent",
+                cursor: "pointer",
+              }}
+            />
+          </label>
+        </div>
+      </Field>
+    </div>
+  );
+}
+
+function RangeControl({
+  label,
+  min,
+  max,
+  value,
+  onChange,
+}: {
+  label: string;
+  min: number;
+  max: number;
+  value: number;
+  onChange: (value: number) => void;
+}) {
+  return (
+    <label style={{ display: "grid", gap: 4, fontSize: 11, color: "var(--color-muted)" }}>
+      <span style={{ textTransform: "uppercase", letterSpacing: "0.08em" }}>
+        {label} {Math.round(value)}
+      </span>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        value={value}
+        onChange={(event) => onChange(Number(event.target.value))}
+      />
+    </label>
   );
 }
 
@@ -725,8 +1112,8 @@ function DesignPanel({
                   background: p.color ?? `linear-gradient(135deg, ${designSeal}, ${designSeal})`,
                   cursor: "pointer",
                   border: active ? "2px solid var(--color-ink)" : "2px solid rgba(0,0,0,0.08)",
-                  outline: active ? "1.5px solid rgba(255,255,255,0.8)" : "none",
-                  outlineOffset: 1, position: "relative",
+                  boxShadow: active ? "0 0 0 2px rgba(255,255,255,0.8)" : "none",
+                  position: "relative",
                 }}>
                 {p.color === null && (
                   <span style={{
@@ -764,7 +1151,7 @@ function DesignPanel({
                 borderRadius: 12, padding: 6, background: envelopeDesignId === d.id ? "rgba(255,255,255,0.7)" : "transparent",
                 cursor: "pointer",
                 border: `2px solid ${envelopeDesignId === d.id ? "var(--color-ink)" : "transparent"}`,
-                transition: "all 0.15s",
+                transition: "background 0.15s, border-color 0.15s",
               }}>
               {d.imageUrl ? (
                 <PhotoEnvelope design={d} width={118} height={76} state="closed" />
@@ -800,6 +1187,8 @@ function StampsPanel({
   }, [query]);
   const [envelopeText, setEnvelopeText] = useState("");
   const [envelopeTextColor, setEnvelopeTextColor] = useState("#3b2a1e");
+  const [envelopeTextFont, setEnvelopeTextFont] = useState<string>(EXTRA_TEXT_FONTS[0].value);
+  const [envelopeTextSize, setEnvelopeTextSize] = useState(12);
 
   const emojis = results ?? STAMP_EMOJI_LIBRARY.find((c) => c.id === category)?.emojis ?? [];
 
@@ -814,16 +1203,15 @@ function StampsPanel({
         fontFamily: "var(--font-hand)",
       }}>
         <Sparkles size={14} style={{ color: "#c06a4a" }} />
-        Pick a stamp or text, then click the envelope to place. Drag to move, handles to rotate &amp; resize.
+        Add optional decorations to the envelope front. For the main envelope message, use Front Text.
       </div>
 
-      <Field label="Envelope text">
-        <div style={{ display: "grid", gridTemplateColumns: "1fr auto auto", gap: 8, alignItems: "center" }}>
+      <Field label="Extra placed text">
+        <div style={{ display: "grid", gap: 10 }}>
           <input
             value={envelopeText}
             onChange={(e) => setEnvelopeText(e.target.value)}
-            placeholder="To Mom, From me, Open when..."
-            className="font-hand"
+            placeholder="Tiny note, initials, postmark…"
             style={{
               minWidth: 0,
               borderRadius: 8,
@@ -831,34 +1219,75 @@ function StampsPanel({
               background: "rgba(255,255,255,0.82)",
               border: "1px solid var(--color-muted)",
               color: "var(--color-ink)",
-              outline: "none",
-              fontSize: 14,
+              fontFamily: envelopeTextFont,
+              fontSize: 15,
             }}
           />
-          <input
-            type="color"
-            value={envelopeTextColor}
-            onChange={(e) => setEnvelopeTextColor(e.target.value)}
-            aria-label="Envelope text color"
-            style={{ width: 32, height: 32, padding: 0, borderRadius: 8, border: "1px solid var(--color-muted)", background: "transparent" }}
-          />
-          <button
-            type="button"
-            disabled={!envelopeText.trim()}
-            onClick={() => setPending({ kind: "emoji", value: envelopeText.trim(), color: envelopeTextColor })}
-            style={{
-              borderRadius: 999,
-              padding: "8px 13px",
-              fontSize: 12,
-              background: envelopeText.trim() ? "var(--color-ink)" : "rgba(0,0,0,0.18)",
-              color: "var(--color-bg)",
-              border: "none",
-              cursor: envelopeText.trim() ? "pointer" : "default",
-              whiteSpace: "nowrap",
-            }}
-          >
-            Place text
-          </button>
+          <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+            <select
+              value={envelopeTextFont}
+              onChange={(e) => setEnvelopeTextFont(e.target.value)}
+              aria-label="Extra text font"
+              style={{
+                borderRadius: 8,
+                padding: "7px 10px",
+                background: "rgba(255,255,255,0.82)",
+                border: "1px solid var(--color-muted)",
+                color: "var(--color-ink)",
+                fontSize: 12,
+              }}
+            >
+              {EXTRA_TEXT_FONTS.map((font) => (
+                <option key={font.value} value={font.value}>
+                  {font.label}
+                </option>
+              ))}
+            </select>
+            <label style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12, color: "var(--color-muted)" }}>
+              Size
+              <input
+                type="range"
+                min={2}
+                max={22}
+                value={envelopeTextSize}
+                onChange={(e) => setEnvelopeTextSize(Number(e.target.value))}
+                aria-label="Extra text size"
+                style={{ width: 95 }}
+              />
+            </label>
+            <input
+              type="color"
+              value={envelopeTextColor}
+              onChange={(e) => setEnvelopeTextColor(e.target.value)}
+              aria-label="Extra text color"
+              style={{ width: 32, height: 32, padding: 0, borderRadius: 8, border: "1px solid var(--color-muted)", background: "transparent" }}
+            />
+            <button
+              type="button"
+              disabled={!envelopeText.trim()}
+              onClick={() =>
+                setPending({
+                  kind: "text",
+                  value: envelopeText.trim(),
+                  color: envelopeTextColor,
+                  fontFamily: envelopeTextFont,
+                  size: envelopeTextSize,
+                })
+              }
+              style={{
+                borderRadius: 999,
+                padding: "8px 13px",
+                fontSize: 12,
+                background: envelopeText.trim() ? "var(--color-ink)" : "rgba(0,0,0,0.18)",
+                color: "var(--color-bg)",
+                border: "none",
+                cursor: envelopeText.trim() ? "pointer" : "default",
+                whiteSpace: "nowrap",
+              }}
+            >
+              Add Text
+            </button>
+          </div>
         </div>
       </Field>
 
@@ -878,7 +1307,7 @@ function StampsPanel({
                     border: active ? "1.5px solid #c06a4a" : "1px solid rgba(0,0,0,0.08)",
                     cursor: "pointer", padding: 6,
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    transition: "all 0.15s",
+                    transition: "background 0.15s, border-color 0.15s",
                   }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={a.url} alt={a.label} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }} />
@@ -918,7 +1347,7 @@ function StampsPanel({
               borderRadius: 8, padding: "7px 10px 7px 30px", fontSize: 12,
               background: "rgba(255,255,255,0.85)",
               border: "1px solid var(--color-muted)",
-              color: "var(--color-ink)", outline: "none",
+              color: "var(--color-ink)",
             }}
           />
         </div>
@@ -960,7 +1389,7 @@ function StampsPanel({
                     background: active ? "rgba(192,106,74,0.15)" : "transparent",
                     border: active ? "1.5px solid #c06a4a" : "1.5px solid transparent",
                     aspectRatio: "1",
-                    transition: "all 0.1s",
+                    transition: "background 0.1s, border-color 0.1s",
                   }}>
                   {e}
                 </button>
@@ -1002,7 +1431,7 @@ function UnlockPanel({
           style={{
             marginTop: 10, borderRadius: 8, background: "rgba(255,255,255,0.7)",
             padding: "8px 14px", border: "1px solid var(--color-muted)",
-            color: "var(--color-ink)", outline: "none", fontSize: 13,
+            color: "var(--color-ink)", fontSize: 13,
           }}
         />
       )}
@@ -1030,6 +1459,35 @@ function Field({ label, action, children }: { label: string; action?: React.Reac
     </div>
   );
 }
+
+const fieldHintSx: React.CSSProperties = {
+  fontSize: 11,
+  color: "var(--color-muted)",
+  letterSpacing: "0.08em",
+  textTransform: "uppercase",
+};
+
+function inputSx(extra: React.CSSProperties = {}): React.CSSProperties {
+  return {
+    width: "100%",
+    borderRadius: 12,
+    border: "1px solid var(--color-muted)",
+    background: "rgba(255,255,255,0.78)",
+    color: "var(--color-ink)",
+    padding: "10px 12px",
+    ...extra,
+  };
+}
+
+const ghostButtonSx: React.CSSProperties = {
+  borderRadius: 999,
+  border: "1px solid var(--color-muted)",
+  background: "transparent",
+  color: "var(--color-muted)",
+  cursor: "pointer",
+  fontSize: 12,
+  padding: "6px 12px",
+};
 
 function pillSx(active: boolean, extra: React.CSSProperties = {}): React.CSSProperties {
   return {

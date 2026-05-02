@@ -6,8 +6,9 @@ import { designsFor, themeList, type ThemeId } from "@/lib/themes";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { PhotoEnvelope } from "@/components/envelope/PhotoEnvelope";
 import { EnvelopeSVG } from "@/components/envelope/EnvelopeSVG";
+import { EnvelopeStampsOverlay } from "@/components/envelope/EnvelopeStampsOverlay";
 import { upsertEnvelope, deleteEnvelope } from "@/app/actions/bundles";
-import type { EnvelopeStamp } from "@/lib/stamps";
+import { getEnvelopeFrontText, type EnvelopeStamp } from "@/lib/stamps";
 import { EnvelopeWorkspace } from "./EnvelopeWorkspace";
 import { BundleSettings } from "./BundleSettings";
 import type { ItemRow } from "./ItemsEditor";
@@ -133,6 +134,7 @@ export function BundleBuilder({
             const design = designs.find((d) => d.id === env.envelopeDesignId) ?? designs[0];
             const isActive = env.id === activeId;
             const count = itemsByEnvelope[env.id]?.length ?? 0;
+            const frontText = getEnvelopeFrontText(env.title, env.caption);
 
             return (
               <div
@@ -159,15 +161,25 @@ export function BundleBuilder({
                 {/* Envelope thumbnail */}
                 <div style={{ display: "flex", justifyContent: "center", pointerEvents: "none" }}>
                   {design.imageUrl ? (
-                    <PhotoEnvelope
+                    <div style={{ position: "relative" }}>
+                      <PhotoEnvelope
+                        design={design}
+                        width={164}
+                        height={106}
+                        state="closed"
+                        sealColorOverride={env.sealColorOverride}
+                      />
+                      <EnvelopeStampsOverlay stamps={env.stamps} frontText={frontText} width={164} height={106} />
+                    </div>
+                  ) : (
+                    <EnvelopeSVG
                       design={design}
                       width={164}
                       height={106}
-                      state="closed"
+                      stamps={env.stamps}
                       sealColorOverride={env.sealColorOverride}
+                      frontText={frontText}
                     />
-                  ) : (
-                    <EnvelopeSVG design={design} width={164} height={106} stamps={env.stamps} sealColorOverride={env.sealColorOverride} />
                   )}
                 </div>
 

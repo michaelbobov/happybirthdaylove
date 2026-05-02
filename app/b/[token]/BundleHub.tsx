@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { EnvelopeSVG } from "@/components/envelope/EnvelopeSVG";
 import { PhotoEnvelope } from "@/components/envelope/PhotoEnvelope";
 import { EnvelopeStampsOverlay } from "@/components/envelope/EnvelopeStampsOverlay";
+import { getEnvelopeFrontText } from "@/lib/stamps";
 import { getDesign, getTheme, type ThemeId } from "@/lib/themes";
 import type { EnvelopePublic } from "@/lib/types";
 
@@ -201,6 +202,7 @@ function EnvelopeTile({
   const theme = getTheme(themeId);
   const design = getDesign(envelope.envelopeDesignId);
   const locked = useLockedState(envelope);
+  const frontText = getEnvelopeFrontText(envelope.title, envelope.caption);
 
   const isOpened = !!envelope.openedAt;
 
@@ -227,10 +229,19 @@ function EnvelopeTile({
               state="closed"
               sealColorOverride={envelope.sealColorOverride}
             />
-            <EnvelopeStampsOverlay stamps={envelope.stamps} width={280} height={180} />
+            <EnvelopeStampsOverlay stamps={envelope.stamps} frontText={frontText} width={280} height={180} />
           </div>
         ) : (
-          <EnvelopeSVG design={design} width={280} height={180} monogram="" state="closed" sealColorOverride={envelope.sealColorOverride} stamps={envelope.stamps} />
+          <EnvelopeSVG
+            design={design}
+            width={280}
+            height={180}
+            monogram=""
+            state="closed"
+            sealColorOverride={envelope.sealColorOverride}
+            stamps={envelope.stamps}
+            frontText={frontText}
+          />
         )}
       </div>
       <div className="mt-4 font-display text-2xl" style={{ color: "var(--color-ink)" }}>

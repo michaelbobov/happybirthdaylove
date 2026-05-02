@@ -223,15 +223,26 @@ export const PhotoEnvelope = forwardRef<HTMLDivElement, PhotoEnvelopeProps>(func
           transformOrigin: `${hingeXpct}% ${hingeYpct}%`,
           transformStyle: "preserve-3d",
           willChange: "transform",
+          zIndex: 5,
         }}
-      />
+      >
+      </PaperLayer>
 
-      {/* Wax seal at the flap apex, targetable as `.wax-seal`. */}
       <svg
+        className="env-flap-seal"
         viewBox={`0 0 ${width} ${height}`}
         width={width}
         height={height}
-        style={{ position: "absolute", inset: 0, zIndex: 8, pointerEvents: "none", overflow: "visible" }}
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 6,
+          pointerEvents: "none",
+          overflow: "visible",
+          transformOrigin: `${hingeXpct}% ${hingeYpct}%`,
+          transformStyle: "preserve-3d",
+          willChange: "transform",
+        }}
         aria-hidden="true"
       >
         <WaxSeal
@@ -241,6 +252,8 @@ export const PhotoEnvelope = forwardRef<HTMLDivElement, PhotoEnvelopeProps>(func
           color={sealColorOverride ?? design.seal}
           monogram={monogram}
           imageUrl={sealImageUrl}
+          showShadow={false}
+          sealClassName="wax-seal wax-seal-attached"
         />
       </svg>
     </div>

@@ -8,6 +8,7 @@ import { EnvelopeOpener } from "@/components/envelope/EnvelopeOpener";
 import { EnvelopeSpread } from "@/components/envelope/EnvelopeSpread";
 import { ItemViewer } from "@/components/items/ItemViewer";
 import { getDesign, type ThemeId } from "@/lib/themes";
+import { getEnvelopeFrontText } from "@/lib/stamps";
 import type { RevealedItem } from "@/lib/types";
 import type { EnvelopeStamp } from "@/lib/stamps";
 
@@ -37,6 +38,7 @@ export function EnvelopeOpenClient({
 }) {
   const themeId = (envelope.themeOverrideId as ThemeId) ?? (bundleThemeId as ThemeId);
   const design = getDesign(envelope.envelopeDesignId);
+  const frontText = getEnvelopeFrontText(envelope.title, envelope.caption);
 
   const [passphrase, setPassphrase] = useState("");
   const [status, setStatus] = useState<"idle" | "locked" | "need_pass" | "ok" | "viewing" | "spread" | "done" | "err">(
@@ -200,6 +202,7 @@ export function EnvelopeOpenClient({
               design={design}
               sealColorOverride={envelope.sealColorOverride}
               stamps={envelope.stamps}
+              frontText={frontText}
               autoOpen
               onOpened={() => setStatus("viewing")}
             >

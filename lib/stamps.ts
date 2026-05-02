@@ -1,30 +1,46 @@
 /**
  * Stamp library for envelope decoration. Two kinds:
  *   - `emoji`: native emoji glyph, renders via SVG <text>.
- *   - `asset`: bundled PNG from /public/images/stamps/ (plus the one-off
- *     /public/images/stamp1.png), renders via SVG <image>.
+ *   - `asset`: bundled PNGs from /public/images/stamp{1..n}.png, rendered via SVG <image>.
  *
  * Stamps are decorative only — recipients see them on the closed envelope
  * preview. They never appear inside the letter.
  */
 
-export type StampKind = "emoji" | "asset";
+export type StampKind = "emoji" | "asset" | "text";
 
 export type EnvelopeStamp = {
   id: string;
   kind: StampKind;
-  /** Emoji glyph (for kind="emoji") or image URL path (for kind="asset"). */
+  /** Emoji glyph, text content, or image URL path. */
   value: string;
   /** x/y as percentages (0–100) of envelope width/height. Represents center. */
   x: number;
   y: number;
   /** Size as percentage of the shorter envelope dimension. */
   size: number;
+  /** Optional text box width as percentage of envelope width. */
+  width?: number;
+  /** Optional text box height as percentage of envelope height. */
+  height?: number;
   /** Rotation in degrees, unconstrained. */
   rotation: number;
   /** Optional text color for special envelope text placement metadata. */
   color?: string;
+  /** Optional font family for text stamps. */
+  fontFamily?: string;
 };
+
+export const ENVELOPE_FRONT_TEXT_STAMP_ID = "__captionPlacement";
+export const DEFAULT_FRONT_TEXT_POSITION = { x: 50, y: 65 };
+export const DEFAULT_FRONT_TEXT_SIZE = 22;
+export const DEFAULT_FRONT_TEXT_ROTATION = -1.4;
+export const DEFAULT_FRONT_TEXT_COLOR = "rgba(40,24,8,0.62)";
+export const DEFAULT_FRONT_TEXT_FONT = "var(--font-hand)";
+
+export function getEnvelopeFrontText(title: string, caption: string | null | undefined) {
+  return caption?.trim() || title.trim();
+}
 
 export type StampAsset = {
   id: string;
@@ -34,6 +50,10 @@ export type StampAsset = {
 
 export const STAMP_ASSETS: StampAsset[] = [
   { id: "stamp1", url: "/images/stamp1.png", label: "Classic stamp" },
+  { id: "stamp2", url: "/images/stamp2.png", label: "Kiss mark" },
+  { id: "stamp3", url: "/images/stamp3.png", label: "Stamp 3" },
+  { id: "stamp4", url: "/images/stamp4.png", label: "Stamp 4" },
+  { id: "stamp5", url: "/images/stamp5.png", label: "Stamp 5" },
 ];
 
 export type StampCategory = {

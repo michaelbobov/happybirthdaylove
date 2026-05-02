@@ -28,6 +28,8 @@ type Props = {
   sealImageUrl?: string;
   /** Decorative stamps placed on the envelope front. */
   stamps?: EnvelopeStamp[];
+  /** Sender-facing text shown on the closed envelope front. */
+  frontText?: string | null;
   /** Keep the revealed child inside the envelope peek instead of rendering a full overlay. */
   inlineReveal?: boolean;
 };
@@ -52,6 +54,7 @@ export function EnvelopeOpener({
   sealColorOverride,
   sealImageUrl,
   stamps,
+  frontText,
   inlineReveal = false,
 }: Props) {
   const rootRef = useRef<HTMLDivElement | null>(null);
@@ -121,10 +124,8 @@ export function EnvelopeOpener({
       // PhotoEnvelope uses HTML divs with the same class hooks; SVGEnvelope
       // uses <g> groups. GSAP handles both when typed as Element.
       const flap = root.querySelector(".env-flap") as Element | null;
+      const flapSeal = root.querySelector(".env-flap-seal") as Element | null;
       const seal = root.querySelector(".wax-seal") as Element | null;
-      const sealTop = root.querySelector(".wax-seal-top") as Element | null;
-      const sealBottom = root.querySelector(".wax-seal-bottom") as Element | null;
-      const sealShadow = root.querySelector(".wax-seal-shadow") as Element | null;
       const peek = root.querySelector(".env-peek") as Element | null;
 
       const tl = gsap.timeline({
@@ -135,27 +136,12 @@ export function EnvelopeOpener({
         },
       });
 
-      // 1. Wax seal tears: the upper wax lifts with the flap, while a lower
-      //    remnant stays stuck to the envelope body.
-      if (sealTop && sealBottom) {
-        tl.to(seal, { scale: 1.03, duration: 0.12, transformOrigin: "center" }, 0);
-        if (sealShadow) {
-          tl.to(sealShadow, { opacity: 0.2, duration: 0.38, ease: "power2.out" }, 0.18);
-        }
-        tl.to(sealTop, {
-          y: -height * 0.16,
-          rotationX: -120,
-          rotation: 0,
-          opacity: 0,
-          duration: D * 0.58,
-          transformOrigin: "center bottom",
-          transformPerspective: 800,
-          ease: "power3.inOut",
-        }, 0.24);
-        gsap.set(sealBottom, { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1 });
-      } else if (seal) {
+      if (seal && !flapSeal) {
         tl.to(seal, { scale: 1.08, duration: 0.18, transformOrigin: "center" }, 0)
           .to(seal, { scale: 0, rotation: 22, opacity: 0, duration: 0.25, ease: "power2.in" }, 0.18);
+      }
+      if (flapSeal) {
+        tl.set(flapSeal, { zIndex: 4 }, 0.18);
       }
 
       // 2. Flap lifts (rotate around top edge) — rotationX for 3D feel.
@@ -163,9 +149,10 @@ export function EnvelopeOpener({
       // top edge; photo: at the envelope bounds' top-middle, which may be
       // inset from the PNG edge if the asset has padding). Letting CSS own
       // the origin keeps GSAP agnostic to the renderer.
-      if (flap) {
+      const flapTargets = [flap, flapSeal].filter(Boolean) as Element[];
+      if (flapTargets.length > 0) {
         tl.to(
-          flap,
+          flapTargets,
           {
             rotationX: -175,
             duration: D * 0.55,
@@ -251,7 +238,9 @@ export function EnvelopeOpener({
               >
                 {inlineReveal ? children : null}
               </PhotoEnvelope>
-              {stage === "closed" && <EnvelopeStampsOverlay stamps={stamps} width={width} height={height} />}
+              {stage === "closed" && (
+                <EnvelopeStampsOverlay stamps={stamps} frontText={frontText} width={width} height={height} />
+              )}
               </div>
             ) : (
               <EnvelopeSVG
@@ -264,6 +253,7 @@ export function EnvelopeOpener({
                 sealColorOverride={sealColorOverride}
                 sealImageUrl={sealImageUrl}
                 stamps={stamps}
+                frontText={frontText}
               >
                 {inlineReveal ? children : null}
               </EnvelopeSVG>
