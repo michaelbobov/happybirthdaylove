@@ -1,13 +1,16 @@
 /**
- * Stamp library for envelope decoration. Two kinds:
+ * Stamp library for envelope decoration. Kinds:
  *   - `emoji`: native emoji glyph, renders via SVG <text>.
- *   - `asset`: bundled PNGs from /public/images/stamp{1..n}.png, rendered via SVG <image>.
+ *   - `asset`: bundled PNGs from /public/images/stamp{1..n}.png.
+ *   - `text`: free-form positioned text on the envelope front.
+ *   - `postmark`: round dashed-ring postmark (outer arc text + inner center
+ *     text), the same look used on the landing-page collage.
  *
  * Stamps are decorative only — recipients see them on the closed envelope
  * preview. They never appear inside the letter.
  */
 
-export type StampKind = "emoji" | "asset" | "text";
+export type StampKind = "emoji" | "asset" | "text" | "postmark";
 
 export type EnvelopeStamp = {
   id: string;
@@ -29,7 +32,28 @@ export type EnvelopeStamp = {
   color?: string;
   /** Optional font family for text stamps. */
   fontFamily?: string;
+  /** For `postmark` kind: curved text along the upper arc. `value` is the inner center text. */
+  outerText?: string;
 };
+
+/**
+ * Curated postmark presets — each is one click to add. Users can also build
+ * custom postmarks from the composer.
+ */
+export type PostmarkPreset = {
+  id: string;
+  outerText: string;
+  innerText: string;
+};
+
+export const POSTMARK_PRESETS: PostmarkPreset[] = [
+  { id: "kept-safe",     outerText: "ENVELOPED · KEPT SAFE",   innerText: String(new Date().getFullYear()) },
+  { id: "with-love",     outerText: "SEALED WITH LOVE",        innerText: "♡" },
+  { id: "first-class",   outerText: "FIRST CLASS · POSTAGE",   innerText: "MAIL" },
+  { id: "for-you",       outerText: "JUST FOR YOU",            innerText: "★" },
+  { id: "handmade",      outerText: "HANDMADE · WITH CARE",    innerText: "♡" },
+  { id: "open-when",     outerText: "OPEN WHEN READY",         innerText: "✿" },
+];
 
 export const ENVELOPE_FRONT_TEXT_STAMP_ID = "__captionPlacement";
 export const DEFAULT_FRONT_TEXT_POSITION = { x: 50, y: 65 };

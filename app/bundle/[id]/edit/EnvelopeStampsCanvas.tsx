@@ -10,6 +10,7 @@ import {
 import { RotateCw, Trash2, Maximize2 } from "lucide-react";
 import type { EnvelopeStamp } from "@/lib/stamps";
 import { measureEnvelopeTextBoxPct } from "@/lib/envelope-text-layout";
+import { PostmarkSvg } from "@/components/envelope/Postmark";
 
 /**
  * Interactive overlay for placing, moving, rotating, scaling, and deleting
@@ -24,13 +25,15 @@ import { measureEnvelopeTextBoxPct } from "@/lib/envelope-text-layout";
  */
 
 export type PendingStamp = {
-  kind: "emoji" | "asset" | "text";
+  kind: "emoji" | "asset" | "text" | "postmark";
   value: string;
   color?: string;
   fontFamily?: string;
   size?: number;
   width?: number;
   height?: number;
+  /** Postmark only: curved upper-arc text (value holds the inner center text). */
+  outerText?: string;
 };
 
 type Props = {
@@ -42,6 +45,9 @@ type Props = {
   height: number;
   /** Rendered envelope preview (EnvelopeSVG or PhotoEnvelope). */
   children: React.ReactNode;
+  /** Called when the user clicks the canvas background (not on a stamp).
+      Lets the parent deselect peer overlays like the front-text caption. */
+  onBackgroundClick?: () => void;
 };
 
 type DragState =
@@ -90,6 +96,7 @@ export function EnvelopeStampsCanvas({
   width,
   height,
   children,
+  onBackgroundClick,
 }: Props) {
   const uid = useId();
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -117,6 +124,7 @@ export function EnvelopeStampsCanvas({
     if (e.target !== canvasRef.current) return;
     if (!pending) {
       setSelectedId(null);
+      onBackgroundClick?.();
       return;
     }
     const rect = canvasRef.current.getBoundingClientRect();
@@ -129,12 +137,21 @@ export function EnvelopeStampsCanvas({
       value: pending.value,
       x,
       y,
-      size: pending.size ?? (pending.kind === "asset" ? 22 : pending.kind === "text" ? TEXT_DEFAULT_SIZE : 14),
+      size:
+        pending.size ??
+        (pending.kind === "asset"
+          ? 22
+          : pending.kind === "text"
+          ? TEXT_DEFAULT_SIZE
+          : pending.kind === "postmark"
+          ? 24
+          : 14),
       width: pending.kind === "text" ? pending.width : undefined,
       height: pending.kind === "text" ? pending.height : undefined,
-      rotation: 0,
+      rotation: pending.kind === "postmark" ? -8 : 0,
       color: pending.color,
       fontFamily: pending.fontFamily,
+      outerText: pending.kind === "postmark" ? pending.outerText : undefined,
     };
     onChange([...stamps, next]);
     setSelectedId(id);
@@ -145,6 +162,8 @@ export function EnvelopeStampsCanvas({
   const onStampPointerDown = (e: React.PointerEvent, id: string) => {
     e.stopPropagation();
     setSelectedId(id);
+    // Selecting a stamp deselects any peer overlay (front text caption).
+    onBackgroundClick?.();
     const rect = canvasRef.current!.getBoundingClientRect();
     const stamp = stamps.find((s) => s.id === id)!;
     const pxX = (stamp.x / 100) * rect.width;
@@ -342,6 +361,16 @@ export function EnvelopeStampsCanvas({
                     pointerEvents: "none",
                   }}
                 />
+              ) : s.kind === "postmark" ? (
+                <div style={{ width: "100%", height: "100%", pointerEvents: "none" }}>
+                  <PostmarkSvg
+                    sizePx={sizePx}
+                    outerText={s.outerText}
+                    innerText={s.value}
+                    color={s.color}
+                    uid={s.id}
+                  />
+                </div>
               ) : s.kind === "text" ? (
                 <span
                   style={{
@@ -382,7 +411,7 @@ export function EnvelopeStampsCanvas({
                   style={{
                     position: "absolute",
                     inset: -6,
-                    border: "1.5px dashed rgba(192,106,74,0.85)",
+                    border: "1px dashed rgba(40,24,8,0.55)",
                     borderRadius: 4,
                     pointerEvents: "none",
                   }}
@@ -405,6 +434,7 @@ export function EnvelopeStampsCanvas({
               <button
                 type="button"
                 aria-label="Rotate stamp"
+                className="env-handle"
                 // eslint-disable-next-line react-hooks/refs
                 onPointerDown={(e) => onHandlePointerDown(e, selected.id, "rotate")}
                 style={{
@@ -412,21 +442,17 @@ export function EnvelopeStampsCanvas({
                   left: `${selected.x}%`,
                   top: `${selected.y}%`,
                   transform: `translate(-50%, ${-halfDiag}px)`,
-                  width: 28,
-                  height: 28,
+                  width: 24,
+                  height: 24,
                   borderRadius: "50%",
-                  background: "rgba(255,255,255,0.95)",
-                  border: "1.5px solid rgba(192,106,74,0.85)",
-                  color: "var(--color-ink)",
                   cursor: "grab",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  boxShadow: "0 3px 10px rgba(0,0,0,0.15)",
                   touchAction: "none",
                 }}
               >
-                <RotateCw size={14} />
+                <RotateCw size={12} strokeWidth={2.2} />
               </button>
 
               {selected.kind === "text"
@@ -455,19 +481,16 @@ export function EnvelopeStampsCanvas({
                         key={edge}
                         type="button"
                         aria-label={`Resize text ${edge}`}
+                        className="env-handle"
                         onPointerDown={(e) => onResizeTextPointerDown(e, selected.id, edge)}
                         style={{
                           position: "absolute",
                           left: `${left}%`,
                           top: `${top}%`,
                           transform: "translate(-50%, -50%)",
-                          width: 14,
-                          height: 14,
-                          borderRadius: 4,
-                          background: "rgba(255,255,255,0.95)",
-                          border: "1.5px solid rgba(192,106,74,0.85)",
-                          boxShadow: "0 2px 8px rgba(0,0,0,0.12)",
-                          padding: 0,
+                          width: 11,
+                          height: 11,
+                          borderRadius: 3,
                           cursor,
                           touchAction: "none",
                         }}
@@ -480,53 +503,47 @@ export function EnvelopeStampsCanvas({
               <button
                 type="button"
                 aria-label="Resize stamp"
+                className="env-handle"
                 onPointerDown={(e) => onHandlePointerDown(e, selected.id, "scale")}
                 style={{
                   position: "absolute",
                   left: `${selected.x}%`,
                   top: `${selected.y}%`,
-                  transform: `translate(${halfDiag - 14}px, ${halfDiag - 14}px)`,
-                  width: 24,
-                  height: 24,
-                  borderRadius: 6,
-                  background: "rgba(255,255,255,0.95)",
-                  border: "1.5px solid rgba(192,106,74,0.85)",
-                  color: "var(--color-ink)",
+                  transform: `translate(${halfDiag - 11}px, ${halfDiag - 11}px)`,
+                  width: 20,
+                  height: 20,
+                  borderRadius: 5,
                   cursor: "nwse-resize",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  boxShadow: "0 3px 10px rgba(0,0,0,0.15)",
                   touchAction: "none",
                 }}
               >
-                <Maximize2 size={12} />
+                <Maximize2 size={10} strokeWidth={2.4} />
               </button>
 
               {/* Delete button — top-right of envelope, absolute, not on stamp */}
               <button
                 type="button"
                 aria-label="Remove stamp"
+                className="env-handle env-handle--danger"
                 onClick={(e) => { e.stopPropagation(); remove(selected.id); }}
                 style={{
                   position: "absolute",
                   left: `${selected.x}%`,
                   top: `${selected.y}%`,
-                  transform: `translate(${halfDiag - 14}px, ${-halfDiag}px)`,
-                  width: 24,
-                  height: 24,
+                  transform: `translate(${halfDiag - 11}px, ${-halfDiag}px)`,
+                  width: 22,
+                  height: 22,
                   borderRadius: "50%",
-                  background: "rgba(255,255,255,0.95)",
-                  border: "1.5px solid #d94f3a",
-                  color: "#d94f3a",
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  boxShadow: "0 3px 10px rgba(0,0,0,0.15)",
                 }}
               >
-                <Trash2 size={12} />
+                <Trash2 size={11} strokeWidth={2.2} />
               </button>
             </>
           );
@@ -565,6 +582,10 @@ export function EnvelopeStampsCanvas({
           {pending.kind === "asset" ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={pending.value} alt="" style={{ width: 20, height: 20, objectFit: "contain" }} />
+          ) : pending.kind === "postmark" ? (
+            <span style={{ display: "inline-flex", alignItems: "center" }}>
+              <PostmarkSvg sizePx={22} outerText={pending.outerText} innerText={pending.value} color={pending.color} />
+            </span>
           ) : pending.kind === "text" ? (
             <span
               style={{

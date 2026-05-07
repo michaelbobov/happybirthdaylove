@@ -44,11 +44,14 @@ export async function POST(
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
+  // Once an envelope has been opened, the date/manual gate no longer applies —
+  // the recipient already proved access on the first reveal. We still verify
+  // the bundle access token (and passphrase, if any) every time.
   const result = await canUnlock(
     { accessToken: bundle.access_token, passphraseHash: bundle.passphrase_hash },
     {
-      unlockType: envelope.unlock_type,
-      unlockAt: envelope.unlock_at ? new Date(envelope.unlock_at) : null,
+      unlockType: envelope.opened_at ? "immediate" : envelope.unlock_type,
+      unlockAt: envelope.opened_at ? null : (envelope.unlock_at ? new Date(envelope.unlock_at) : null),
     },
     { token: parsed.data.token, passphrase: parsed.data.passphrase },
   );

@@ -25,13 +25,19 @@ function getKey(): Buffer {
   return key;
 }
 
-export function encrypt(plaintext: string | Buffer): Buffer {
+/**
+ * Returns the ciphertext as a Postgres bytea literal (`\x<hex>`).
+ * Passing a Node Buffer directly to supabase-js for a bytea column round-trips
+ * through `Buffer.toJSON()` and lands as the literal text `{"type":"Buffer","data":[…]}`,
+ * which corrupts the column. Always insert via this string form.
+ */
+export function encrypt(plaintext: string | Buffer): string {
   const iv = randomBytes(IV_LEN);
   const cipher = createCipheriv(ALG, getKey(), iv);
   const buf = Buffer.isBuffer(plaintext) ? plaintext : Buffer.from(plaintext, "utf8");
   const ct = Buffer.concat([cipher.update(buf), cipher.final()]);
   const tag = cipher.getAuthTag();
-  return Buffer.concat([iv, tag, ct]);
+  return "\\x" + Buffer.concat([iv, tag, ct]).toString("hex");
 }
 
 export function decrypt(blob: Buffer): Buffer {
@@ -56,14 +62,35 @@ export function decryptToString(blob: Buffer): string {
 
 /** Convert a Postgres bytea response (`\x...` hex or base64 string or Buffer) into a Buffer. */
 export function coerceBytea(v: unknown): Buffer {
-  if (Buffer.isBuffer(v)) return v;
-  if (v instanceof Uint8Array) return Buffer.from(v);
-  if (typeof v === "string") {
-    if (v.startsWith("\\x")) return Buffer.from(v.slice(2), "hex");
-    // supabase returns base64 for bytea over PostgREST
-    return Buffer.from(v, "base64");
+  let buf: Buffer;
+  if (Buffer.isBuffer(v)) buf = v;
+  else if (v instanceof Uint8Array) buf = Buffer.from(v);
+  else if (typeof v === "string") {
+    buf = v.startsWith("\\x")
+      ? Buffer.from(v.slice(2), "hex")
+      : Buffer.from(v, "base64"); // supabase returns base64 for bytea over PostgREST
+  } else {
+    throw new Error("Unrecognized bytea value");
   }
-  throw new Error("Unrecognized bytea value");
+
+  // Legacy rows: an earlier version of `encrypt()` returned a Node Buffer, and
+  // supabase-js stringified it via Buffer.toJSON() before inserting, so the
+  // bytea column literally contains `{"type":"Buffer","data":[…]}`. Recover the
+  // original ciphertext bytes from that wrapper so old items still decrypt.
+  if (buf.length > 20 && buf[0] === 0x7b /* '{' */) {
+    const head = buf.subarray(0, 32).toString("utf8");
+    if (head.startsWith('{"type":"Buffer"')) {
+      try {
+        const parsed = JSON.parse(buf.toString("utf8")) as { type?: string; data?: number[] };
+        if (parsed?.type === "Buffer" && Array.isArray(parsed.data)) {
+          return Buffer.from(parsed.data);
+        }
+      } catch {
+        // fall through and return the raw buffer
+      }
+    }
+  }
+  return buf;
 }
 
 /** 32-byte URL-safe token for bundle share links. */

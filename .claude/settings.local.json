@@ -14,7 +14,11 @@
       "Bash(npm run *)",
       "Bash(curl -s -o /tmp/edit.html -w \"%{http_code}\\\\n\" -L \"http://localhost:3000/bundle/00000000-0000-0000-0000-000000000000/edit\")",
       "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://localhost:3000/sign-in)",
-      "PowerShell(Get-NetTCPConnection -LocalPort 3000,3001 -State Listen -ErrorAction SilentlyContinue)"
+      "PowerShell(Get-NetTCPConnection -LocalPort 3000,3001 -State Listen -ErrorAction SilentlyContinue)",
+      "Bash(dir /B)",
+      "Bash(awk 'NR<1713 || NR>2028' app/bundle/\\\\[id\\\\]/edit/EnvelopeWorkspace.tsx)",
+      "Bash(mv /tmp/ew.tsx app/bundle/\\\\[id\\\\]/edit/EnvelopeWorkspace.tsx)",
+      "Bash(grep -n \"Test timeout\\\\|Error: page\\\\\\\\.\\\\|expect.*Locator\\\\|expect.*Page\\\\|Error:.*Error\\\\|TimeoutError\\\\|getByRole\\\\|toBeVisible\\\\|toHaveURL\" \"C:\\\\Users\\\\mbobo\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\c--Projects-happybirthdaylove\\\\ddef90b8-3c1b-4421-bb7e-846fe3884497\\\\tasks\\\\bh348kx6n.output\")"
     ]
   }
 }

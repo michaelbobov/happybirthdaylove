@@ -106,7 +106,7 @@ export const createBundleSchema = z.object({
 
 export const envelopeStampSchema = z.object({
   id: z.string().min(1).max(40),
-  kind: z.enum(["emoji", "asset", "text"]),
+  kind: z.enum(["emoji", "asset", "text", "postmark"]),
   value: z.string().min(1).max(400),
   x: z.number().min(-10).max(110),
   y: z.number().min(-10).max(110),
@@ -116,6 +116,7 @@ export const envelopeStampSchema = z.object({
   rotation: z.number().min(-720).max(720),
   color: z.string().max(80).optional(),
   fontFamily: z.string().max(200).optional(),
+  outerText: z.string().max(80).optional(),
 });
 
 export const upsertEnvelopeSchema = z.object({

@@ -8,6 +8,7 @@ import {
   type EnvelopeStamp,
 } from "@/lib/stamps";
 import { captionHorizontalRangePct, measureEnvelopeTextBoxPct } from "@/lib/envelope-text-layout";
+import { PostmarkGroup } from "./Postmark";
 
 /**
  * Non-interactive SVG overlay that renders envelope stamps at the same
@@ -114,6 +115,21 @@ export function EnvelopeStampsOverlay({
             transform={t}
             preserveAspectRatio="xMidYMid meet"
           />
+          );
+        }
+        if (s.kind === "postmark") {
+          return (
+            <PostmarkGroup
+              key={s.id}
+              cx={cx}
+              cy={cy}
+              sizePx={sizePx}
+              outerText={s.outerText}
+              innerText={s.value}
+              color={s.color}
+              rotation={s.rotation}
+              uid={s.id}
+            />
           );
         }
         if (s.kind === "text") {

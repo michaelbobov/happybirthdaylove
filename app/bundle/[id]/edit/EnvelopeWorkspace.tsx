@@ -21,11 +21,13 @@ import {
   DEFAULT_FRONT_TEXT_ROTATION,
   DEFAULT_FRONT_TEXT_SIZE,
   ENVELOPE_FRONT_TEXT_STAMP_ID,
+  POSTMARK_PRESETS,
   STAMP_ASSETS,
   STAMP_EMOJI_LIBRARY,
   getEnvelopeFrontText,
   type EnvelopeStamp,
 } from "@/lib/stamps";
+import { PostmarkSvg } from "@/components/envelope/Postmark";
 import { captionHorizontalRangePct, measureEnvelopeTextBoxPct } from "@/lib/envelope-text-layout";
 import { PhotoEnvelope } from "@/components/envelope/PhotoEnvelope";
 import { EnvelopeSVG } from "@/components/envelope/EnvelopeSVG";
@@ -116,8 +118,14 @@ export function EnvelopeWorkspace({
   bundleId, bundleThemeId, envelope, items, onUpdated, onItemsChange,
 }: Props) {
   const [env, setEnv] = useState<Envelope>(envelope);
-  const [tab, setTab] = useState<Tab>("front");
+  const [tab, setTabRaw] = useState<Tab>("front");
   const [pending, setPending] = useState<PendingStamp | null>(null);
+  const [frontTextSelected, setFrontTextSelected] = useState(false);
+  // Wrap setTab so leaving Decorate clears the front-text selection chrome.
+  const setTab = (next: Tab) => {
+    setTabRaw(next);
+    if (next !== "stamps" && next !== "front") setFrontTextSelected(false);
+  };
   const [stampQuery, setStampQuery] = useState("");
   const [stampCat, setStampCat] = useState(STAMP_EMOJI_LIBRARY[0].id);
   const [saveState, setSaveState] = useState<"idle" | "saving" | "saved">("idle");
@@ -312,6 +320,7 @@ export function EnvelopeWorkspace({
             onChange={setStamps}
             pending={pending}
             onPendingConsumed={() => setPending(null)}
+            onBackgroundClick={() => setFrontTextSelected(false)}
             width={ENVELOPE_W}
             height={ENVELOPE_H}
           >
@@ -326,11 +335,12 @@ export function EnvelopeWorkspace({
                   boxWidthPct={captionWidthPct}
                   boxHeightPct={captionHeightPct}
                   rotation={captionRotation}
-                  showFrame
+                  showFrame={frontTextSelected}
                   bounds={captionBounds}
                   envelopeWidthPx={ENVELOPE_W}
                   envelopeHeightPx={ENVELOPE_H}
                   onPlacementChange={setCaptionPlacement}
+                  onSelect={() => setFrontTextSelected(true)}
                 />
             </>
           </EnvelopeStampsCanvas>
@@ -588,6 +598,7 @@ function EnvelopeCaptionOverlay({
   envelopeWidthPx,
   envelopeHeightPx,
   onPlacementChange,
+  onSelect,
 }: {
   caption: string;
   position: { x: number; y: number };
@@ -602,6 +613,8 @@ function EnvelopeCaptionOverlay({
   envelopeWidthPx: number;
   envelopeHeightPx: number;
   onPlacementChange: (placement: CaptionPlacementPatch) => void;
+  /** Called when the caption is clicked. Used by Decorate to mark it selected. */
+  onSelect?: () => void;
 }) {
   const dragOffset = useRef<{ x: number; y: number } | null>(null);
   const rotateDrag = useRef<{ cx: number; cy: number; startAngle: number; startRotation: number } | null>(null);
@@ -657,13 +670,20 @@ function EnvelopeCaptionOverlay({
 
   const handleStyle: CSSProperties = {
     position: "absolute",
-    width: 14,
-    height: 14,
-    borderRadius: 4,
-    background: "rgba(255,255,255,0.95)",
-    border: "1.5px solid rgba(192,106,74,0.85)",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.12)",
-    padding: 0,
+    width: 11,
+    height: 11,
+    borderRadius: 3,
+    touchAction: "none",
+  };
+  const handleClassName = "env-handle";
+  const roundHandleStyle: CSSProperties = {
+    position: "absolute",
+    width: 24,
+    height: 24,
+    borderRadius: "50%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     touchAction: "none",
   };
 
@@ -672,6 +692,7 @@ function EnvelopeCaptionOverlay({
       onPointerDown={(event) => {
         event.preventDefault();
         event.stopPropagation();
+        onSelect?.();
         const parent = event.currentTarget.parentElement;
         if (!parent) return;
         const rect = parent.getBoundingClientRect();
@@ -713,7 +734,10 @@ function EnvelopeCaptionOverlay({
         textShadow: "0 1px 0 rgba(255,255,255,0.45)",
         touchAction: "none",
         userSelect: "none",
-        border: showFrame ? "1.5px dashed rgba(192,106,74,0.85)" : "1.5px solid transparent",
+        // Caption may be rendered inside a pointer-events:none wrapper on the
+        // Decorate tab; force auto so click-to-select still works there.
+        pointerEvents: "auto",
+        border: showFrame ? "1px dashed rgba(40,24,8,0.55)" : "1px solid transparent",
         borderRadius: 8,
         boxShadow: showFrame ? "0 0 0 3px rgba(255,255,255,0.32)" : "none",
       }}
@@ -736,6 +760,7 @@ function EnvelopeCaptionOverlay({
           <button
             type="button"
             aria-label="Rotate front text"
+            className="env-handle"
             onPointerDown={(event) => {
               event.preventDefault();
               event.stopPropagation();
@@ -768,25 +793,14 @@ function EnvelopeCaptionOverlay({
               rotateDrag.current = null;
             }}
             style={{
-              position: "absolute",
+              ...roundHandleStyle,
               left: "50%",
-              top: -38,
+              top: -34,
               transform: `translateX(-50%) rotate(${-rotation}deg)`,
-              width: 28,
-              height: 28,
-              borderRadius: "50%",
-              background: "rgba(255,255,255,0.95)",
-              border: "1.5px solid rgba(192,106,74,0.85)",
-              color: "var(--color-ink)",
               cursor: "grab",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: "0 3px 10px rgba(0,0,0,0.15)",
-              touchAction: "none",
             }}
           >
-            <RotateCw size={14} />
+            <RotateCw size={12} strokeWidth={2.2} />
           </button>
 
           {(
@@ -805,6 +819,7 @@ function EnvelopeCaptionOverlay({
               key={edge}
               type="button"
               aria-label={`Resize front text ${edge}`}
+              className={handleClassName}
               onPointerDown={(event) => {
                 event.preventDefault();
                 event.stopPropagation();
@@ -1169,6 +1184,15 @@ function DesignPanel({
 
 // ── Stamps panel ──────────────────────────────────────────────────────────────
 
+type StampSubTab = "stickers" | "postmarks" | "text" | "custom";
+
+const STAMP_SUB_TABS: Array<{ id: StampSubTab; label: string; placeholder: string }> = [
+  { id: "stickers",  label: "Stickers",  placeholder: "Search — heart, cake, rocket…" },
+  { id: "postmarks", label: "Postmarks", placeholder: "Search postmarks — love, post, mail…" },
+  { id: "text",      label: "Text",      placeholder: "Type a tiny note, initials…" },
+  { id: "custom",    label: "Custom",    placeholder: "Search your stamps…" },
+];
+
 function StampsPanel({
   pending, setPending, query, setQuery, category, setCategory, stamps, onClearAll,
 }: {
@@ -1181,6 +1205,7 @@ function StampsPanel({
   stamps: EnvelopeStamp[];
   onClearAll: () => void;
 }) {
+  const [subTab, setSubTab] = useState<StampSubTab>("stickers");
   const results = useMemo(() => {
     if (!query.trim()) return null;
     return searchStickers(query);
@@ -1189,8 +1214,27 @@ function StampsPanel({
   const [envelopeTextColor, setEnvelopeTextColor] = useState("#3b2a1e");
   const [envelopeTextFont, setEnvelopeTextFont] = useState<string>(EXTRA_TEXT_FONTS[0].value);
   const [envelopeTextSize, setEnvelopeTextSize] = useState(12);
+  const [postmarkOuter, setPostmarkOuter] = useState("");
+  const [postmarkInner, setPostmarkInner] = useState("");
+  const [postmarkColor, setPostmarkColor] = useState("#a02822");
 
   const emojis = results ?? STAMP_EMOJI_LIBRARY.find((c) => c.id === category)?.emojis ?? [];
+
+  const setPendingPostmark = (outer: string, inner: string, color = postmarkColor) => {
+    setPending({ kind: "postmark", value: inner, outerText: outer, color });
+  };
+
+  const q = query.trim().toLowerCase();
+  const filteredPostmarks = q
+    ? POSTMARK_PRESETS.filter(
+        (p) => p.outerText.toLowerCase().includes(q) || p.innerText.toLowerCase().includes(q),
+      )
+    : POSTMARK_PRESETS;
+  const filteredAssets = q
+    ? STAMP_ASSETS.filter((a) => a.label.toLowerCase().includes(q))
+    : STAMP_ASSETS;
+
+  const activeSubTab = STAMP_SUB_TABS.find((t) => t.id === subTab)!;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
@@ -1203,204 +1247,482 @@ function StampsPanel({
         fontFamily: "var(--font-hand)",
       }}>
         <Sparkles size={14} style={{ color: "#c06a4a" }} />
-        Add optional decorations to the envelope front. For the main envelope message, use Front Text.
+        Click an item, then click the envelope to place. Drag to move; click out to deselect.
       </div>
 
-      <Field label="Extra placed text">
-        <div style={{ display: "grid", gap: 10 }}>
-          <input
-            value={envelopeText}
-            onChange={(e) => setEnvelopeText(e.target.value)}
-            placeholder="Tiny note, initials, postmark…"
-            style={{
-              minWidth: 0,
-              borderRadius: 8,
-              padding: "8px 12px",
-              background: "rgba(255,255,255,0.82)",
-              border: "1px solid var(--color-muted)",
-              color: "var(--color-ink)",
-              fontFamily: envelopeTextFont,
-              fontSize: 15,
-            }}
-          />
-          <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-            <select
-              value={envelopeTextFont}
-              onChange={(e) => setEnvelopeTextFont(e.target.value)}
-              aria-label="Extra text font"
-              style={{
-                borderRadius: 8,
-                padding: "7px 10px",
-                background: "rgba(255,255,255,0.82)",
-                border: "1px solid var(--color-muted)",
-                color: "var(--color-ink)",
-                fontSize: 12,
-              }}
-            >
-              {EXTRA_TEXT_FONTS.map((font) => (
-                <option key={font.value} value={font.value}>
-                  {font.label}
-                </option>
-              ))}
-            </select>
-            <label style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12, color: "var(--color-muted)" }}>
-              Size
-              <input
-                type="range"
-                min={2}
-                max={22}
-                value={envelopeTextSize}
-                onChange={(e) => setEnvelopeTextSize(Number(e.target.value))}
-                aria-label="Extra text size"
-                style={{ width: 95 }}
-              />
-            </label>
-            <input
-              type="color"
-              value={envelopeTextColor}
-              onChange={(e) => setEnvelopeTextColor(e.target.value)}
-              aria-label="Extra text color"
-              style={{ width: 32, height: 32, padding: 0, borderRadius: 8, border: "1px solid var(--color-muted)", background: "transparent" }}
-            />
+      {/* Sub-tab pill row */}
+      <div style={{
+        display: "flex", flexWrap: "wrap", gap: 4,
+        padding: 4, borderRadius: 999,
+        background: "rgba(255,255,255,0.55)",
+        border: "1px solid rgba(0,0,0,0.06)",
+        alignSelf: "flex-start",
+      }}>
+        {STAMP_SUB_TABS.map((t) => {
+          const isActive = subTab === t.id;
+          const count =
+            t.id === "stickers" ? stamps.filter((s) => s.kind === "emoji").length
+            : t.id === "postmarks" ? stamps.filter((s) => s.kind === "postmark").length
+            : t.id === "text" ? stamps.filter((s) => s.kind === "text").length
+            : stamps.filter((s) => s.kind === "asset").length;
+          return (
             <button
+              key={t.id}
               type="button"
-              disabled={!envelopeText.trim()}
-              onClick={() =>
-                setPending({
-                  kind: "text",
-                  value: envelopeText.trim(),
-                  color: envelopeTextColor,
-                  fontFamily: envelopeTextFont,
-                  size: envelopeTextSize,
-                })
-              }
+              onClick={() => { setSubTab(t.id); setQuery(""); }}
               style={{
-                borderRadius: 999,
-                padding: "8px 13px",
-                fontSize: 12,
-                background: envelopeText.trim() ? "var(--color-ink)" : "rgba(0,0,0,0.18)",
-                color: "var(--color-bg)",
-                border: "none",
-                cursor: envelopeText.trim() ? "pointer" : "default",
-                whiteSpace: "nowrap",
+                display: "inline-flex", alignItems: "center", gap: 5,
+                borderRadius: 999, padding: "6px 13px", fontSize: 12,
+                fontWeight: isActive ? 600 : 500,
+                background: isActive ? "var(--color-ink)" : "transparent",
+                color: isActive ? "var(--color-bg)" : "var(--color-ink)",
+                border: "none", cursor: "pointer",
+                transition: "background 0.15s, color 0.15s",
               }}
             >
-              Add Text
+              {t.label}
+              {count > 0 && (
+                <span style={{
+                  fontSize: 10, opacity: 0.7,
+                  padding: "0 5px", borderRadius: 999,
+                  background: isActive ? "rgba(255,255,255,0.18)" : "rgba(0,0,0,0.06)",
+                }}>{count}</span>
+              )}
             </button>
-          </div>
-        </div>
-      </Field>
+          );
+        })}
+      </div>
 
-      {/* Custom assets row */}
-      {STAMP_ASSETS.length > 0 && (
-        <Field label="Your stamps">
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-            {STAMP_ASSETS.map((a) => {
-              const active = pending?.kind === "asset" && pending.value === a.url;
-              return (
-                <button key={a.id} type="button"
-                  onClick={() => setPending(active ? null : { kind: "asset", value: a.url })}
-                  title={a.label}
-                  style={{
-                    width: 64, height: 64, borderRadius: 10,
-                    background: active ? "rgba(192,106,74,0.12)" : "rgba(255,255,255,0.7)",
-                    border: active ? "1.5px solid #c06a4a" : "1px solid rgba(0,0,0,0.08)",
-                    cursor: "pointer", padding: 6,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    transition: "background 0.15s, border-color 0.15s",
-                  }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={a.url} alt={a.label} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }} />
-                </button>
-              );
-            })}
-          </div>
-        </Field>
-      )}
-
-      {/* Emoji stamps library */}
-      <Field
-        label="Emoji stamps"
-        action={
-          stamps.length > 0 ? (
-            <button type="button" onClick={onClearAll}
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 4,
-                background: "transparent", border: "none",
-                color: "var(--color-muted)", fontSize: 11, cursor: "pointer",
-              }}>
-              <Trash2 size={11} /> Clear all ({stamps.length})
-            </button>
-          ) : null
-        }
-      >
-        {/* Search */}
-        <div style={{ position: "relative", marginBottom: 10 }}>
-          <Search size={13} style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", color: "var(--color-muted)" }} />
+      {/* Universal search bar — context-aware placeholder */}
+      {subTab !== "text" && (
+        <div style={{ position: "relative" }}>
+          <Search size={13} style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "var(--color-muted)" }} />
           <input
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search — heart, cake, rocket…"
+            placeholder={activeSubTab.placeholder}
             style={{
               width: "100%", boxSizing: "border-box",
-              borderRadius: 8, padding: "7px 10px 7px 30px", fontSize: 12,
-              background: "rgba(255,255,255,0.85)",
+              borderRadius: 10, padding: "9px 12px 9px 32px", fontSize: 13,
+              background: "rgba(255,255,255,0.9)",
               border: "1px solid var(--color-muted)",
-              color: "var(--color-ink)",
+              color: "var(--color-ink)", outline: "none",
             }}
           />
         </div>
+      )}
 
-        {/* Category tabs */}
-        {!results && (
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginBottom: 10 }}>
-            {STAMP_EMOJI_LIBRARY.map((cat) => (
-              <button key={cat.id} type="button" onClick={() => setCategory(cat.id)}
-                style={pillSx(category === cat.id, { fontSize: 11, padding: "3px 11px" })}>
-                {cat.label}
-              </button>
-            ))}
-          </div>
-        )}
+      {/* Active sub-tab content */}
+      {subTab === "stickers" && (
+        <StickersTab
+          stamps={stamps}
+          query={query}
+          results={results}
+          emojis={emojis}
+          category={category}
+          setCategory={setCategory}
+          pending={pending}
+          setPending={setPending}
+          onClearAll={onClearAll}
+        />
+      )}
 
-        {/* Grid */}
-        {emojis.length === 0 ? (
-          <div style={{ padding: "16px 4px", textAlign: "center", fontSize: 12, color: "var(--color-muted)" }}>
-            No stamps match &ldquo;{query}&rdquo;
-          </div>
-        ) : (
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(40px, 1fr))",
-            gap: 4,
-            maxHeight: 176,
-            overflowY: "auto",
-            padding: 2,
-          }}>
-            {emojis.map((e, i) => {
-              const active = pending?.kind === "emoji" && pending.value === e;
-              return (
-                <button key={`${e}-${i}`} type="button"
-                  onClick={() => setPending(active ? null : { kind: "emoji", value: e })}
-                  style={{
-                    fontSize: 24, lineHeight: 1, padding: 6, cursor: "pointer",
-                    borderRadius: 8,
-                    background: active ? "rgba(192,106,74,0.15)" : "transparent",
-                    border: active ? "1.5px solid #c06a4a" : "1.5px solid transparent",
-                    aspectRatio: "1",
-                    transition: "background 0.1s, border-color 0.1s",
-                  }}>
-                  {e}
-                </button>
-              );
-            })}
-          </div>
-        )}
-      </Field>
+      {subTab === "postmarks" && (
+        <PostmarksTab
+          presets={filteredPostmarks}
+          query={query}
+          pending={pending}
+          setPending={setPending}
+          setPendingPostmark={setPendingPostmark}
+          postmarkOuter={postmarkOuter}
+          setPostmarkOuter={setPostmarkOuter}
+          postmarkInner={postmarkInner}
+          setPostmarkInner={setPostmarkInner}
+          postmarkColor={postmarkColor}
+          setPostmarkColor={setPostmarkColor}
+        />
+      )}
+
+      {subTab === "text" && (
+        <TextTab
+          envelopeText={envelopeText}
+          setEnvelopeText={setEnvelopeText}
+          envelopeTextColor={envelopeTextColor}
+          setEnvelopeTextColor={setEnvelopeTextColor}
+          envelopeTextFont={envelopeTextFont}
+          setEnvelopeTextFont={setEnvelopeTextFont}
+          envelopeTextSize={envelopeTextSize}
+          setEnvelopeTextSize={setEnvelopeTextSize}
+          setPending={setPending}
+        />
+      )}
+
+      {subTab === "custom" && (
+        <CustomTab
+          assets={filteredAssets}
+          query={query}
+          pending={pending}
+          setPending={setPending}
+        />
+      )}
     </div>
   );
 }
+
+function StickersTab({
+  stamps, query, results, emojis, category, setCategory, pending, setPending, onClearAll,
+}: {
+  stamps: EnvelopeStamp[];
+  query: string;
+  results: string[] | null;
+  emojis: string[];
+  category: string;
+  setCategory: (c: string) => void;
+  pending: PendingStamp | null;
+  setPending: (p: PendingStamp | null) => void;
+  onClearAll: () => void;
+}) {
+  const stickerCount = stamps.filter((s) => s.kind === "emoji").length;
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      {!results && (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+          {STAMP_EMOJI_LIBRARY.map((cat) => (
+            <button key={cat.id} type="button" onClick={() => setCategory(cat.id)}
+              style={pillSx(category === cat.id, { fontSize: 11, padding: "3px 11px" })}>
+              {cat.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {emojis.length === 0 ? (
+        <div style={{ padding: "16px 4px", textAlign: "center", fontSize: 12, color: "var(--color-muted)" }}>
+          No stamps match &ldquo;{query}&rdquo;
+        </div>
+      ) : (
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(40px, 1fr))",
+          gap: 4,
+          maxHeight: 220,
+          overflowY: "auto",
+          padding: 2,
+        }}>
+          {emojis.map((e, i) => {
+            const active = pending?.kind === "emoji" && pending.value === e;
+            return (
+              <button key={`${e}-${i}`} type="button"
+                onClick={() => setPending(active ? null : { kind: "emoji", value: e })}
+                style={{
+                  fontSize: 24, lineHeight: 1, padding: 6, cursor: "pointer",
+                  borderRadius: 8,
+                  background: active ? "rgba(192,106,74,0.15)" : "transparent",
+                  border: active ? "1.5px solid #c06a4a" : "1.5px solid transparent",
+                  aspectRatio: "1",
+                  transition: "background 0.1s, border-color 0.1s",
+                }}>
+                {e}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {stickerCount > 0 && (
+        <button type="button" onClick={onClearAll}
+          style={{
+            alignSelf: "flex-start",
+            display: "inline-flex", alignItems: "center", gap: 4,
+            background: "transparent", border: "none",
+            color: "var(--color-muted)", fontSize: 11, cursor: "pointer", padding: 0,
+          }}>
+          <Trash2 size={11} /> Clear all stamps ({stamps.length})
+        </button>
+      )}
+    </div>
+  );
+}
+
+function PostmarksTab({
+  presets, query, pending, setPending, setPendingPostmark,
+  postmarkOuter, setPostmarkOuter, postmarkInner, setPostmarkInner,
+  postmarkColor, setPostmarkColor,
+}: {
+  presets: typeof POSTMARK_PRESETS;
+  query: string;
+  pending: PendingStamp | null;
+  setPending: (p: PendingStamp | null) => void;
+  setPendingPostmark: (outer: string, inner: string, color?: string) => void;
+  postmarkOuter: string;
+  setPostmarkOuter: (s: string) => void;
+  postmarkInner: string;
+  setPostmarkInner: (s: string) => void;
+  postmarkColor: string;
+  setPostmarkColor: (s: string) => void;
+}) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+      {/* Preset row */}
+      {presets.length === 0 ? (
+        <div style={{ padding: "16px 4px", textAlign: "center", fontSize: 12, color: "var(--color-muted)" }}>
+          No postmarks match &ldquo;{query}&rdquo;
+        </div>
+      ) : (
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+          {presets.map((p) => {
+            const active =
+              pending?.kind === "postmark" &&
+              pending.outerText === p.outerText &&
+              pending.value === p.innerText;
+            return (
+              <button
+                key={p.id}
+                type="button"
+                onClick={() =>
+                  active ? setPending(null) : setPendingPostmark(p.outerText, p.innerText)
+                }
+                title={`${p.outerText} · ${p.innerText}`}
+                style={{
+                  width: 78, height: 78, borderRadius: 12, padding: 4,
+                  background: active ? "rgba(160,40,34,0.10)" : "rgba(255,255,255,0.7)",
+                  border: active ? "1.5px solid #a02822" : "1px solid rgba(0,0,0,0.08)",
+                  cursor: "pointer",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  transition: "all 0.15s",
+                }}
+              >
+                <PostmarkSvg
+                  sizePx={66}
+                  outerText={p.outerText}
+                  innerText={p.innerText}
+                  color={postmarkColor}
+                  uid={`preset-${p.id}`}
+                />
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Custom composer */}
+      <div style={{
+        padding: "14px 14px 12px",
+        borderRadius: 12,
+        background: "rgba(253,250,242,0.5)",
+        border: "1px dashed rgba(0,0,0,0.08)",
+        display: "flex", flexDirection: "column", gap: 10,
+      }}>
+        <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.14em", color: "var(--color-muted)", fontWeight: 600 }}>
+          Compose your own
+        </div>
+        <div style={{
+          display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr) auto auto",
+          gap: 8, alignItems: "center",
+        }}>
+          <input
+            value={postmarkOuter}
+            onChange={(e) => setPostmarkOuter(e.target.value.slice(0, 40))}
+            placeholder="Outer arc text"
+            style={{
+              minWidth: 0, borderRadius: 8, padding: "8px 12px",
+              background: "rgba(255,255,255,0.82)",
+              border: "1px solid var(--color-muted)",
+              color: "var(--color-ink)", fontSize: 12,
+              fontFamily: "var(--font-display-warm, Caveat, cursive)",
+              letterSpacing: "0.05em", textTransform: "uppercase",
+            }}
+          />
+          <input
+            value={postmarkInner}
+            onChange={(e) => setPostmarkInner(e.target.value.slice(0, 8))}
+            placeholder="Center"
+            style={{
+              minWidth: 0, borderRadius: 8, padding: "8px 12px",
+              background: "rgba(255,255,255,0.82)",
+              border: "1px solid var(--color-muted)",
+              color: "var(--color-ink)", fontSize: 14,
+              fontFamily: "var(--font-display-warm, Caveat, cursive)",
+              textAlign: "center",
+            }}
+          />
+          <input
+            type="color"
+            value={postmarkColor}
+            onChange={(e) => setPostmarkColor(e.target.value)}
+            aria-label="Postmark color"
+            style={{
+              width: 32, height: 32, padding: 0, borderRadius: 8,
+              border: "1px solid var(--color-muted)", background: "transparent", cursor: "pointer",
+            }}
+          />
+          <button
+            type="button"
+            disabled={!postmarkOuter.trim() && !postmarkInner.trim()}
+            onClick={() => setPendingPostmark(postmarkOuter.trim(), postmarkInner.trim(), postmarkColor)}
+            style={{
+              borderRadius: 999, padding: "8px 14px", fontSize: 12,
+              background: postmarkOuter.trim() || postmarkInner.trim() ? "var(--color-ink)" : "rgba(0,0,0,0.18)",
+              color: "var(--color-bg)", border: "none",
+              cursor: postmarkOuter.trim() || postmarkInner.trim() ? "pointer" : "default",
+              whiteSpace: "nowrap",
+            }}
+          >
+            Add
+          </button>
+        </div>
+
+        {(postmarkOuter.trim() || postmarkInner.trim()) && (
+          <div style={{
+            display: "flex", justifyContent: "center", padding: "6px 4px 0",
+          }}>
+            <PostmarkSvg
+              sizePx={84}
+              outerText={postmarkOuter.trim() || undefined}
+              innerText={postmarkInner.trim() || undefined}
+              color={postmarkColor}
+              uid="composer-preview"
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function TextTab({
+  envelopeText, setEnvelopeText, envelopeTextColor, setEnvelopeTextColor,
+  envelopeTextFont, setEnvelopeTextFont, envelopeTextSize, setEnvelopeTextSize, setPending,
+}: {
+  envelopeText: string;
+  setEnvelopeText: (s: string) => void;
+  envelopeTextColor: string;
+  setEnvelopeTextColor: (s: string) => void;
+  envelopeTextFont: string;
+  setEnvelopeTextFont: (s: string) => void;
+  envelopeTextSize: number;
+  setEnvelopeTextSize: (n: number) => void;
+  setPending: (p: PendingStamp | null) => void;
+}) {
+  return (
+    <div style={{ display: "grid", gap: 10 }}>
+      <input
+        value={envelopeText}
+        onChange={(e) => setEnvelopeText(e.target.value)}
+        placeholder="Tiny note, initials, postmark…"
+        style={{
+          minWidth: 0,
+          borderRadius: 10,
+          padding: "10px 14px",
+          background: "rgba(255,255,255,0.9)",
+          border: "1px solid var(--color-muted)",
+          color: "var(--color-ink)",
+          fontFamily: envelopeTextFont,
+          fontSize: 16,
+          outline: "none",
+        }}
+      />
+      <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+        <select
+          value={envelopeTextFont}
+          onChange={(e) => setEnvelopeTextFont(e.target.value)}
+          aria-label="Extra text font"
+          style={{
+            borderRadius: 8, padding: "7px 10px",
+            background: "rgba(255,255,255,0.82)",
+            border: "1px solid var(--color-muted)",
+            color: "var(--color-ink)", fontSize: 12,
+          }}
+        >
+          {EXTRA_TEXT_FONTS.map((font) => (
+            <option key={font.value} value={font.value}>{font.label}</option>
+          ))}
+        </select>
+        <label style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 12, color: "var(--color-muted)" }}>
+          Size
+          <input
+            type="range" min={2} max={22}
+            value={envelopeTextSize}
+            onChange={(e) => setEnvelopeTextSize(Number(e.target.value))}
+            aria-label="Extra text size"
+            style={{ width: 95 }}
+          />
+        </label>
+        <input
+          type="color"
+          value={envelopeTextColor}
+          onChange={(e) => setEnvelopeTextColor(e.target.value)}
+          aria-label="Extra text color"
+          style={{ width: 32, height: 32, padding: 0, borderRadius: 8, border: "1px solid var(--color-muted)", background: "transparent" }}
+        />
+        <button
+          type="button"
+          disabled={!envelopeText.trim()}
+          onClick={() =>
+            setPending({
+              kind: "text",
+              value: envelopeText.trim(),
+              color: envelopeTextColor,
+              fontFamily: envelopeTextFont,
+              size: envelopeTextSize,
+            })
+          }
+          style={{
+            borderRadius: 999, padding: "8px 14px", fontSize: 12,
+            background: envelopeText.trim() ? "var(--color-ink)" : "rgba(0,0,0,0.18)",
+            color: "var(--color-bg)", border: "none",
+            cursor: envelopeText.trim() ? "pointer" : "default",
+            whiteSpace: "nowrap",
+          }}
+        >
+          Add Text
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function CustomTab({
+  assets, query, pending, setPending,
+}: {
+  assets: typeof STAMP_ASSETS;
+  query: string;
+  pending: PendingStamp | null;
+  setPending: (p: PendingStamp | null) => void;
+}) {
+  if (assets.length === 0) {
+    return (
+      <div style={{ padding: "16px 4px", textAlign: "center", fontSize: 12, color: "var(--color-muted)" }}>
+        {query ? `No custom stamps match "${query}"` : "No custom stamps yet."}
+      </div>
+    );
+  }
+  return (
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+      {assets.map((a) => {
+        const active = pending?.kind === "asset" && pending.value === a.url;
+        return (
+          <button key={a.id} type="button"
+            onClick={() => setPending(active ? null : { kind: "asset", value: a.url })}
+            title={a.label}
+            style={{
+              width: 72, height: 72, borderRadius: 12,
+              background: active ? "rgba(192,106,74,0.12)" : "rgba(255,255,255,0.7)",
+              border: active ? "1.5px solid #c06a4a" : "1px solid rgba(0,0,0,0.08)",
+              cursor: "pointer", padding: 8,
+              display: "flex", alignItems: "center", justifyContent: "center",
+              transition: "background 0.15s, border-color 0.15s",
+            }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={a.url} alt={a.label} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }} />
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 
 // ── Unlock panel ──────────────────────────────────────────────────────────────
 

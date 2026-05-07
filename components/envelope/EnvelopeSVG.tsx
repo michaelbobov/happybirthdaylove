@@ -14,6 +14,7 @@ import {
 } from "@/lib/stamps";
 import { captionHorizontalRangePct, measureEnvelopeTextBoxPct } from "@/lib/envelope-text-layout";
 import { EnvelopePatterns, patternFillUrl } from "./EnvelopePatterns";
+import { PostmarkGroup } from "./Postmark";
 import { WaxSeal } from "./WaxSeal";
 
 export type EnvelopeSVGProps = {
@@ -195,6 +196,21 @@ export const EnvelopeSVG = forwardRef<SVGSVGElement, EnvelopeSVGProps>(function 
                         filter:
                           "drop-shadow(0 2px 2px rgba(0,0,0,0.18)) drop-shadow(0 0 0.5px rgba(0,0,0,0.3))",
                       }}
+                    />
+                  );
+                }
+                if (s.kind === "postmark") {
+                  return (
+                    <PostmarkGroup
+                      key={s.id}
+                      cx={cx}
+                      cy={cy}
+                      sizePx={sizePx}
+                      outerText={s.outerText}
+                      innerText={s.value}
+                      color={s.color}
+                      rotation={s.rotation}
+                      uid={s.id}
                     />
                   );
                 }

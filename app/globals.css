@@ -249,3 +249,38 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Selection handles — used by EnvelopeStampsCanvas and EnvelopeCaptionOverlay
+   for the drag/rotate/scale/delete chips on a selected stamp or caption. */
+.env-handle {
+  border: 1px solid rgba(40, 24, 8, 0.85);
+  background: #ffffff;
+  color: rgba(40, 24, 8, 0.85);
+  box-shadow:
+    0 1px 1px rgba(40, 24, 8, 0.04),
+    0 4px 12px rgba(40, 24, 8, 0.18);
+  transition:
+    transform 0.12s cubic-bezier(0.2, 0.6, 0.3, 1),
+    box-shadow 0.12s ease,
+    background-color 0.12s ease;
+  animation: env-handle-in 0.16s cubic-bezier(0.2, 0.6, 0.3, 1) both;
+  padding: 0;
+}
+.env-handle:hover {
+  transform-box: fill-box;
+  background: #fdfaf2;
+  box-shadow:
+    0 2px 2px rgba(40, 24, 8, 0.06),
+    0 6px 16px rgba(40, 24, 8, 0.22);
+}
+.env-handle--danger {
+  border-color: #d94f3a;
+  color: #d94f3a;
+}
+.env-handle--danger:hover {
+  background: #fff7f5;
+}
+@keyframes env-handle-in {
+  from { opacity: 0; transform: scale(0.7); }
+  to   { opacity: 1; transform: scale(1); }
+}

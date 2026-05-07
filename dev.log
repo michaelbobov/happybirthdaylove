@@ -1,0 +1,713 @@
+
+> happybirthdaylove@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.4.58:3000
+- Environments: .env.local
+✓ Ready in 671ms
+
+○ Compiling / ...
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
+Error: Can't resolve 'tailwindcss' in 'c:\Projects'
+    [2m[at finishWithoutResolve (C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:587:18)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:679:14][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:16:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m
+    [2m[at C:\Projects\happybirthdaylove\node_modules\.pnpm\enhanced-resolve@5.20.1\node_modules\enhanced-resolve\lib\Resolver.js:740:5][0m
+    [2m[at eval (eval at create (C:\Projects\happybirthdaylove\node_modules\.pnpm\tapable@2.3.2\node_modules\tapable\lib\HookCodeFactory.js:31:10), <anonymous>:15:1)][0m {
+  details: "resolve 'tailwindcss' in 'c:\\Projects'\n" +
+    '  Parsed request is a module\n' +
+    '  No description file found in c:\\Projects or above\n' +
+    '  resolve as module\n' +
+    "    c:\\Projects\\node_modules doesn't exist or is not a directory\n" +
+    "    c:\\node_modules doesn't exist or is not a directory\n" +
+    '    looking for modules in C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\n' +
+    '      single file module\n' +
+    '        using description file: C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\package.json (relative path: ./node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52/node_modules;C:/Projects/happybirthdaylove/node_modules/.pnpm/node_modules/tailwindcss)\n' +
+    '          no extension\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist\n" +
+    '          .css\n' +
+    "            C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss.css doesn't exist\n" +
+    "      C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules\\next\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\next@16.2.4_@babel+core@7.2_11ffd9b5e66591c4474335ed03190f52\\node_modules;C:\\Projects\\happybirthdaylove\\node_modules\\.pnpm\\node_modules\\tailwindcss doesn't exist"
+}
