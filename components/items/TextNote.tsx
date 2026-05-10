@@ -39,12 +39,15 @@ export function TextNote({ payload, caption }: Props) {
     return (
       <div className="w-full max-w-xl mx-auto">
         <div
-          className="relative paper-sheet rounded-[var(--radius-lg)]"
           style={{
+            position: "relative",
             aspectRatio: "560/380",
+            background: "var(--color-paper, #fdfaf2)",
             backgroundImage: paperBg(paperStyle ?? "blank"),
             backgroundPosition: "0 36px",
-            boxShadow: "0 12px 40px var(--color-shadow), inset 0 0 0 1px rgba(0,0,0,0.04)",
+            borderRadius: 12,
+            border: "1px solid rgba(0,0,0,0.1)",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.07), inset 0 1px 0 rgba(255,255,255,0.6)",
             overflow: "hidden",
           }}
         >
@@ -74,12 +77,15 @@ export function TextNote({ payload, caption }: Props) {
     return (
       <div className="w-full max-w-xl mx-auto">
         <div
-          className="relative paper-sheet rounded-[var(--radius-lg)]"
           style={{
+            position: "relative",
             aspectRatio: "560/380",
+            background: "var(--color-paper, #fdfaf2)",
             backgroundImage: paperBg(paperStyle ?? "lined"),
             backgroundPosition: "0 36px",
-            boxShadow: "0 12px 40px var(--color-shadow), inset 0 0 0 1px rgba(0,0,0,0.04)",
+            borderRadius: 12,
+            border: "1px solid rgba(0,0,0,0.1)",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.07), inset 0 1px 0 rgba(255,255,255,0.6)",
             overflow: "hidden",
           }}
         >
@@ -137,18 +143,28 @@ export function TextNote({ payload, caption }: Props) {
     <div className="w-full max-w-xl mx-auto">
       <div
         ref={rootRef}
-        className="relative paper-sheet rounded-[var(--radius-lg)] p-8 md:p-10"
         style={{
+          position: "relative",
           color: "var(--color-ink)",
           minHeight: 240,
           fontFamily,
-          backgroundImage: paperBg(paperStyle ?? "blank"),
+          background: "var(--color-paper, #fdfaf2)",
+          backgroundImage: paperBg(paperStyle ?? "lined"),
           backgroundPosition: "0 36px",
-          boxShadow: "0 12px 40px var(--color-shadow), inset 0 0 0 1px rgba(0,0,0,0.04)",
+          borderRadius: 12,
+          border: "1px solid rgba(0,0,0,0.1)",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.07), inset 0 1px 0 rgba(255,255,255,0.6)",
+          padding: "14px 18px",
+          overflow: "hidden",
         }}
       >
         <div
-          className="text-2xl md:text-3xl leading-[1.7]"
+          className="textnote-body"
+          style={{
+            fontSize: 17,
+            lineHeight: "28px",
+            whiteSpace: "pre-wrap",
+          }}
           dangerouslySetInnerHTML={{ __html: wrapped }}
         />
       </div>

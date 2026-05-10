@@ -457,7 +457,7 @@ export function EnvelopeWorkspace({
 
       <style>{`
         .envelope-preview-shell {
-          overflow: hidden;
+          overflow: visible;
           min-height: ${ENVELOPE_H}px;
         }
 

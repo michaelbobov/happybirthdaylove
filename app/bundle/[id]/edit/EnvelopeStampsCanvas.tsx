@@ -304,7 +304,7 @@ export function EnvelopeStampsCanvas({
   const selected = stamps.find((s) => s.id === selectedId) ?? null;
 
   return (
-    <div style={{ position: "relative", width, height, userSelect: "none" }}>
+    <div style={{ position: "relative", width, height, userSelect: "none", overflow: "visible" }}>
       {/* Envelope art — pointer events pass through to canvas so clicks on
           empty envelope areas trigger placement/deselection. */}
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
@@ -319,6 +319,7 @@ export function EnvelopeStampsCanvas({
         style={{
           position: "absolute",
           inset: 0,
+          overflow: "visible",
           cursor: pending ? "copy" : "default",
         }}
       >
@@ -427,23 +428,45 @@ export function EnvelopeStampsCanvas({
         {selected && (() => {
           const sizePx = (selected.size / 100) * shorter;
           const bounds = getStampBounds(selected, sizePx, width, height);
-          const halfDiag = Math.sqrt(bounds.width ** 2 + bounds.height ** 2) / 2 + 18;
+          const halfDiag = Math.sqrt(bounds.width ** 2 + bounds.height ** 2) / 2 + 24;
           return (
             <>
-              {/* Rotate handle — top */}
+              {/* Delete — top-left */}
+              <button
+                type="button"
+                aria-label="Remove stamp"
+                className="env-handle env-handle--danger"
+                onClick={(e) => { e.stopPropagation(); remove(selected.id); }}
+                style={{
+                  position: "absolute",
+                  left: `${selected.x}%`,
+                  top: `${selected.y}%`,
+                  transform: `translate(${-halfDiag - 3}px, ${-halfDiag}px)`,
+                  width: 28,
+                  height: 28,
+                  borderRadius: "50%",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Trash2 size={13} strokeWidth={2.2} />
+              </button>
+
+              {/* Rotate handle — top-right */}
               <button
                 type="button"
                 aria-label="Rotate stamp"
-                className="env-handle"
-                // eslint-disable-next-line react-hooks/refs
+                className="env-handle env-handle--rotate"
                 onPointerDown={(e) => onHandlePointerDown(e, selected.id, "rotate")}
                 style={{
                   position: "absolute",
                   left: `${selected.x}%`,
                   top: `${selected.y}%`,
-                  transform: `translate(-50%, ${-halfDiag}px)`,
-                  width: 24,
-                  height: 24,
+                  transform: `translate(${halfDiag - 25}px, ${-halfDiag}px)`,
+                  width: 28,
+                  height: 28,
                   borderRadius: "50%",
                   cursor: "grab",
                   display: "flex",
@@ -452,7 +475,7 @@ export function EnvelopeStampsCanvas({
                   touchAction: "none",
                 }}
               >
-                <RotateCw size={12} strokeWidth={2.2} />
+                <RotateCw size={13} strokeWidth={2.2} />
               </button>
 
               {selected.kind === "text"
@@ -488,9 +511,9 @@ export function EnvelopeStampsCanvas({
                           left: `${left}%`,
                           top: `${top}%`,
                           transform: "translate(-50%, -50%)",
-                          width: 11,
-                          height: 11,
-                          borderRadius: 3,
+                          width: 14,
+                          height: 14,
+                          borderRadius: 4,
                           cursor,
                           touchAction: "none",
                         }}
@@ -503,16 +526,16 @@ export function EnvelopeStampsCanvas({
               <button
                 type="button"
                 aria-label="Resize stamp"
-                className="env-handle"
+                className="env-handle env-handle--scale"
                 onPointerDown={(e) => onHandlePointerDown(e, selected.id, "scale")}
                 style={{
                   position: "absolute",
                   left: `${selected.x}%`,
                   top: `${selected.y}%`,
-                  transform: `translate(${halfDiag - 11}px, ${halfDiag - 11}px)`,
-                  width: 20,
-                  height: 20,
-                  borderRadius: 5,
+                  transform: `translate(${halfDiag - 14}px, ${halfDiag - 14}px)`,
+                  width: 28,
+                  height: 28,
+                  borderRadius: 7,
                   cursor: "nwse-resize",
                   display: "flex",
                   alignItems: "center",
@@ -520,30 +543,7 @@ export function EnvelopeStampsCanvas({
                   touchAction: "none",
                 }}
               >
-                <Maximize2 size={10} strokeWidth={2.4} />
-              </button>
-
-              {/* Delete button — top-right of envelope, absolute, not on stamp */}
-              <button
-                type="button"
-                aria-label="Remove stamp"
-                className="env-handle env-handle--danger"
-                onClick={(e) => { e.stopPropagation(); remove(selected.id); }}
-                style={{
-                  position: "absolute",
-                  left: `${selected.x}%`,
-                  top: `${selected.y}%`,
-                  transform: `translate(${halfDiag - 11}px, ${-halfDiag}px)`,
-                  width: 22,
-                  height: 22,
-                  borderRadius: "50%",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Trash2 size={11} strokeWidth={2.2} />
+                <Maximize2 size={13} strokeWidth={2.4} />
               </button>
             </>
           );

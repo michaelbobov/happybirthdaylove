@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Lock } from "lucide-react";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
@@ -47,8 +47,9 @@ export function EnvelopeOpenClient({
   const [items, setItems] = useState<RevealedItem[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [unlockAt, setUnlockAt] = useState<string | null>(envelope.unlockAt);
+  const [openedAt] = useState<string>(() => envelope.openedAt ?? new Date().toISOString());
 
-  const tryReveal = async (pass?: string, onSuccessStatus?: "ok" | "spread") => {
+  const tryReveal = useCallback(async (pass?: string, onSuccessStatus?: "ok" | "spread") => {
     setError(null);
     const res = await fetch(`/api/reveal/${envelope.id}`, {
       method: "POST",
@@ -79,7 +80,7 @@ export function EnvelopeOpenClient({
       setStatus("err");
       setError(json.error ?? "Something went wrong");
     }
-  };
+  }, [envelope.id, envelope.unlockAt, token]);
 
   useEffect(() => {
     // If already opened on a prior visit, fetch items and jump straight to spread view.
@@ -100,8 +101,20 @@ export function EnvelopeOpenClient({
       }, 0);
       return () => window.clearTimeout(id);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [hasPassphrase, token, envelope.openedAt, tryReveal]);
+
+  // Re-fetch signed URLs when the user returns to an already-opened envelope,
+  // so media never shows placeholders due to expired URLs.
+  useEffect(() => {
+    if (!envelope.openedAt) return;
+    const onVisible = () => {
+      if (document.visibilityState !== "visible") return;
+      const pass = hasPassphrase ? window.sessionStorage.getItem(passphraseStorageKey(token)) ?? undefined : undefined;
+      tryReveal(pass, "spread");
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => document.removeEventListener("visibilitychange", onVisible);
+  }, [envelope.openedAt, hasPassphrase, token, tryReveal]);
 
   return (
     <ThemeProvider themeId={themeId} as="main" className="app-screen paper grain flex-1 min-h-screen">
@@ -214,7 +227,7 @@ export function EnvelopeOpenClient({
 
         {status === "spread" && items.length > 0 && (
           <div className="mt-10">
-            <EnvelopeSpread items={items} openedAt={envelope.openedAt!} />
+            <EnvelopeSpread items={items} openedAt={openedAt} />
           </div>
         )}
 

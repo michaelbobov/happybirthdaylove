@@ -16,6 +16,9 @@ import { createCipheriv, randomBytes } from "node:crypto";
 import dotenv from "dotenv";
 import { createClient } from "@supabase/supabase-js";
 
+// Minimal 1×1 JPEG — Chrome-verified valid JPEG for testing storage/signed-URL path.
+const TINY_JPEG_B64 = "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBD/wAARCAABAAEDAREAAhEAAxEA/8QAFAAAAQAAAAAAAAAAAAAAAAAAAP/EABQQAAEAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAgADAAA/AAD/2Q==";
+
 dotenv.config({ path: ".env.local" });
 dotenv.config({ path: ".env.test.local" }); // optional overrides
 
@@ -51,6 +54,7 @@ export interface Seeds {
       token: string;
       id: string;
       immediateEnvelopeId: string;
+      imageEnvelopeId: string;
       dateLocked: { id: string; unlockAt: string };
       manualEnvelopeId: string;
     };
@@ -77,6 +81,7 @@ async function setup() {
           token: "",
           id: "",
           immediateEnvelopeId: "",
+          imageEnvelopeId: "",
           dateLocked: { id: "", unlockAt: "" },
           manualEnvelopeId: "",
         },
@@ -102,7 +107,7 @@ async function setup() {
     password: testPassword,
     email_confirm: true,
   });
-  const { data: recipientUser } = await admin.auth.admin.createUser({
+  await admin.auth.admin.createUser({
     email: recipientEmail,
     password: testPassword,
     email_confirm: true,
@@ -141,6 +146,14 @@ async function setup() {
       {
         bundle_id: jordanBundle!.id,
         order_index: 1,
+        title: "A photo for you",
+        caption: "Look inside",
+        unlock_type: "immediate",
+        envelope_design_id: "blush-linen",
+      },
+      {
+        bundle_id: jordanBundle!.id,
+        order_index: 2,
         title: "On your special day",
         caption: "Save for later",
         unlock_type: "date",
@@ -149,26 +162,45 @@ async function setup() {
       },
       {
         bundle_id: jordanBundle!.id,
-        order_index: 2,
+        order_index: 3,
         title: "When the time is right",
         caption: "Sender will unlock",
         unlock_type: "manual",
         envelope_design_id: "sage-botanical",
       },
     ])
-    .select("id, unlock_type");
+    .select("id, unlock_type, order_index");
 
-  const immediateEnv = envelopes!.find((e) => e.unlock_type === "immediate")!;
-  const dateEnv = envelopes!.find((e) => e.unlock_type === "date")!;
-  const manualEnv = envelopes!.find((e) => e.unlock_type === "manual")!;
+  type EnvRow = { id: string; unlock_type: string; order_index: number };
+  const envRows = envelopes as EnvRow[];
+  const immediateEnv = envRows.find((e) => e.unlock_type === "immediate" && e.order_index === 0)!;
+  const imageEnv = envRows.find((e) => e.unlock_type === "immediate" && e.order_index === 1)!;
+  const dateEnv = envRows.find((e) => e.unlock_type === "date")!;
+  const manualEnv = envRows.find((e) => e.unlock_type === "manual")!;
 
-  // Add an encrypted text item to the immediate envelope
+  // Text item in the immediate envelope
   await admin.from("envelope_items").insert({
     envelope_id: immediateEnv.id,
     order_index: 0,
     type: "text",
     payload_encrypted: encryptPayload({ type: "text", html: "<p>Happy birthday, Jordan! 🎉</p>" }),
     meta_json: {},
+  });
+
+  // Upload a real (tiny) JPEG to storage so the signed-URL path is fully exercised.
+  const imageBytes = Buffer.from(TINY_JPEG_B64, "base64");
+  const imageStorageKey = `bundles/${jordanBundle!.id}/e2e-test-photo.jpg`;
+  await admin.storage.from("envelope-media").upload(imageStorageKey, imageBytes, {
+    contentType: "image/jpeg",
+    upsert: true,
+  });
+
+  await admin.from("envelope_items").insert({
+    envelope_id: imageEnv.id,
+    order_index: 0,
+    type: "image",
+    payload_encrypted: encryptPayload({ type: "image", storageKey: imageStorageKey, caption: "E2E test photo" }),
+    meta_json: { frame: "polaroid", captionMode: "bottom" },
   });
 
   // ── Sarah's draft bundle (sender edit-flow) ──────────────────────────────────
@@ -203,6 +235,7 @@ async function setup() {
         token: jordanToken,
         id: jordanBundle!.id,
         immediateEnvelopeId: immediateEnv.id,
+        imageEnvelopeId: imageEnv.id,
         dateLocked: { id: dateEnv.id, unlockAt: futureDate },
         manualEnvelopeId: manualEnv.id,
       },

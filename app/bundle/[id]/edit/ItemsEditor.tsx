@@ -469,7 +469,7 @@ function EditItemPanel({
 }) {
   const payload = item.previewPayload;
   const [caption, setCaption] = useState(payload && "caption" in payload ? payload.caption ?? "" : (item.meta.captionHint as string) ?? "");
-  const [textValue, setTextValue] = useState(payload?.type === "text" ? htmlToText(payload.html ?? "") : "");
+  const [textValue, setTextValue] = useState(payload?.type === "text" && "html" in payload ? htmlToText(payload.html ?? "") : "");
   const [gifUrl, setGifUrl] = useState(payload?.type === "gif" ? payload.url : "");
   const [frame, setFrame] = useState<PhotoFrame>((item.meta.frame as PhotoFrame) === "plain" ? "plain" : "polaroid");
   const [filter, setFilter] = useState<PhotoFilter>((item.meta.filter as PhotoFilter) ?? "none");

@@ -34,6 +34,7 @@ async function loadSeeds(): Promise<Seeds> {
           token: "",
           id: "",
           immediateEnvelopeId: "",
+          imageEnvelopeId: "",
           dateLocked: { id: "", unlockAt: "" },
           manualEnvelopeId: "",
         },

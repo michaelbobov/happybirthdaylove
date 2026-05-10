@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { X, ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -34,7 +34,7 @@ export function CollectionHub({ token, themeId, bundleTitle }: Props) {
   const gridRef = useRef<HTMLDivElement>(null);
   const lightboxRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  const loadItems = useCallback(() => {
     fetch(`/api/collection/${token}`)
       .then((r) => r.json())
       .then((data) => {
@@ -42,6 +42,17 @@ export function CollectionHub({ token, themeId, bundleTitle }: Props) {
         setLoading(false);
       });
   }, [token]);
+
+  useEffect(() => {
+    loadItems();
+  }, [loadItems]);
+
+  // Re-fetch when the user returns to the tab so signed URLs are always fresh.
+  useEffect(() => {
+    const onVisible = () => { if (document.visibilityState === "visible") loadItems(); };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => document.removeEventListener("visibilitychange", onVisible);
+  }, [loadItems]);
 
   // Animate grid items on load or filter change
   useEffect(() => {

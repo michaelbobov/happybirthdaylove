@@ -58,7 +58,7 @@ export async function GET(
     if (payload.type === "image" || payload.type === "audio") {
       const { data: signed } = await admin.storage
         .from("envelope-media")
-        .createSignedUrl(payload.storageKey, 300); // 5-min TTL for collection view
+        .createSignedUrl(payload.storageKey, 3600);
       mediaUrl = signed?.signedUrl;
     }
 

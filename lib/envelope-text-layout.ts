@@ -105,7 +105,16 @@ export function measureEnvelopeTextBoxPct(options: {
   const ctx = canvas.getContext("2d");
   if (!ctx) return fallbackBoxPct(maxWidthPct, trimmed, fontSizePx * lineHeight);
 
-  ctx.font = `${fontSizePx}px ${fontFamily}`;
+  // CSS variables like "var(--font-hand)" can't be used directly in canvas font.
+  // Resolve them against a real DOM element so measureText uses the correct typeface.
+  let resolvedFont = fontFamily;
+  if (fontFamily.startsWith("var(")) {
+    const varName = fontFamily.match(/var\((--[^,)]+)/)?.[1];
+    if (varName) {
+      resolvedFont = getComputedStyle(document.documentElement).getPropertyValue(varName).trim() || fontFamily;
+    }
+  }
+  ctx.font = `${fontSizePx}px ${resolvedFont}`;
   const innerMax = Math.max(40, maxWidthPx - horizontalPaddingPx * 2);
   const lines = layoutWrappedLines(ctx, trimmed, innerMax);
   let maxLineW = 0;

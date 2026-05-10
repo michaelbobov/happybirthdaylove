@@ -91,7 +91,7 @@ export async function POST(
     if (payload.type === "image" || payload.type === "audio") {
       const { data: signed } = await admin.storage
         .from("envelope-media")
-        .createSignedUrl(payload.storageKey, 60);
+        .createSignedUrl(payload.storageKey, 3600);
       mediaUrl = signed?.signedUrl;
     }
 
